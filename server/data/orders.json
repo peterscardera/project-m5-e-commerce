@@ -1,19 +1,24 @@
 [
   {
     "0001": {
-      "0409202012345" : []
+      "currentCart" : {},
+      "orderHistory" : []
     },
     "0002": {
-      "0409202068996" : []
+      "currentCart" : {},
+      "orderHistory" : []
     },
     "0003": {
-      "0409202052739" : []
+      "currentCart" : {},
+      "orderHistory" : []
     },
     "0004": {
-      "0409202027384" : []
+      "currentCart" : {},
+      "orderHistory" : []
     },
     "0005": {
-      "0409202009876" : []
+      "currentCart" : {},
+      "orderHistory" : []
     }
   }
 ]

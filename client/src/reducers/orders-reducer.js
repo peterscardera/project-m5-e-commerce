@@ -1,6 +1,6 @@
 const initialState = {
-  orders: {},
   currentCart: {},
+  orderHistory: [],
   status: 'idle',
 };
 
@@ -17,8 +17,9 @@ export default function ordersReducer(state = initialState, action) {
     }
     case 'RECEIVE_CARTS' : {
       return {
-        orders: action.carts,
-        currentCart: action.carts[action.carts.length-1],
+        orderHistory: action.orderHistory,
+        currentCart: action.currentCart,
+        // currentCart: action.carts[action.carts.length-1],
         status: 'idle',
       }
     }
@@ -36,7 +37,7 @@ export default function ordersReducer(state = initialState, action) {
         status: 'sending',
       }
     }
-    case 'ADD_ITEM_TO_CART_SUCCESS' : { // is this supposed to be currentCart?  last order in orders also needs to change
+    case 'ADD_ITEM_TO_CART_SUCCESS' : {
       if (state.currentCart[action.item.id]) {
         return {
           ...state,
@@ -107,7 +108,7 @@ export default function ordersReducer(state = initialState, action) {
       else { // case: removing some, but not all, of a given item from the cart
         return {
           ...state,
-          cart: {
+          currentCart: {
             ...state.cart,
             [action.item.id] : {
               ...state.cart[action.item.id],
@@ -156,12 +157,11 @@ export default function ordersReducer(state = initialState, action) {
     }
     // when the below state occurs, the 
     case 'PURCHASE_SUCCESS': {
+      let newHistory = state.orderHistory;
+      newHistory.push(currentCart);
       return {
         ...state,
-        orders: {
-          ...state.orders,
-          [state.currentCart.id]: state.currentCart,
-        },
+        orderHistory: newHistory,
         currentCart: {},
       }
     }
@@ -180,5 +180,5 @@ export default function ordersReducer(state = initialState, action) {
 }
 
 export const getCart = state => state.currentCart;
-export const getOrders = state => state.orders;
+export const getOrderHistory = state => state.orderHistory;
 export const getCartStatus = state => state.status;
