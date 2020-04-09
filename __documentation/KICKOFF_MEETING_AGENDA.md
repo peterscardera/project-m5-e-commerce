@@ -13,7 +13,7 @@
 - **Brainstorming**
   - Take a look at the data
     - What do we have to show?
-    - How ca nwe make the most of the provided data?
+    - How can we make the most of the provided data?
   - Ideas for store functionality
     - What do we want users to be able to do?
   - Look and feel
