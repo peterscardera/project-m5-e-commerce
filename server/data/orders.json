@@ -1,24 +1,22 @@
-[
-  {
-    "0001": {
-      "currentCart" : {},
-      "orderHistory" : []
-    },
-    "0002": {
-      "currentCart" : {},
-      "orderHistory" : []
-    },
-    "0003": {
-      "currentCart" : {},
-      "orderHistory" : []
-    },
-    "0004": {
-      "currentCart" : {},
-      "orderHistory" : []
-    },
-    "0005": {
-      "currentCart" : {},
-      "orderHistory" : []
-    }
+{
+  "0001": {
+    "currentCart" : {},
+    "orderHistory" : []
+  },
+  "0002": {
+    "currentCart" : {},
+    "orderHistory" : []
+  },
+  "0003": {
+    "currentCart" : {},
+    "orderHistory" : []
+  },
+  "0004": {
+    "currentCart" : {},
+    "orderHistory" : []
+  },
+  "0005": {
+    "currentCart" : {},
+    "orderHistory" : []
   }
-]
+}

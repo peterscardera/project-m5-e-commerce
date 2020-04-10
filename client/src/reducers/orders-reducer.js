@@ -1,3 +1,16 @@
+// Sample of object layout
+// currentCart: {
+//   "itemId#" : {
+//     itemInfo: action.item,
+//     quantity: "quantity",
+//   }
+//   "itemId#" : {
+//     itemInfo: action.item,
+//     quantity: "quantity",
+//   }
+// }
+
+
 const initialState = {
   currentCart: {},
   orderHistory: [],
@@ -9,13 +22,13 @@ export default function ordersReducer(state = initialState, action) {
   switch (action.type) {
 
     // First three cases represent the obtaining of the carts.  This should be dispatched when a user logs in
-    case 'REQUEST_CARTS' : {
+    case 'REQUEST_ORDERS' : {
       return {
         ...state,
         status: 'loading',
       }
     }
-    case 'RECEIVE_CARTS' : {
+    case 'RECEIVE_ORDERS_SUCCESS' : {
       return {
         orderHistory: action.orderHistory,
         currentCart: action.currentCart,
@@ -23,7 +36,7 @@ export default function ordersReducer(state = initialState, action) {
         status: 'idle',
       }
     }
-    case 'RECEIVE_CARTS_ERROR' : {
+    case 'RECEIVE_ORDERS_ERROR' : {
       return {
         ...state,
         status: 'error',
@@ -112,7 +125,7 @@ export default function ordersReducer(state = initialState, action) {
             ...state.cart,
             [action.item.id] : {
               ...state.cart[action.item.id],
-              quantity: state.cart[action.item.id].quantity - action.item.quantity,
+              quantity: state.cart[action.item.id].quantity - action.quantity,
             }
           },
           status: 'idle',
@@ -158,14 +171,15 @@ export default function ordersReducer(state = initialState, action) {
     // when the below state occurs, the 
     case 'PURCHASE_SUCCESS': {
       let newHistory = state.orderHistory;
-      newHistory.push(state.currentCart);
+      let completedOrder = {[action.orderId]: [state.currentCart]};
+      newHistory.push(completedOrder);
       return {
         ...state,
         orderHistory: newHistory,
         currentCart: {},
       }
     }
-    case 'EMPTY_CART_ERROR': {
+    case 'PURCHASE_ERROR': {
       return {
         ...state,
         status: 'error',

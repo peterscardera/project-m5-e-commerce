@@ -1,22 +1,27 @@
 [
   {
     "id": "0001",
+    "userName": "LunaLove",
     "name": "Kendra"
   },
   {
     "id": "0002",
+    "userName": "Cogito",
     "name": "Andrew"
   },
   {
     "id": "0003",
+    "userName": "iGotThis",
     "name": "Peter"
   },
   {
     "id": "0004",
+    "userName": "BattleWorn",
     "name": "Buffy"
   },
   {
     "id": "0005",
+    "userName": "BigDamnHero",
     "name": "Malcolm"
   }
 ]

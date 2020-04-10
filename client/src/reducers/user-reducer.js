@@ -24,21 +24,23 @@ export default function userReducer(state = initialState, action) {
         status: 'error',
       }
     }
-    case 'REQUEST_LOG_USER_OUT' : {
-      return {
-        ...state,
-        status: 'loading',
-      }
-    }
-    case 'LOG_USER_OUT' : {
+    // Logging out is front end, cannot fail
+    // case 'REQUEST_LOG_USER_OUT' : {
+    //   return {
+    //     ...state,
+    //     status: 'loading',
+    //   }
+    // }
+    case 'LOG_USER_OUT_SUCCESS' : {
       return {...initialState}
     }
-    case 'LOG_USER_OUT_ERROR' : {
-      return {
-        ...state,
-        status: 'error',
-      }
-    }
+
+    // case 'LOG_USER_OUT_ERROR' : {
+    //   return {
+    //     ...state,
+    //     status: 'error',
+    //   }
+    // }
 
     default: {
       return state;
