@@ -6,36 +6,29 @@ const NavBar = () => {
     <>
       <header>
         <NavWrapper>
-          <ul>
-            <li>
-              <a href="#">Home</a>
-            </li>
-            <li>
-              <a href="#">Shop</a>
-            </li>
-            <li>
-              <a href="#">Login</a>
-            </li>
-            <li>
-              <a href="#">Wishlist</a>
-            </li>
-            <li>
-              <a href="#">Shopping Cart</a>
-            </li>
-          </ul>
+          <a href="#"> HOME </a>
+          <a href="#">SHOP</a>
+          <a href="#">ACCOUNT</a>
+          <a href="#">CART</a>
         </NavWrapper>
       </header>
     </>
   );
 };
 
+// once you click on account, we can have our sign in / create account, and even a wishlist! //
+
 const NavWrapper = styled.nav`
+  background: lightgrey;
+  font-family: sans-serif;
+  margin-top: 10px;
+  padding-top: 10px;
+  font-size: 20px;
+  margin: 0;
+  padding: 20px;
   display: flex;
   flex-direction: row;
-  background: lightseagreen;
-  font-family: sans-serif;
-  font-size: 30px;
-  margin: 0;
+  justify-content: space-between;
 `;
 
 export default NavBar;
