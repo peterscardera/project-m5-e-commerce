@@ -158,7 +158,7 @@ export default function ordersReducer(state = initialState, action) {
     // when the below state occurs, the 
     case 'PURCHASE_SUCCESS': {
       let newHistory = state.orderHistory;
-      newHistory.push(currentCart);
+      newHistory.push(state.currentCart);
       return {
         ...state,
         orderHistory: newHistory,

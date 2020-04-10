@@ -1,5 +1,8 @@
 {
   "dependencies": {
     "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "prettier": "2.0.4"
   }
 }

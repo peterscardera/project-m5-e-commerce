@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-import CartItems from "./CartItem";
+import CartItems from "./CartItems";
 
 const Cart = () => {
     
@@ -54,11 +54,16 @@ const Cart = () => {
 
   return (
     <React.Fragment>
-      <Container>
-        <div> Cart </div>
-        <div> Order#</div>
-        {/* map trough the data and return the CartItem list (maybe a maxmimum about of times?) */}
-        <CartItems> </CartItems>
+      <Container>       
+      {data.map((item, index)=> {
+        return (
+          <>
+    <CartItems name={item.name} price={item.price}> </CartItems>
+    
+          </>
+        )
+      })}
+      {data.length > 3 && (<div> ".." more product</div>)}
         <button> See shopping cart</button>
       </Container>
     </React.Fragment>
@@ -68,9 +73,9 @@ const Cart = () => {
 export default Cart;
 
 const Container = styled.div`
-  margin-left: 50px;
-  height: 380px;
+  height: 600px;
   /* change to flexible width */
-  width: 242px;
+  width: 600px;
   border: 1px solid black;
+  margin-left: auto;
 `;
