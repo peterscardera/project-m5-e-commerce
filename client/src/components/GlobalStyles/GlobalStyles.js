@@ -1,4 +1,4 @@
-import { createGlobalStyle } from 'styled-components';
+import { createGlobalStyle } from "styled-components";
 
 const GlobalStyles = createGlobalStyle`
   html,
@@ -44,7 +44,10 @@ const GlobalStyles = createGlobalStyle`
 
   body ,
   input,
-  button,
+  button {
+  cursor: pointer;
+  background: none;
+}
   select,
   option {
     font-family: var(--font-family);
