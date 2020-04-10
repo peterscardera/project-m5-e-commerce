@@ -42,6 +42,21 @@ export const receiveGalleryItemsError = () => ({
 });
 // END OF GALLERY ACTIONS
 
+// START OF VENDORS ACTIONS
+export const requestVendors = () => ({
+  type: 'REQUEST_VENDORS',
+});
+
+export const receiveVendors = (vendors) => ({
+  type: 'RECEIVE_VENDORS',
+  vendors,
+});
+
+export const receiveVendorsError = () => ({
+  type: 'RECEIVE_VENDORS_ERROR',
+});
+// END OF VENDORS ACTIONS
+
 // START OF ORDERS ACTIONS
 export const requestOrders = () => ({
   type: 'REQUEST_ORDERS',
