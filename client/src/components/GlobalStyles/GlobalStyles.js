@@ -45,7 +45,6 @@ const GlobalStyles = createGlobalStyle`
   body ,
   input,
   button {
-  cursor: pointer;
   background: none;
 }
   select,

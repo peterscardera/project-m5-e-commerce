@@ -6,10 +6,10 @@ const NavBar = () => {
     <>
       <header>
         <NavWrapper>
-          <a href="#"> HOME </a>
-          <a href="#">SHOP</a>
-          <a href="#">ACCOUNT</a>
-          <a href="#">CART</a>
+          <a href="/"> HOME </a>
+          <a href="/shop">SHOP</a>
+          <a href="/account">ACCOUNT</a>
+          <a href="/cart">CART</a>
         </NavWrapper>
       </header>
     </>
@@ -20,7 +20,6 @@ const NavBar = () => {
 
 const NavWrapper = styled.nav`
   background: lightgrey;
-  font-family: sans-serif;
   margin-top: 10px;
   padding-top: 10px;
   font-size: 20px;
@@ -28,7 +27,20 @@ const NavWrapper = styled.nav`
   padding: 20px;
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   justify-content: space-between;
+  a {
+    padding: 5px;
+    color: black;
+    text-decoration: none;
+    @media screen and (max-width: 420px) {
+      flex: 100%;
+      font-size: 16px;
+    }
+  }
+  a:hover {
+    color: white;
+  }
 `;
 
 export default NavBar;

@@ -8,10 +8,12 @@ import {
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import GlobalStyles from "./GlobalStyles";
 
-import Shop from "./Shop/Shop"
+import NavBar from "./Layout/NavBar";
+
+import Shop from "./Shop/Shop";
 import Home from "./Home/Home";
 import ItemDetails from "../components/Items/ItemsDetails";
-
+import Account from "./Account";
 
 function App() {
   const dispatch = useDispatch();
@@ -37,6 +39,7 @@ function App() {
 
   return (
     <React.Fragment>
+      <NavBar />
       <Router>
         <GlobalStyles />
         <Switch>
@@ -50,7 +53,9 @@ function App() {
           <Route exact path="/item/:itemId">
             <ItemDetails />
           </Route>
-
+          <Route exact path="/account">
+            <Account />
+          </Route>
           <Route exact path="/:userId/profile"></Route>
         </Switch>
       </Router>
