@@ -18,28 +18,80 @@ const PORT = 4000;
     res.status(200).json(vendors)
   }
 
-  const handleGetUser = (req, res) => {
-    let userName = req.params.userName;
-    const userInfo = users.find(element => element.userName === userName);
+  const handleLogIn = (req, res) => {
+    let email = req.params.email;
+    const userInfo = users.find(element => element.email === email);
     if (!userInfo) {
-      res.status(400).json(`User name ${userName} does not exist.`)
+      res.status(400).json(`Account linked to: ${email}, does not exist.`)
+    }
+    let password = req.body.password;
+    if (password === userInfo.password){
+      res.status(200).json(userInfo);
     }
     else {
-      res.status(200).json(userInfo)
+      res.status(422).json('Password is incorrect.');
     }
   }
 
-  const handleGetOrders = (req, res) => {
-    let userName = req.params.userName;
-    let userInfo = users.find(element => element.userName === userName);
-    if (!userInfo || !userInfo.id) {
-      res.status(400).json(`Error accessing ${userName}'s information.`)
+  const handleCreateAccount = (req, res) => {
+    let email = req.params.email;
+    let userInfo = users.find(element => element.email === email);
+    if (userInfo) {
+      res.status(403).json(`Email address: ${email} already has an account.`)
     }
-    // console.log(userInfo.id);
-    // console.log(orders);
-    const userOrders = orders[userInfo.id];
+    let id = users.length+1;
+    if (id<10) id = `000${id}`;
+    else if (id<100) id = `00${id}`;
+    else if (id<1000) id = `0${id}`;
+    else id = `${id}`;
+    console.log(email);
+    let password = req.body.password;
+    let userName = req.body.userName;
+    let givenName = req.body.givenName;
+    let surName = req.body.surName;
+    let address1HouseNum = req.body.address1HouseNum;
+    let addressStreetName = req.body.addressStreetName;
+    let address1City = req.body.address1City;
+    let address1PostalCode = req.body.address1PostalCode;
+    let phone1 = req.body.phone1;
+    if (!password || password.length === 0) {
+      res.status(400).json(`Password may not be blank.`)
+    }
+    let newAccount = {id: id, email: email, password: password};
+    if (userName) newAccount.userName = userName;
+    if (givenName) newAccount.givenName = givenName;
+    if (surName) newAccount.surName = surName;
+    if (address1HouseNum) newAccount.address1HouseNum = address1HouseNum;
+    if (addressStreetName) newAccount.addressStreetName = addressStreetName;
+    if (address1City) newAccount.address1City = address1City;
+    if (address1PostalCode) newAccount.address1PostalCode = address1PostalCode;
+    if (phone1) newAccount.phone1 = phone1;
+    users.push(newAccount);
+    userInfo = users.find(element => element.email === email);
+    if (userInfo) {
+      let ordersKeys = Object.keys(orders);
+      let foundOrder = ordersKeys.find(key => key === email);
+      if (!foundOrder) {
+        let newOrders = { currentCart : {}, orderHistory : [] };
+        orders[email] = newOrders;
+      }
+      res.status(200).json(userInfo);
+    }
+    else {
+      res.status(500).json("Internal error.");
+    }
+
+    // ALSO CREATE AN EMPTY ORDERS
+  }
+  const handleGetOrders = (req, res) => {
+    let email = req.params.email;
+    // let userInfo = users.find(element => element.email === email);
+    // if (!userInfo || !userInfo.id) {
+    //   res.status(400).json(`No account linked to email address: ${email}, was found.`)
+    // }
+    const userOrders = orders[email];
     if (!userOrders) {
-      res.status(400).json(`User name ${userName} does not have existing orders...`)
+      res.status(400).json(`${email} does not have existing orders...`)
     }
     else {
       res.status(200).json(userOrders)
@@ -48,13 +100,13 @@ const PORT = 4000;
 
   const handleMergeCartGetOrders = (req, res) => {
     let incomingCart = req.body.currentCart;
-    let userName = req.params.userName;
-    let userInfo = users.find(element => element.userName === userName);
+    let email = req.params.email;
+    let userInfo = users.find(element => element.email === email);
     let incomingKeys = Object.keys(incomingCart);
     if (!userInfo || !userInfo.id) {
-      res.status(400).json(`Error accessing ${userName}'s information.`)
+      res.status(400).json(`Error accessing ${email}'s information.`)
     }
-    const userOrders = orders[userInfo.id];
+    const userOrders = orders[email];
     if (!userOrders) {
       res.status(400).json(`User name ${userName} does not have existing orders...`)
     }
@@ -98,40 +150,38 @@ const PORT = 4000;
   }
 
   const handleAddItem = (req, res) => {
-    let userId = req.params.userId;
+    let email = req.params.email;
     let itemId = req.params.itemId;
     let quantity = req.params.quantity;
     let itemInfo = items.find(element => element.id === parseInt(itemId));
     if (!itemInfo) {
       res.status(400).json(`Item number ${itemId} not found.}`)
     }
-    else if (!orders[userId]) {
-      res.status(400).json(`User ${userId} does not have any orders...`)
+    else if (!orders[email]) {
+      res.status(400).json(`Acount linked to: ${email}, does not have any orders...`)
     }
-    else if (orders[userId].currentCart) {
-      if (orders[userId].currentCart[itemId]){
-        if ((parseInt(quantity) + parseInt(orders[userId].currentCart[itemId].quantity))  > itemInfo.numInStock) {
+    else if (orders[email].currentCart) {
+      if (orders[email].currentCart[itemId]){
+        if ((parseInt(quantity) + parseInt(orders[email].currentCart[itemId].quantity))  > itemInfo.numInStock) {
           res.status(409).json(`Insufficient quantity of item id ${itemId} in stock.`)
         }
         else {
-          orders[userId].currentCart[itemId] = {
+          orders[email].currentCart[itemId] = {
             itemInfo: {itemInfo},
-            quantity: (parseInt(quantity) + parseInt(orders[userId].currentCart[itemId].quantity)).toString(),
+            quantity: (parseInt(quantity) + parseInt(orders[email].currentCart[itemId].quantity)).toString(),
           };
-          res.status(200).json(orders[userId].currentCart[itemId])
+          res.status(200).json(orders[email].currentCart[itemId])
         }
-        // Line below was for when this handle function only introduced new items to cart
-        // res.status(400).json(`Item id ${itemId} already exists in user ${userId}'s cart.`)
       }
       else if (parseInt(quantity) > itemInfo.numInStock){
         res.status(409).json(`Insufficient quantity of item id ${itemId} in stock.`)
       }
       else{
-        orders[userId].currentCart[itemId] = {
+        orders[email].currentCart[itemId] = {
           itemInfo: {itemInfo},
           quantity: quantity,
         };
-        res.status(200).json(orders[userId].currentCart[itemId])
+        res.status(200).json(orders[email].currentCart[itemId])
       }
     }
     else {
@@ -140,33 +190,33 @@ const PORT = 4000;
   }
 
   const handleRemoveItem = (req, res) => {
-    let userId = req.params.userId;
+    let email = req.params.email;
     let itemId = req.params.itemId;
     let quantity = req.params.quantity;
     let itemInfo = items.find(element => element.id === parseInt(itemId));
     if (!itemInfo) {
       res.status(400).json(`Item number ${itemId} not found.}`)
     }
-    else if (!orders[userId]) {
-      res.status(400).json(`User ${userId} does not have any orders...`)
+    else if (!orders[email]) {
+      res.status(400).json(`Account linked to: ${email}, does not have any orders...`)
     }
-    else if (orders[userId].currentCart) {
-      if (parseInt(orders[userId].currentCart[itemId].quantity) < parseInt(quantity)){
-        res.status(400).json(`Error: requested to remove ${quantity} of item id ${itemId} when there are only ${orders[userId].currentCart[itemId].quantity} to be removed.`)
+    else if (orders[email].currentCart) {
+      if (parseInt(orders[email].currentCart[itemId].quantity) < parseInt(quantity)){
+        res.status(400).json(`Error: requested to remove ${quantity} of item id ${itemId} when there are only ${orders[email].currentCart[itemId].quantity} to be removed.`)
       }
-      else if (parseInt(orders[userId].currentCart[itemId].quantity) === parseInt(quantity)){
-        delete orders[userId].currentCart[itemId];
-        res.status(200).json(orders[userId].currentCart);
+      else if (parseInt(orders[email].currentCart[itemId].quantity) === parseInt(quantity)){
+        delete orders[email].currentCart[itemId];
+        res.status(200).json(orders[email].currentCart);
       }
-      else if (parseInt(orders[userId].currentCart[itemId].quantity) > parseInt(quantity)){
-        let currentQuantity = parseInt(orders[userId].currentCart[itemId].quantity);
+      else if (parseInt(orders[email].currentCart[itemId].quantity) > parseInt(quantity)){
+        let currentQuantity = parseInt(orders[email].currentCart[itemId].quantity);
         let newQuantity = currentQuantity - parseInt(quantity);
         newQuantity = newQuantity.toString();
-        orders[userId].currentCart[itemId] = {
+        orders[email].currentCart[itemId] = {
           itemInfo: {itemInfo},
           quantity: newQuantity,
         };
-        res.status(200).json(orders[userId].currentCart[itemId])
+        res.status(200).json(orders[email].currentCart[itemId])
       }
       else {
         res.status(400).json(`Unknown error.`)
@@ -178,26 +228,29 @@ const PORT = 4000;
   }
 
   const handleEmptyCart = (req, res) => {
-    let userId = req.params.userId;
-    if (!orders[userId]) {
-      res.status(400).json(`User ${userId} does not have any orders...`)
+    let email = req.params.email;
+    if (!orders[email]) {
+      res.status(400).json(`Account linked to: ${email}, does not have any orders...`)
     }
     else {
-      orders[userId].currentCart = {};
-      res.status(200).json(orders[userId].currentCart)
+      orders[email].currentCart = {};
+      res.status(200).json(orders[email].currentCart)
     }
   }
 
   const handlePurchase = (req, res) => {
-    let userId = req.params.userId;
-    if (!orders[userId]) {
-      res.status(400).json(`User ${userId} does not have any orders...`)
+    let email = req.params.email;
+    if (!email) {
+      res.status(400).json('Email must be provided.')
     }
-    else if(Object.keys(orders[userId].currentCart).length === 0) {
+    if (!orders[email]) {
+      res.status(400).json(`Account linked to: ${email}, does not have any orders...`)
+    }
+    else if(Object.keys(orders[email].currentCart).length === 0) {
       res.status(400).json(`Nothing in the shopping cart to purchase`)
     }
-    else if(Object.keys(orders[userId].currentCart).length > 0) {
-      let cartKeys = Object.keys(orders[userId].currentCart)
+    else if(Object.keys(orders[email].currentCart).length > 0) {
+      let cartKeys = Object.keys(orders[email].currentCart)
       let notFoundError = false;
       let insufficient = false;
       let insufficientItems = [];
@@ -205,7 +258,16 @@ const PORT = 4000;
         let idInt = parseInt(id);
         let itemInStore = items.find(element => element.id === idInt);
         if (!itemInStore) {notFoundError = true;}
-        if(parseInt(order[userId].currentCart[id].quantity) > itemInStore.numInStock) {
+
+        //testing
+        if (itemInStore) {
+        console.log(`num avail: ${itemInStore.numInStock}`);
+        }
+        else {
+          console.log('item In Store not found')
+        }
+        
+        if(parseInt(orders[email].currentCart[id].quantity) > itemInStore.numInStock) {
           insufficient = true;
           insufficientItems.push(id);
         }
@@ -220,13 +282,13 @@ const PORT = 4000;
         cartKeys.forEach((id)=>{
           let idInt = parseInt(id);
           let itemInStore = items.find(element => element.id === idInt);
-          itemInStore.quantity -= parseInt(order[userId].currentCart[id].quantity);
+          itemInStore.quantity -= parseInt(orders[email].currentCart[id].quantity);
         })
         let date = Date();
         let randNum = Math.floor(Math.random()*100000);
         let orderId = `${date} - ${randNum}`;
-        order[userId].orderHistory.push({ orderId : order[userId].currentCart});
-        order[userId].currentCart = {};
+        orders[email].orderHistory.push({ [orderId] : orders[email].currentCart});
+        orders[email].currentCart = {};
         res.status(200).json(orderId);
       }
     }
@@ -253,17 +315,37 @@ express()
   .use(express.urlencoded({ extended: false }))
   .use('/', express.static(__dirname + '/'))
 
-  .get('/getStore', handleGetStore) // retrieves items that vendor has for sale (regardless of quantity in stock)
-  .get('/getVendors', handleGetVendors) // retrieves information about the vendors
-  .get('/logIn/:userName', handleGetUser) // retrieves user's profile info
-  .get('/:userName/getOrders', handleGetOrders) // retrieves user's order info
+  // retrieves items that vendor has for sale (regardless of quantity in stock)
+  .get('/getStore', handleGetStore) 
 
-  .post('/:userName/mergeCartGetOrders', handleMergeCartGetOrders ) // merges current cart into signed in one's
+  // retrieves information about the vendors
+  .get('/getVendors', handleGetVendors) 
 
-  .post('/addItem/:userId/:itemId/:quantity', handleAddItem) // adds an item to cart or increases its quantity
-  .put('/removeItem/:userId/:itemId/:quantity', handleRemoveItem) // removes all or all cases of an item from a cart
-  .put('/emptyCart/:userId', handleEmptyCart) // removes all items from cart
-  .get('/purchase/:userId', handlePurchase)
+  // provided the correct password: retrieves user's profile info 
+  .post('/logIn/:email', handleLogIn) 
+
+  // retrieves user's order info
+  .get('/getOrders/:email', handleGetOrders) 
+
+  // creates a new account
+  .post('/createAccount/:email', handleCreateAccount)
+
+  // could make apis to change password, shipping address, etc.  Seems outside the scopt of this exercise
+
+  // merges current cart into signed in one's
+  .post('/mergeCartGetOrders/:email', handleMergeCartGetOrders ) 
+
+  // adds an item to cart or increases its quantity
+  .get('/addItem/:email/:itemId/:quantity', handleAddItem)
+
+  // removes all or all cases of an item from a cart
+  .put('/removeItem/:email/:itemId/:quantity', handleRemoveItem) 
+
+  // removes all items from cart
+  .put('/emptyCart/:email', handleEmptyCart)
+  
+  
+  .get('/purchase/:email', handlePurchase)
   // The endpoint above: tests stock, if sufficient it reduces the stock.  Generates a semi-random orderNumber.
   // moves the currentCart into the orderHistory in an object as the value of the key: orderNumber.
 

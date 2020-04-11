@@ -1,27 +1,47 @@
 [
   {
     "id": "0001",
+    "email": "Kendra@gmail.com",
+    "password": "pw4444",
     "userName": "LunaLove",
-    "name": "Kendra"
+    "givenName": "Kendra",
+    "surName": "Scappaticci"
   },
   {
     "id": "0002",
+    "email": "Andrew@gmail.com",
+    "password": "admin",
     "userName": "Cogito",
-    "name": "Andrew"
+    "givenName": "Andrew",
+    "surName": "Diles",
+    "address1HouseNum": "123",
+    "address1StreetName": "Happy Street",
+    "address1City": "Smileton",
+    "address1PostalCode": "A1B2C3",
+    "phone1": "14507508888"
   },
   {
     "id": "0003",
+    "email": "Peter@gmail.com",
+    "password": "backslash",
     "userName": "iGotThis",
-    "name": "Peter"
+    "givenName": "Peter",
+    "surName": "Scardera"
   },
   {
     "id": "0004",
+    "email": "Buffy@gmail.com",
+    "password": "somethingWitty",
     "userName": "BattleWorn",
-    "name": "Buffy"
+    "givenName": "Buffy",
+    "surName": "Summers"
   },
   {
     "id": "0005",
+    "email": "Malcolm@gmail.com",
+    "password": "prettyfloralbonnet",
     "userName": "BigDamnHero",
-    "name": "Malcolm"
+    "givenName": "Malcolm",
+    "surName": "Reynolds"
   }
 ]

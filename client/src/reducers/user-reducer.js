@@ -24,6 +24,24 @@ export default function userReducer(state = initialState, action) {
         status: 'error',
       }
     }
+    case 'REQUEST_CREATE_NEW_USER' : {
+      return {
+        ...state,
+        status: 'error',
+      }
+    }
+    case 'CREATE_NEW_USER_SUCCESS' : {
+      return {
+        ...state,
+        status: 'error',
+      }
+    }
+    case 'CREATE_NEW_USER_ERROR' : {
+      return {
+        ...state,
+        status: 'error',
+      }
+    }
     // Logging out is front end, cannot fail
     // case 'REQUEST_LOG_USER_OUT' : {
     //   return {
@@ -31,7 +49,7 @@ export default function userReducer(state = initialState, action) {
     //     status: 'loading',
     //   }
     // }
-    case 'LOG_USER_OUT_SUCCESS' : {
+    case 'LOG_USER_OUT' : {
       return {...initialState}
     }
 

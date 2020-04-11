@@ -14,17 +14,23 @@ export const receiveUserInfoError = () => ({
 });
 
 // logging out:
-// export const requestLogUserOut = () => ({
-//   type: 'REQUEST_LOG_USER_OUT',
-// });
-
 export const logUserOutSuccess = () => ({
   type: 'LOG_USER_OUT_SUCCESS',
 });
 
-// export const logUserOutError = () => ({
-//   type: 'LOG_USER_OUT_ERROR',
-// });
+// creating new user:
+export const requestCreateNewUser = () => ({
+  type: 'REQUEST_CREATE_NEW_USER',
+});
+
+export const createNewUserSuccess = () => ({
+  type: 'CREATE_NEW_USER_SUCCESS',
+});
+
+export const createNewUserError = () => ({
+  type: 'CREATE_NEW_USER_ERROR',
+});
+
 // END OF USER ACTIONS
 
 // START OF GALLERY ACTIONS
