@@ -1,6 +1,7 @@
 import { createGlobalStyle } from "styled-components";
 
 const GlobalStyles = createGlobalStyle`
+
   html,
   body,
   div,
@@ -42,16 +43,6 @@ const GlobalStyles = createGlobalStyle`
     outline: 5px auto var(--color-primary);
   }
 
-  body ,
-  input,
-  button {
-  background: none;
-}
-  select,
-  option {
-    font-family: var(--font-family);
-    font-weight: var(--font-weight-light);
-  }
 
   h1,
   h2,
@@ -77,11 +68,7 @@ const GlobalStyles = createGlobalStyle`
     font-size: 0.95em;
   }
 
-  /* Scrollbar and selection styles */
-  ::selection {
-    background-color: var(--color-primary);
-    color: white;
-  }
+
 
   :root {
     --color-primary: hsl(313deg, 100%, 65%);

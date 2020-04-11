@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Layout from "../Layout";
 import ListingGrid from "../Items";
 import NextPage from "./NextPage";
+import FilterBar from "./FilterBar";
 import Cart from "../Cart";
 import { useSelector } from "react-redux";
 
@@ -13,7 +14,7 @@ const Shop = () => {
   const [itemsPerPage, setItemsPerPage] = useState(8);
 
   const allOfTheItems = useSelector((state) => state.gallery.items);
-  console.log(allOfTheItems);
+  //console.log(allOfTheItems);
   useEffect(() => {
     if (!allOfTheItems) {
       setLoading(true);
@@ -37,11 +38,12 @@ const Shop = () => {
   return (
     <React.Fragment>
       <Layout>
-        <div>HOME PAGE</div>
-        <ListingGrid itemList={currentPosts} loading={loading}>
-         
-        </ListingGrid>
+        <FilterBar setItemsPerPage={setItemsPerPage} />
+        
+
+        <ListingGrid itemList={currentPosts} loading={loading}></ListingGrid>
         <NextPage
+          currentPage={currentPage}
           totalItems={itemList.length}
           itemsPerPage={itemsPerPage}
           loadSpecificPageNumber={loadSpecificPageNumber}

@@ -19,6 +19,7 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
+
     dispatch(requestGalleryItems());
     const getStore = async () => {
       try {
@@ -35,6 +36,14 @@ function App() {
       }
     };
     getStore();
+
+
+
+//add get vendors
+
+
+
+
   }, []);
 
   return (

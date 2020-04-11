@@ -16,6 +16,7 @@ const EachUnit = ({
       <Link to={`/item/${id}`}>
         <img src={imageSrc} />
         <div>{name}</div>
+        <span>{price}</span>
       </Link>
     </React.Fragment>
   );
