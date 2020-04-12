@@ -19,7 +19,7 @@ const PORT = 4000;
   }
 
   const handleLogIn = (req, res) => {
-    let email = req.params.email;
+    let email = req.params.email.toLowerCase();
     const userInfo = users.find(element => element.email === email);
     if (!userInfo) {
       res.status(400).json(`Account linked to: ${email}, does not exist.`)
@@ -34,7 +34,7 @@ const PORT = 4000;
   }
 
   const handleCreateAccount = (req, res) => {
-    let email = req.params.email;
+    let email = req.params.email.toLowerCase();
     let userInfo = users.find(element => element.email === email);
     if (userInfo) {
       res.status(403).json(`Email address: ${email} already has an account.`)
@@ -44,16 +44,18 @@ const PORT = 4000;
     else if (id<100) id = `00${id}`;
     else if (id<1000) id = `0${id}`;
     else id = `${id}`;
-    console.log(email);
     let password = req.body.password;
     let userName = req.body.userName;
     let givenName = req.body.givenName;
     let surName = req.body.surName;
-    let address1HouseNum = req.body.address1HouseNum;
+    let addressHouseNum = req.body.addressHouseNum;
     let addressStreetName = req.body.addressStreetName;
-    let address1City = req.body.address1City;
-    let address1PostalCode = req.body.address1PostalCode;
+    let addressCity = req.body.addressCity;
+    let addressProvince = req.body.addressProvince;
+    let addressCountry = req.body.addressCountry;
+    let addressPostalCode = req.body.addressPostalCode;
     let phone1 = req.body.phone1;
+    let phone2 = req.body.phone2;
     if (!password || password.length === 0) {
       res.status(400).json(`Password may not be blank.`)
     }
@@ -61,11 +63,16 @@ const PORT = 4000;
     if (userName) newAccount.userName = userName;
     if (givenName) newAccount.givenName = givenName;
     if (surName) newAccount.surName = surName;
-    if (address1HouseNum) newAccount.address1HouseNum = address1HouseNum;
-    if (addressStreetName) newAccount.addressStreetName = addressStreetName;
-    if (address1City) newAccount.address1City = address1City;
-    if (address1PostalCode) newAccount.address1PostalCode = address1PostalCode;
+    let address = {};
+    if (addressHouseNum) address.HouseNum = addressHouseNum;
+    if (addressStreetName) address.StreetName = addressStreetName;
+    if (addressProvince) address.Province = addressProvince;
+    if (addressCity) address.City = addressCity;
+    if (addressCountry) address.Country = addressCountry;
+    if (addressPostalCode) address.PostalCode = addressPostalCode;
+    if (Object.keys(address).length > 0) newAccount.address1 = address;
     if (phone1) newAccount.phone1 = phone1;
+    if (phone2) newAccount.phone2 = phone2;
     users.push(newAccount);
     userInfo = users.find(element => element.email === email);
     if (userInfo) {
@@ -84,7 +91,7 @@ const PORT = 4000;
     // ALSO CREATE AN EMPTY ORDERS
   }
   const handleGetOrders = (req, res) => {
-    let email = req.params.email;
+    let email = req.params.email.toLowerCase();
     // let userInfo = users.find(element => element.email === email);
     // if (!userInfo || !userInfo.id) {
     //   res.status(400).json(`No account linked to email address: ${email}, was found.`)
@@ -100,7 +107,7 @@ const PORT = 4000;
 
   const handleMergeCartGetOrders = (req, res) => {
     let incomingCart = req.body.currentCart;
-    let email = req.params.email;
+    let email = req.params.email.toLowerCase();
     let userInfo = users.find(element => element.email === email);
     let incomingKeys = Object.keys(incomingCart);
     if (!userInfo || !userInfo.id) {
@@ -150,7 +157,7 @@ const PORT = 4000;
   }
 
   const handleAddItem = (req, res) => {
-    let email = req.params.email;
+    let email = req.params.email.toLowerCase();
     let itemId = req.params.itemId;
     let quantity = req.params.quantity;
     let itemInfo = items.find(element => element.id === parseInt(itemId));
@@ -190,7 +197,7 @@ const PORT = 4000;
   }
 
   const handleRemoveItem = (req, res) => {
-    let email = req.params.email;
+    let email = req.params.email.toLowerCase();
     let itemId = req.params.itemId;
     let quantity = req.params.quantity;
     let itemInfo = items.find(element => element.id === parseInt(itemId));
@@ -228,7 +235,7 @@ const PORT = 4000;
   }
 
   const handleEmptyCart = (req, res) => {
-    let email = req.params.email;
+    let email = req.params.email.toLowerCase();
     if (!orders[email]) {
       res.status(400).json(`Account linked to: ${email}, does not have any orders...`)
     }
@@ -239,7 +246,7 @@ const PORT = 4000;
   }
 
   const handlePurchase = (req, res) => {
-    let email = req.params.email;
+    let email = req.params.email.toLowerCase();
     if (!email) {
       res.status(400).json('Email must be provided.')
     }
@@ -258,15 +265,6 @@ const PORT = 4000;
         let idInt = parseInt(id);
         let itemInStore = items.find(element => element.id === idInt);
         if (!itemInStore) {notFoundError = true;}
-
-        //testing
-        if (itemInStore) {
-        console.log(`num avail: ${itemInStore.numInStock}`);
-        }
-        else {
-          console.log('item In Store not found')
-        }
-        
         if(parseInt(orders[email].currentCart[id].quantity) > itemInStore.numInStock) {
           insufficient = true;
           insufficientItems.push(id);
@@ -279,10 +277,45 @@ const PORT = 4000;
         res.status(400).json(insufficientItems);
       }
       else {
+        let addAddress = req.body.addAddress;
+        let addressHouseNum = req.body.addressHouseNum;
+        let addressStreetName = req.body.addressStreetName;
+        let addressCity = req.body.addressCity;
+        let addressProvince = req.body.addressProvince;
+        let addressCountry = req.body.addressCountry;
+        let addressPostalCode = req.body.addressPostalCode;
+        if (!addAddress || !addressHouseNum || !addressStreetName || !addressCity || !addressProvince || !addressCountry || !addressPostalCode) {
+          res.status(400).json('Address is incomplete');
+        }
+        let address = {
+          HouseNum: addressHouseNum,
+          StreetName: addressStreetName,
+          City: addressCity,
+          Province: addressProvince,
+          Country: addressCountry,
+          PostalCode: addressPostalCode
+        };
+        // addAddress should only be available if the user is logged in, and, if true, adds the given address into the user's profile information
+        if (addAddress) {
+          let foundNewAddressIndex = false;
+          let i = 1;
+          let userInfo = users.find(element => element.email === email);
+          let nextAddressNum = `address${i}`;
+          while (!foundNewAddressIndex) {
+            let potentialFind = userInfo[nextAddressNum];
+            if (!potentialFind) foundNewAddressIndex = true;
+            else {
+              i ++;
+              nextAddressNum = `address${i}`;
+            }
+          }
+          userInfo[nextAddressNum] = address;
+        }
+        orders[email].currentCart.shippingAddress = address;
         cartKeys.forEach((id)=>{
           let idInt = parseInt(id);
           let itemInStore = items.find(element => element.id === idInt);
-          itemInStore.quantity -= parseInt(orders[email].currentCart[id].quantity);
+          itemInStore.numInStock -= parseInt(orders[email].currentCart[id].quantity);
         })
         let date = Date();
         let randNum = Math.floor(Math.random()*100000);
@@ -323,17 +356,38 @@ express()
 
   // provided the correct password: retrieves user's profile info 
   .post('/logIn/:email', handleLogIn) 
+  // Body has shape: { 
+    // password:
+  // }
 
   // retrieves user's order info
   .get('/getOrders/:email', handleGetOrders) 
 
   // creates a new account
   .post('/createAccount/:email', handleCreateAccount)
+  // Body has shape: {
+    // password:
+    // userName:
+    // givenName:
+    // surName:
+    // addressHouseNum:
+    // addressStreetName:
+    // addressCity:
+    // addressProvince:
+    // addressCountry:
+    // addressPostalCode:
+    // phone1:
+    // phone2:
+  // }
+  // password is mandatory, the rest are not
 
   // could make apis to change password, shipping address, etc.  Seems outside the scopt of this exercise
 
   // merges current cart into signed in one's
   .post('/mergeCartGetOrders/:email', handleMergeCartGetOrders ) 
+  // Body has shape: { 
+    // currentCart:
+  // }
 
   // adds an item to cart or increases its quantity
   .get('/addItem/:email/:itemId/:quantity', handleAddItem)
@@ -343,10 +397,21 @@ express()
 
   // removes all items from cart
   .put('/emptyCart/:email', handleEmptyCart)
-  
-  
-  .get('/purchase/:email', handlePurchase)
+    
+  .post('/purchase/:email', handlePurchase)
   // The endpoint above: tests stock, if sufficient it reduces the stock.  Generates a semi-random orderNumber.
   // moves the currentCart into the orderHistory in an object as the value of the key: orderNumber.
+  // Body has shape: { 
+    // addAddress:
+    // addressHouseNum:
+    // addressStreetName:
+    // addressCity:
+    // addressProvince:
+    // addressCountry:
+    // addressPostalCode:
+  // }
+  // All these fields are mandatory
+  // addAddress is a boolean 
+
 
   .listen(PORT, () => console.info(`Listening on port ${PORT}`));

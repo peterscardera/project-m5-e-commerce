@@ -1,7 +1,7 @@
 [
   {
     "id": "0001",
-    "email": "Kendra@gmail.com",
+    "email": "kendra@gmail.com",
     "password": "pw4444",
     "userName": "LunaLove",
     "givenName": "Kendra",
@@ -9,20 +9,25 @@
   },
   {
     "id": "0002",
-    "email": "Andrew@gmail.com",
+    "email": "andrew@gmail.com",
     "password": "admin",
     "userName": "Cogito",
     "givenName": "Andrew",
     "surName": "Diles",
-    "address1HouseNum": "123",
-    "address1StreetName": "Happy Street",
-    "address1City": "Smileton",
-    "address1PostalCode": "A1B2C3",
-    "phone1": "14507508888"
+    "phone1": "14507508888",
+    "address1" : 
+    {
+      "HouseNum": "123",
+      "StreetName": "Happy Street",
+      "City": "Smileton",
+      "Province": "Quebec",
+      "Country": "Canada",
+      "PostalCode": "A1B2C3"
+    }
   },
   {
     "id": "0003",
-    "email": "Peter@gmail.com",
+    "email": "peter@gmail.com",
     "password": "backslash",
     "userName": "iGotThis",
     "givenName": "Peter",
@@ -30,7 +35,7 @@
   },
   {
     "id": "0004",
-    "email": "Buffy@gmail.com",
+    "email": "buffy@gmail.com",
     "password": "somethingWitty",
     "userName": "BattleWorn",
     "givenName": "Buffy",
@@ -38,7 +43,7 @@
   },
   {
     "id": "0005",
-    "email": "Malcolm@gmail.com",
+    "email": "malcolm@gmail.com",
     "password": "prettyfloralbonnet",
     "userName": "BigDamnHero",
     "givenName": "Malcolm",
