@@ -12,19 +12,23 @@ const NextPage = ({
   const pageNumbers = [];
   const pagesNumberTooShow = 3;
 
+  //--------create specific about of page number to show
   for (let i = currentPage; i <= Math.floor(totalItems / itemsPerPage); i++) {
-    //should be 43.5 per page flooring it give 43 pages
     if (pageNumbers.length < pagesNumberTooShow) {
       pageNumbers.push(i);
     } else {
       pageNumbers.push("...");
-      pageNumbers.push(43);
+      pageNumbers.push(`${Math.floor(totalItems / itemsPerPage)}`);
       break;
     }
   }
+  if (pageNumbers[0] !== 1) {
+    pageNumbers.unshift("...");
+    pageNumbers.unshift(1);
+  }
+  //---------------------------------------------------
+  // console.log(pageNumbers);
 
-  console.log(pageNumbers);
-  //we only want to show
   return (
     <React.Fragment>
       <nav>
@@ -33,13 +37,18 @@ const NextPage = ({
             return (
               <Wrapper>
                 <StyledLi>
-                  <Button
-                    onClick={() => {
-                      loadSpecificPageNumber(individualPageNumber);
-                    }}
-                  >
-                    {individualPageNumber}
-                  </Button>
+                  {individualPageNumber === "..." ? (
+                    <span> ... </span>
+                  ) : (
+                    <Button
+                      currentPage={currentPage}
+                      onClick={() => {
+                        loadSpecificPageNumber(individualPageNumber);
+                      }}
+                    >
+                      {individualPageNumber}
+                    </Button>
+                  )}
                 </StyledLi>
               </Wrapper>
             );
@@ -51,7 +60,7 @@ const NextPage = ({
 };
 export default NextPage;
 const Wrapper = styled.div`
-  background: red;
+  /* background: red; */
   display: inline-flex;
 `;
 
@@ -59,8 +68,15 @@ const StyledLi = styled.li`
   list-style-type: none;
 `;
 const Button = styled.button`
-  font-size: 0.8rem;
-  width: 20px;
-  height: 20px;
+  font-size: 1rem;
+  width: 28px;
+  height: 22px;
   cursor: pointer;
+  background: none;
+  outline: none;
+  border: none;
+  font-weight: ${(props) =>
+    props.children === props.currentPage ? "bold" : "none"};
+  border-bottom: ${(props) =>
+    props.children === props.currentPage ? "1px solid black" : "none"};
 `;

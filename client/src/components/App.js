@@ -1,9 +1,12 @@
 import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   requestGalleryItems,
   receiveGalleryItems,
   receiveGalleryItemsError,
+  requestVendors,
+  receiveVendors,
+  receiveVendorsError,
 } from "../actions";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import GlobalStyles from "./GlobalStyles";
@@ -16,27 +19,39 @@ import ItemDetails from "../components/Items/ItemsDetails";
 import Account from "./Account";
 
 function App() {
+  const allOfTheItems = useSelector((state) => state.gallery.items);
+  const allOfTheVendors = useSelector((state) => state.vendors.items);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(requestGalleryItems());
-    const getStore = async () => {
+    dispatch(requestVendors());
+    const initialFetch = async () => {
       try {
-        let data = await fetch("/getStore");
-        if (data.status === 200) {
-          let jsonData = await data.json();
+        let storeData = await fetch("/getStore");
+        if (storeData.status === 200) {
+          let jsonData = await storeData.json();
           dispatch(receiveGalleryItems(jsonData));
         } else {
-          console.log("error fetching data");
+          console.log("error fetching store data");
           dispatch(receiveGalleryItemsError());
+        }
+        let vendorData = await fetch("/getVendors");
+        if (vendorData.status === 200) {
+          let jsonVendor = await vendorData.json();
+          dispatch(receiveVendors(jsonVendor));
+        } else {
+          console.log("error fetching vendor data");
+          dispatch(receiveVendorsError());
         }
       } catch (err) {
         console.log(err);
       }
     };
-    getStore();
+    initialFetch();
 
-    //add get vendors
+    //**add Promise all and dispatch that BOTH have been received so they both come in at same time
   }, []);
 
   return (
@@ -44,22 +59,25 @@ function App() {
       <NavBar />
       <Router>
         <GlobalStyles />
-        <Switch>
-          <Route exact path="/">
-            <Home />
-          </Route>
-          <Route exact path="/shop">
-            <Shop />
-          </Route>
-          <Route exact path="/login"></Route>
-          <Route exact path="/item/:itemId">
-            <ItemDetails />
-          </Route>
-          <Route exact path="/account">
-            <Account />
-          </Route>
-          <Route exact path="/:userId/profile"></Route>
-        </Switch>
+        {allOfTheItems && allOfTheVendors && (
+          <Switch>
+            <Route exact path="/">
+              <Home />
+            </Route>
+            <Route exact path="/shop">
+              <Shop />
+            </Route>
+            <Route exact path="/login"></Route>
+            <Route exact path="/item/:itemId">
+              {/* only if fully loaded because we are not fetching on itemDetails */}
+               <ItemDetails />
+            </Route>
+            <Route exact path="/account">
+              <Account />
+            </Route>
+            <Route exact path="/:userId/profile"></Route>
+          </Switch>
+        )}
       </Router>
     </React.Fragment>
   );

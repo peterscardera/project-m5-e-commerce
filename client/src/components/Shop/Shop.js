@@ -49,7 +49,7 @@ const Shop = () => {
           loadSpecificPageNumber={loadSpecificPageNumber}
         ></NextPage>
         {/* for now well place cart bellow  */}
-        {/* <Cart /> */}
+        <Cart />
       </Layout>
     </React.Fragment>
   );
