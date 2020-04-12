@@ -17,6 +17,7 @@ const NavBar = () => {
 };
 
 // once you click on account, we can have our sign in / create account, and even a wishlist! //
+// hover menu over "shop" - shop all, shop categories
 
 const NavWrapper = styled.nav`
   background: lightgrey;
