@@ -1,10 +1,14 @@
 import styled from "styled-components";
 import React from "react";
 
-function ExistingAccount() {
+//reminder: This is a child component of Account.js if user !null then take the user info and render this 
+function ExistingAccount({loggedInUser}) {
+console.log(loggedInUser)
+
   return (
     <>
-      <Wrapper>WELCOME BACK</Wrapper>
+      <div>WELCOME BACK { loggedInUser.givenName} </div>
+      {/* display past order and more user informatiom */}
     </>
   );
 }

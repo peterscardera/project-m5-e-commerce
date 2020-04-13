@@ -24,8 +24,11 @@ const PORT = 4000;
     if (!userInfo) {
       res.status(400).json(`Account linked to: ${email}, does not exist.`)
     }
+    
     let password = req.body.password;
+  
     if (password === userInfo.password){
+
       res.status(200).json(userInfo);
     }
     else {
