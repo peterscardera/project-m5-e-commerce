@@ -28,7 +28,7 @@ const ItemDetails = () => {
       return element.id === parseInt(itemId);
     });
     setProductChosen([selectedItem]);
-  }, []); //**if i add the use params the conditional render doesnt work as state needs to change**
+  }, [itemId]); //**if i add the use params the conditional render doesnt work as state needs to change**
 
   //-----------useEffect to find company associated with the item selected-----------
   useEffect(() => {

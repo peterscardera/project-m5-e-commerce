@@ -296,10 +296,10 @@ const PORT = 4000;
           PostalCode: addressPostalCode
         };
         // addAddress should only be available if the user is logged in, and, if true, adds the given address into the user's profile information
+        let userInfo = users.find(element => element.email === email);
         if (addAddress) {
           let foundNewAddressIndex = false;
           let i = 1;
-          let userInfo = users.find(element => element.email === email);
           let nextAddressNum = `address${i}`;
           while (!foundNewAddressIndex) {
             let potentialFind = userInfo[nextAddressNum];
@@ -322,7 +322,7 @@ const PORT = 4000;
         let orderId = `${date} - ${randNum}`;
         orders[email].orderHistory.push({ [orderId] : orders[email].currentCart});
         orders[email].currentCart = {};
-        res.status(200).json(orderId);
+        res.status(200).json({orders: orders[email], user: userInfo});
       }
     }
     else {
@@ -401,7 +401,7 @@ express()
   .post('/purchase/:email', handlePurchase)
   // The endpoint above: tests stock, if sufficient it reduces the stock.  Generates a semi-random orderNumber.
   // moves the currentCart into the orderHistory in an object as the value of the key: orderNumber.
-  // Body has shape: { 
+  // Body has shape: {
     // addAddress:
     // addressHouseNum:
     // addressStreetName:
@@ -411,7 +411,8 @@ express()
     // addressPostalCode:
   // }
   // All these fields are mandatory
-  // addAddress is a boolean 
+  // addAddress is a boolean
+  // this post returns the userData (which will be unidentified if they were not logged in) and the orders associated with the given email address
 
 
   .listen(PORT, () => console.info(`Listening on port ${PORT}`));

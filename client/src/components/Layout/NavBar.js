@@ -1,15 +1,44 @@
 import React from "react";
 import styled from "styled-components";
+import { Redirect, Link, NavLink } from "react-router-dom";
+
+import {CartContext} from  '../../cartContext';
+
 
 const NavBar = () => {
+  const {cartVisible, setCartVisible} = React.useContext(CartContext);
+  const {clickStatus, setClickStatus} = React.useContext(CartContext);
+  const [cartVisibilityPreHover, setCartVisibilityPreHover] = React.useState(cartVisible);
   return (
     <>
       <header>
         <NavWrapper>
-          <a href="/"> HOME </a>
-          <a href="/shop">SHOP</a>
-          <a href="/account">ACCOUNT</a>
-          <a href="/cart">CART</a>
+          <NavLink to="/">
+            HOME 
+          </NavLink>
+          <NavLink to="/shop">
+            SHOP
+          </NavLink>
+          <NavLink to="/account">
+            ACCOUNT
+          </NavLink>
+          <CartButton 
+          onMouseEnter={()=>{
+            setCartVisibilityPreHover(cartVisible)
+            setCartVisible(true)
+          }}
+          onMouseLeave={()=>{
+            if (cartVisibilityPreHover && clickStatus) setCartVisible(true);
+            else if (cartVisibilityPreHover && !clickStatus) setCartVisible(false);
+            else if (!cartVisibilityPreHover && clickStatus) setCartVisible(true);
+            else if (!cartVisibilityPreHover && !clickStatus) setCartVisible(false);
+          }} 
+          onClick={()=>{
+            setClickStatus(!clickStatus);
+          }
+          }>
+            CART
+          </CartButton>
         </NavWrapper>
       </header>
     </>
@@ -43,5 +72,10 @@ const NavWrapper = styled.nav`
     color: white;
   }
 `;
+const CartButton = styled.button`
+  &:hover {
+    cursor: pointer;
+  }
+`
 
 export default NavBar;

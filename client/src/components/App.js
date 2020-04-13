@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useContext } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   requestGalleryItems,
@@ -9,7 +9,9 @@ import {
   receiveVendorsError,
 } from "../actions";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import styled from "styled-components";
 import GlobalStyles from "./GlobalStyles";
+import {CartContext} from  '../cartContext';
 
 import NavBar from "./Layout/NavBar";
 
@@ -17,10 +19,12 @@ import Shop from "./Shop/Shop";
 import Home from "./Home/Home";
 import ItemDetails from "../components/Items/ItemsDetails";
 import Account from "./Account";
+import Cart from "./Cart";
 
 function App() {
   const allOfTheItems = useSelector((state) => state.gallery.items);
   const allOfTheVendors = useSelector((state) => state.vendors.items);
+  const { cartVisible } = useContext(CartContext);
 
   const dispatch = useDispatch();
 
@@ -56,29 +60,32 @@ function App() {
 
   return (
     <React.Fragment>
-      <NavBar />
       <Router>
-        <GlobalStyles />
-        {allOfTheItems && allOfTheVendors && (
-          <Switch>
-            <Route exact path="/">
-              <Home />
-            </Route>
-            <Route exact path="/shop">
-              <Shop />
-            </Route>
-            <Route exact path="/login"></Route>
-            <Route exact path="/item/:itemId">
-              {/* only if fully loaded because we are not fetching on itemDetails */}
-               <ItemDetails />
-            </Route>
-            <Route exact path="/account">
-              <Account />
-            </Route>
-            <Route exact path="/:userId/profile"></Route>
-          </Switch>
+        <NavBar />
+        {cartVisible && (
+          <Cart/>
         )}
-      </Router>
+        <GlobalStyles />
+          {allOfTheItems && allOfTheVendors && (
+            <Switch>
+              <Route exact path="/">
+                <Home />
+              </Route>
+              <Route exact path="/shop">
+                <Shop />
+              </Route>
+              <Route exact path="/login"></Route>
+              <Route exact path="/item/:itemId">
+                {/* only if fully loaded because we are not fetching on itemDetails */}
+                <ItemDetails />
+              </Route>
+              <Route exact path="/account">
+                <Account />
+              </Route>
+              <Route exact path="/:userId/profile"></Route>
+            </Switch>
+          )}
+        </Router>
     </React.Fragment>
   );
 }

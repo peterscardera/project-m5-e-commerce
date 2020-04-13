@@ -66,5 +66,5 @@ export default function userReducer(state = initialState, action) {
   }
 }
 
-export const getGallery = state => state.items;
-export const getGalleryStatus = state => state.status;
+export const getUser = state => state.user;
+export const getUserStatus = state => state.status;
