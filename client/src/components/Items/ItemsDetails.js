@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import VendorPage from "./VendorPage"
+import AddToCartButton from "../AddToCart"
 
 
 //**Reminder itemDetails is not a child of any other component other then APP.js **/
@@ -15,10 +16,10 @@ const ItemDetails = () => {
   // if we wouldneed to change a state and re-render
   const [productChosen, setProductChosen] = useState(null);
   const [associatedComp, setAssociatedComp] = useState(null);
-  console.log(associatedComp);
-  console.log(productChosen);
+  // console.log(associatedComp);
+  // console.log(productChosen);
   const { itemId } = useParams();
-  console.log(itemId);
+  // console.log(itemId);
 
   //-----------useEffect to find the object of the selected item based on the params id-----------
   useEffect(() => {
@@ -47,7 +48,7 @@ const ItemDetails = () => {
     <React.Fragment>
       {associatedComp != null &&
         associatedComp.map((eachComp) => {
-          console.log(eachComp);
+          // console.log(eachComp);
           return (
             <>
               <VendorPage
@@ -80,7 +81,7 @@ const ItemDetails = () => {
                   <div>Body location : {item.body_location}</div>
                   <div>Category : {item.category}</div>
                   <div>Num in stock: {item.numInStock}</div>
-                  <button> Add to Cart</button>
+                  <AddToCartButton productChosen={productChosen}>  </AddToCartButton>
                 </DetailsContainer>
                 <RelatedProduct>
                   <div>Related Item</div>

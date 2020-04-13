@@ -56,7 +56,7 @@ export default function ordersReducer(state = initialState, action) {
           ...state,
           currentCart: {
             ...state.currentCart,
-            [action.item.id] : {
+            [action.item[0].id] : {
               itemInfo: action.item,
               quantity: state.currentCart[action.item.id].quantity + action.quantity,
             }
@@ -69,7 +69,7 @@ export default function ordersReducer(state = initialState, action) {
           ...state,
           currentCart: {
             ...state.currentCart,
-            [action.item.id] : {
+            [action.item[0].id] : {
               itemInfo: action.item,
               quantity: action.quantity,
             }
