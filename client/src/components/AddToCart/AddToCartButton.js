@@ -19,6 +19,7 @@ const AddToCartButton = ({ productChosen }) => {
     if (loggedInStatus === null) {
       disptach(addItemToCartSuccess(productChosen, quantity));
     } else {
+      
       //dispatch request userInfo once we have it we:
       //dispatch receive user info OR error
       // to add to cart with a user being sign in we would fetch the /addItem/:email/:itemId/:quantity

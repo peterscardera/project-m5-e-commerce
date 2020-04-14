@@ -22,10 +22,13 @@ import ItemDetails from "../components/Items/ItemsDetails";
 import Account from "./Account";
 import Cart from "./Cart";
 import PurchaseModal from "./PurchaseModal";
+import ExistingAccount from "./Account/ExistingAccount";
 
 function App() {
   const allOfTheItems = useSelector((state) => state.gallery.items);
   const allOfTheVendors = useSelector((state) => state.vendors.items);
+  const loggedInUser = useSelector((state) => state.user.user);
+
   const { cartVisible } = useContext(CartContext);
   const { purchaseModalVisible } = useContext(PurchaseContext);
 
@@ -80,6 +83,9 @@ function App() {
             <Route exact path="/item/:itemId">
               {/* only if fully loaded because we are not fetching on itemDetails */}
               <ItemDetails />
+            </Route>
+            <Route exact path ="/userInformation">
+              <ExistingAccount loggedInUser={loggedInUser} ></ExistingAccount>
             </Route>
             <Route exact path="/account">
               <Account />

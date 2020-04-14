@@ -14,6 +14,9 @@ import {
   requestCreateNewUser,
   createNewUserSuccess,
   createNewUserError,
+  requestOrders,
+  receiveOrdersSuccess,
+  receiveOrdersError,
 } from "../../actions";
 
 //----------------------------------------------login reducer (tad excessive)---------------------------------
@@ -54,14 +57,14 @@ function Account() {
   const [createAccountUserInput, setcreateAccountUserInput] = useState({
     email: "",
     password: "",
-    firstName: "",
-    lastName: "",
-    houseNumber: "",
-    streetName: "",
-    postalCode: "",
-    city: "",
-    province: "",
-    country: "",
+    givenName: "",
+    surName: "",
+    addressHouseNum: "",
+    addressStreetName: "",
+    addressPostalCode: "",
+    addressCity: "",
+    addressProvince: "",
+    addressCountry: "",
   });
 
   //------------------Existing User Log in: keep track of what user  is typing------------------
@@ -93,8 +96,10 @@ function Account() {
     }).then((resp) => {
       if (resp.status === 200) {
         resp.json().then((userData) => {
-          console.log(userData);
+          console.log(userData, "IM IN USERDATA LOGGED IN");
           reduxDispatch(receiveUserInfo(userData));
+          //handler below will get the order history and merge a previous cart to then existing cart
+          getPastInfo(userData);
         });
       } else if (resp.status === 422) {
         reduxDispatch(receiveUserInfoError());
@@ -107,6 +112,56 @@ function Account() {
       }
     });
   };
+  //------------------------------Handler to retrieve previous cart and order history of a logged in user---
+
+  const getPastInfo = (incomingUserData) => {
+    
+  //1- get the current cart and past cart
+    reduxDispatch(requestOrders());
+
+    fetch(`/getOrders/${incomingUserData.email}`).then((response) => {
+      if (response.status === 200) {
+        response.json().then((jsonResp) => {
+          reduxDispatch(receiveOrdersSuccess(jsonResp.orderHistory, jsonResp.currentCart))
+          console.log(jsonResp,"SERVER RESPONSE OK WITH ORDER HISTORY");
+        });
+      } else if (response.status === 400) {
+        reduxDispatch(receiveOrdersError())
+        console.log("user doesnt have existing orders which is fine");
+      } else {
+        console.log("server isnt happy")
+      }
+    });
+  };
+
+  // 2- merge existing cart to cart user had before closing tab or logging out
+
+  // fetch(`/mergeCartGetOrders/incomingUserData.email`).then((responseTwo) => {
+  //     if (responseTwo.status === 200) {
+  //       responseTwo.json().then((jsonRespTwo) => {
+  //        console.log(jsonRespTwo)
+  //       });
+  //     } else if (response.status === 400) {
+  //       reduxDispatch(receiveOrdersError())
+  //       console.log("user doesnt have existing orders which is fine");
+  //     } else {
+  //       console.log("server isnt happy")
+  //     }
+  //   });
+
+
+
+
+
+
+
+  //handler for hitting the end point to retrieve anything that was in the cart prior to logging in
+
+  //requestOrders redux dispatch
+  //'/getOrders/userData.email'
+  //receiveOrdersSuccess redux dispatch or receiveOrdersError
+
+  // '/mergeCartGetOrders/:email'
 
   //----------------------------------Handler for creating a new account----------------------------
 
@@ -126,6 +181,9 @@ function Account() {
     setErrorCreateState(null);
     reduxDispatch(requestCreateNewUser());
 
+    console.log('data about to submit for creation',createAccountUserInput)
+    
+    // one beautiful nested then to create user "then" log the user in
     fetch(`/createAccount/${createAccountUserInput.email}`, {
       method: "POST",
       headers: {
@@ -144,7 +202,7 @@ function Account() {
             // once server says account is created successfully below we will automatically sign in the user
           })
           .then((newUserData) => {
-            console.log(newUserData);
+            // console.log(newUserData);
 
             fetch(`/logIn/${newUserData.email}`, {
               method: "POST",
@@ -152,8 +210,14 @@ function Account() {
                 "Content-Type": "application/json",
               },
               body: JSON.stringify({ password: newUserData.password }),
-            }).then(() => {
-              pushToHome();
+            }).then((newUserLogIn) => {
+              if (newUserLogIn.status === 200) {
+                newUserLogIn.json().then((returnData) => {
+                  // console.log(returnData,"****");
+                  reduxDispatch(receiveUserInfo(returnData));
+                  pushToHome();
+                });
+              }
             });
           });
       } else if (resp.status === 403) {
@@ -167,7 +231,7 @@ function Account() {
     });
   };
 
-  console.log(createAccountUserInput);
+  // console.log(createAccountUserInput);
   //----------------------------------------------------------------------------------------------
 
   //handleClick below covers the createAccount and back to login
@@ -263,6 +327,7 @@ function Account() {
                     required
                     type="password"
                     name="password"
+                    value={createAccountUserInput.password}
                     onChange={handleCreate}
                   />
                 </label>
@@ -270,30 +335,30 @@ function Account() {
                   CONFIRM PASSWORD
                   <input required type="password" name="confirm-password" />
                 </label>
-                <label htmlFor="firstName">
+                <label htmlFor="givenName">
                   FIRST NAME
                   <input
                     type="text"
-                    name="firstName"
-                    value={createAccountUserInput.firstName}
+                    name="givenName"
+                    value={createAccountUserInput.givenName}
                     onChange={handleCreate}
                   />
                 </label>
-                <label htmlFor="lastName">
+                <label htmlFor="surName">
                   LAST NAME
                   <input
                     type="text"
-                    name="lastName"
-                    value={createAccountUserInput.lastName}
+                    name="surName"
+                    value={createAccountUserInput.surName}
                     onChange={handleCreate}
                   />
                 </label>
-                <label htmlFor="houseNumber">
+                <label htmlFor="addressHouseNum">
                   HOUSE NUMBER
                   <input
                     type="text"
-                    name="houseNumber"
-                    value={createAccountUserInput.houseNumber}
+                    name="addressHouseNum"
+                    value={createAccountUserInput.addressHouseNum}
                     onChange={handleCreate}
                   />
                 </label>
@@ -301,26 +366,26 @@ function Account() {
                   STREET NAME
                   <input
                     type="text"
-                    name="streetName"
+                    name="addressStreetName"
                     onChange={handleCreate}
-                    value={createAccountUserInput.streetName}
+                    value={createAccountUserInput.addressStreetName}
                   />
                 </label>
                 <label htmlFor="postalCode">
                   POSTAL / ZIP CODE
                   <input
                     type="text"
-                    name="postalCode"
+                    name="addressPostalCode"
                     onChange={handleCreate}
-                    value={createAccountUserInput.postalCode}
+                    value={createAccountUserInput.addressPostalCode}
                   />
                 </label>
                 <label htmlFor="city">
                   CITY
                   <input
                     type="text"
-                    name="city"
-                    value={createAccountUserInput.city}
+                    name="addressCity"
+                    value={createAccountUserInput.addressCity}
                     onChange={handleCreate}
                   />
                 </label>
@@ -328,8 +393,8 @@ function Account() {
                   PROVINCE / STATE
                   <input
                     type="text"
-                    name="province"
-                    value={createAccountUserInput.province}
+                    name="addressProvince"
+                    value={createAccountUserInput.addressProvince}
                     onChange={handleCreate}
                   />
                 </label>
@@ -337,15 +402,15 @@ function Account() {
                   COUNTRY
                   <input
                     type="text"
-                    name="country"
-                    value={createAccountUserInput.country}
+                    name="addressCountry"
+                    value={createAccountUserInput.addressCountry}
                     onChange={handleCreate}
                   />
                 </label>
                 <input class="submitBtn" type="submit" />
                 <input
                   onClick={() => {
-                    handleClick()
+                    handleClick();
                     setErrorStateLogIn(null);
                     setErrorCreateState(null);
                   }}

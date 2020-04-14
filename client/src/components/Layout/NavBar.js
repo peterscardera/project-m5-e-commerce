@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
+import ExistingAccount from "../Account/ExistingAccount";
 import { 
   logUserOut,
   emptyCartSuccess
@@ -55,6 +56,7 @@ const NavBar = () => {
             ) : (
               <NavLink to="/userInformation">
                 {accountTitle}
+           
               </NavLink>
             )}
           <NavLink to="/account">
