@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useSelector } from "react-redux";
 
 import {CartContext} from  '../../cartContext';
+import {PurchaseContext} from  '../../purchaseContext';
 import CartItems from "./CartItems";
 
 import { 
@@ -13,14 +14,19 @@ import {
 } from "../../actions";
 
 const Cart = () => {
-  const { clickStatus } = React.useContext(CartContext);
-  const { cartVisibilityPreHover } = React.useContext(CartContext);
+  const { clickStatus, cartVisibilityPreHover } = React.useContext(CartContext);
+  const { purchaseModalVisible, setPurchaseModalVisible } = React.useContext(PurchaseContext);
   const currentCart = useSelector((state) => state.orders.currentCart);
   
   const handleEmpty = () => {
 
   };
   // console.log('currentCart: ', Object.keys(currentCart).length);
+
+  const handlePurchase = () => {
+    console.log('setting modal open');
+    setPurchaseModalVisible(true);
+  }
 
   return (
     <React.Fragment>
@@ -45,9 +51,11 @@ const Cart = () => {
         <FinalLineOptions>
           { Object.keys(currentCart).length > 0 ? (
             <>
-            <button> CHECKOUT</button>
             <button
-            onCLick = {handleEmpty}
+            onClick = {handlePurchase}
+            > CHECKOUT</button>
+            <button
+            onClick = {handleEmpty}
             >EMPTY CART</button>
             </>
           ) : (

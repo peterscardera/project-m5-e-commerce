@@ -1,7 +1,6 @@
 import { createGlobalStyle } from "styled-components";
 
-const GlobalStyles = createGlobalStyle`
-
+const GlobalStyles  = createGlobalStyle`
   html,
   body,
   div,

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useContext, useState, useEffect} from "react";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -7,12 +7,26 @@ import {CartContext} from  '../../cartContext';
 
 
 const NavBar = () => {
-  const {cartVisible, setCartVisible} = React.useContext(CartContext);
-  const {clickStatus, setClickStatus} = React.useContext(CartContext);
-  const [cartVisibilityPreHover, setCartVisibilityPreHover] = React.useState(cartVisible);
-  const currentCart = useSelector((state) => state.orders.currentCart);
+  const {cartVisible, setCartVisible} = useContext(CartContext);
+  const {clickStatus, setClickStatus} = useContext(CartContext);
+  const [cartVisibilityPreHover, setCartVisibilityPreHover] = useState(cartVisible);
+  const [accountTitle, setAccountTitle] = useState("MY ACCOUNT");
   const user = useSelector((state) => state.user.user);
+  useEffect(()=>{
+    // if (user) console.log(user.givenName);
+    if (user && user.givenName) {
+      let name = user.givenName;
+      name = name.toUpperCase();
+      let newAccountTitle = `${name}'S ACCOUNT`;
+      console.log(name);
+      setAccountTitle(newAccountTitle);
+      console.log(accountTitle);
+    }
+  },[user]);
+  const currentCart = useSelector((state) => state.orders.currentCart);
+  
   let cartNum = Object.keys(currentCart).length;
+  
   return (
     <>
       <header>
@@ -25,11 +39,11 @@ const NavBar = () => {
           </NavLink>
           {user === null ? (
               <NavLink to="/account">
-                MY ACCOUNT
+                ACCOUNT
               </NavLink>
             ) : (
               <NavLink to="/userInformation">
-                MY ACCOUNT
+                {accountTitle}
               </NavLink>
             )}
           <NavLink to="/account">

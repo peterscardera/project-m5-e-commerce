@@ -12,6 +12,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import styled from "styled-components";
 import GlobalStyles from "./GlobalStyles";
 import {CartContext} from  '../cartContext';
+import {PurchaseContext} from  '../purchaseContext';
 
 import NavBar from "./Layout/NavBar";
 
@@ -20,11 +21,14 @@ import Home from "./Home/Home";
 import ItemDetails from "../components/Items/ItemsDetails";
 import Account from "./Account";
 import Cart from "./Cart";
+import PurchaseModal from "./PurchaseModal";
 
 function App() {
   const allOfTheItems = useSelector((state) => state.gallery.items);
   const allOfTheVendors = useSelector((state) => state.vendors.items);
   const { cartVisible } = useContext(CartContext);
+  const { purchaseModalVisible } = useContext(PurchaseContext);
+  
 
   const dispatch = useDispatch();
 
@@ -64,6 +68,9 @@ function App() {
         <NavBar />
         {cartVisible && (
           <Cart/>
+        )}
+        {purchaseModalVisible && (
+          <PurchaseModal/>
         )}
         <GlobalStyles />
           {allOfTheItems && allOfTheVendors && (
