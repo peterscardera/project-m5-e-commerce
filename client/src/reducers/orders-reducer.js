@@ -148,9 +148,7 @@ export default function ordersReducer(state = initialState, action) {
     }
     case 'EMPTY_CART_SUCCESS': {
       return {
-        ...state,
-        currentCart: {},
-        status: 'idle',
+        ...initialState,
       };
     }
     case 'EMPTY_CART_ERROR': {

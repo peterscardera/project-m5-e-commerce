@@ -1,8 +1,12 @@
 import React, {useContext, useState, useEffect} from "react";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
+import { 
+  logUserOut,
+  emptyCartSuccess
+} from "../../actions";
 import {CartContext} from  '../../cartContext';
 
 
@@ -11,7 +15,9 @@ const NavBar = () => {
   const {clickStatus, setClickStatus} = useContext(CartContext);
   const [cartVisibilityPreHover, setCartVisibilityPreHover] = useState(cartVisible);
   const [accountTitle, setAccountTitle] = useState("MY ACCOUNT");
+  const dispatch = useDispatch();
   const user = useSelector((state) => state.user.user);
+
   useEffect(()=>{
     // if (user) console.log(user.givenName);
     if (user && user.givenName) {
@@ -24,9 +30,14 @@ const NavBar = () => {
     }
   },[user]);
   const currentCart = useSelector((state) => state.orders.currentCart);
-  
   let cartNum = Object.keys(currentCart).length;
   
+  const handleSignOut = () => {
+    console.log('signing out...');
+    dispatch(logUserOut());
+    dispatch(emptyCartSuccess());
+  }
+
   return (
     <>
       <header>
@@ -50,7 +61,11 @@ const NavBar = () => {
             {user === null ? (
               "SIGN IN"
             ) : (
-              "SIGN OUT"
+              <button
+              onClick = {handleSignOut}
+              >
+                "SIGN OUT"
+              </button>
             )}
           </NavLink>
           <CartButton 

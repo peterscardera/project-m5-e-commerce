@@ -14,8 +14,8 @@ export const receiveUserInfoError = () => ({
 });
 
 // logging out:
-export const logUserOutSuccess = () => ({
-  type: 'LOG_USER_OUT_SUCCESS',
+export const logUserOut = () => ({
+  type: 'LOG_USER_OUT',
 });
 
 // creating new user:
