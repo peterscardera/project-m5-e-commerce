@@ -18,15 +18,20 @@ import styled from "styled-components";
 
 
 
-const CartItems = ({ itemForDispatch, item, quantity }) => {
+const CartItems = ({ itemForDispatch, item, quantity, grandTotalObject, setGrandTotalObject }) => {
   const [subTotal, setSubTotal] = useState(quantity*parseFloat(item.price.substring(1)))
-  const [stateQuantity, setStateQuantity] = useState(quantity);
+  const stateItem = useSelector((state) => state.orders.currentCart[item.id]);
+  let stateQuantity = 0;
+  if (stateItem) stateQuantity = stateItem.quantity;
+  // setGrandTotalObject({grandTotalObject});  //working on this
+  // const [stateQuantity, setStateQuantity] = useState(quantity);
   React.useEffect(()=>{
     setSubTotal(Math.floor(100*stateQuantity*parseFloat(item.price.substring(1)))/100);
   },[stateQuantity]);
   
   const user = useSelector((state) => state.user.user);
-
+  const orders = useSelector((state) => state.orders);
+console.log('OOORRRDDEEERRSSS',orders);
   const dispatch = useDispatch();
   let linkAddress = `/item/${item.id}`;
 
@@ -35,8 +40,8 @@ const CartItems = ({ itemForDispatch, item, quantity }) => {
       ev.target.style.disabled = true;
       dispatch(requestAddItemToCart());
       if (!user) {
-        dispatch(addItemToCartSuccess(itemForDispatch, "1"));
-        setStateQuantity(stateQuantity+1)
+        dispatch(addItemToCartSuccess([item], 1));
+        // setStateQuantity(stateQuantity+1)
       }
       else {
         fetch(`/addItem/${user.email}/${item.id}/1`, {
@@ -44,8 +49,8 @@ const CartItems = ({ itemForDispatch, item, quantity }) => {
         })
         .then((res) => {
           if (res.status === 200) {
-            dispatch(addItemToCartSuccess(itemForDispatch, "1"));
-            setStateQuantity(stateQuantity+1)
+            dispatch(addItemToCartSuccess([item], 1));
+            // setStateQuantity(stateQuantity+1)
           } 
           else if (res.status === 400) {
             dispatch(addItemToCartError());
@@ -67,27 +72,27 @@ const CartItems = ({ itemForDispatch, item, quantity }) => {
   const handleSubtract = (ev) => {  
     ev.preventDefault();
       ev.target.style.disabled = true;
-      dispatch(requestDiscardItem());
+      dispatch(requestRemoveItem());
       if (!user) {
-        dispatch(discardItemSuccess(itemForDispatch, "1"));
-        setStateQuantity(stateQuantity-1)
+        dispatch(removeItemFromCartSuccess([item], 1));
+        // setStateQuantity(stateQuantity-1)
       }
       else {
 
         fetch(`/removeItem/${user.email}/${item.id}/1`, {
-          method: "GET",
+          method: "PUT",
         })
         .then((res) => {
           if (res.status === 200) {
-            dispatch(discardItemSuccess(itemForDispatch, "1"));
-            setStateQuantity(stateQuantity-1)
+            dispatch(removeItemFromCartSuccess([item], 1));
+            // setStateQuantity(stateQuantity-1)
           } 
           else if (res.status === 400) {
-            dispatch(discardItemError());
+            dispatch(removeItemFromCartError());
             // An error has occured
           } 
           else {
-            dispatch(discardItemError());
+            dispatch(removeItemFromCartError());
             console.log("something went wrong but it shouldnt have ");
           }
         })

@@ -50,14 +50,19 @@ export default function ordersReducer(state = initialState, action) {
       }
     }
     case 'ADD_ITEM_TO_CART_SUCCESS' : {
-      if (state.currentCart[action.item.id]) {
+      console.log('lololollololol', action.item);
+      if (state.currentCart[action.item[0].id]) {
+        console.log('AAACCTTIIONN.IIITTTEEEMMM', action.item);
+      console.log(state.currentCart);
+      console.log('FIRST QUANT TEST',state.currentCart[action.item[0].id].quantity);
+      console.log('SECOND QUANT TEST', action.quantity);
         return {
           ...state,
           currentCart: {
             ...state.currentCart,
             [action.item[0].id] : {
-              itemInfo: action.item,
-              quantity: state.currentCart[action.item.id].quantity + action.quantity,
+              itemInfo: action.item[0],
+              quantity: state.currentCart[action.item[0].id].quantity + action.quantity,
             }
           },
           status: 'idle',
@@ -69,7 +74,7 @@ export default function ordersReducer(state = initialState, action) {
           currentCart: {
             ...state.currentCart,
             [action.item[0].id] : {
-              itemInfo: action.item,
+              itemInfo: action.item[0],
               quantity: action.quantity,
             }
           },
@@ -112,19 +117,28 @@ export default function ordersReducer(state = initialState, action) {
     }
     case 'REMOVE_ITEM_FROM_CART_SUCCESS' : {
       // case: eliminating all of a given item from the cart
-      if (state.currentCart[action.item.id].quantity === action.quantity) {
+      console.log('action.item:',action.item);
+      console.log('state:', state);
+      console.log("state's currentCart", state.currentCart);
+      console.log("id from action:", action.item[0].id )
+      console.log('item in cart using id from action:', state.currentCart[action.item[0].id]);
+      // console.log('fishing for numInStock',state.currentCart[action.item[0].id].itemInfo[0].numInStock );
+      console.log('qant in state:', state.currentCart[action.item[0].id].quantity );
+      console.log('action.quantity', parseInt(action.quantity));
+      console.log('')
+      if (parseInt(state.currentCart[action.item[0].id].quantity) === parseInt(action.quantity)) {
         const newState = { ...state};
-        delete newState.currentCart[action.item.id];
+        delete newState.currentCart[action.item[0].id];
         return {...newState};
       }
       else { // case: removing some, but not all, of a given item from the cart
         return {
           ...state,
           currentCart: {
-            ...state.cart,
-            [action.item.id] : {
-              ...state.cart[action.item.id],
-              quantity: state.cart[action.item.id].quantity - action.quantity,
+            ...state.currentCart,
+            [action.item[0].id] : {
+              ...state.currentCart[action.item[0].id],
+              quantity: state.currentCart[action.item[0].id].quantity - action.quantity,
             }
           },
           status: 'idle',

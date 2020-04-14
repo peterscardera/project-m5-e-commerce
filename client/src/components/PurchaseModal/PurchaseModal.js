@@ -26,16 +26,14 @@ const PurchaseModal = () => {
   return (
     <React.Fragment>
       <OuterContainer>
-        <InnerContainer
-        id="purchase"
-        >
+        <InnerContainer>
           Purchase Modal
-          <button
+          <StyledButton
           disabled = {cartstate !== 'idle'}
           onClick = {closePurchase}
           >
             X
-          </button>
+          </StyledButton>
         </InnerContainer>
       </OuterContainer>
     </React.Fragment>
@@ -47,6 +45,9 @@ export default PurchaseModal;
 
 // background-color: ${props => (!props.clickStatus && !props.cartVisibilityPreHover) ? "rgba(0,255,0,0.5)" : "rgba(0,255,0,1)"};
 
+const StyledButton = styled.button`
+  cursor: pointer;
+`
 const InnerContainer = styled.div`
   display: flex;
   justify-content: center;

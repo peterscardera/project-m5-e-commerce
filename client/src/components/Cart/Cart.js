@@ -14,6 +14,8 @@ import {
 } from "../../actions";
 
 const Cart = () => {
+  const [grandTotalObject, setGrandTotalObject] = React.useState({});
+  const [grandTotal, setGrandTotal] = React.useState(0);
   const { clickStatus, cartVisibilityPreHover } = React.useContext(CartContext);
   const { purchaseModalVisible, setPurchaseModalVisible } = React.useContext(PurchaseContext);
   const currentCart = useSelector((state) => state.orders.currentCart);
@@ -34,16 +36,19 @@ const Cart = () => {
       clickStatus = {clickStatus}
       hoverStatus = {cartVisibilityPreHover}
       >
+        {console.log('The cart AS IT WERE   JIJIJIJIJI', currentCart)}
         {Object.keys(currentCart).map((itemId, index) => {
           // console.log('item info?',currentCart[itemId].itemInfo);
-          console.log('item info?',currentCart[itemId].quantity);
+          console.log('item info?',currentCart[itemId].itemInfo);
           return (
             <>
               <CartItems
                 key = {itemId}
-                itemForDispatch = {currentCart[itemId].itemInfo}
-                item = {currentCart[itemId].itemInfo[0]}
+                itemForDispatch = {currentCart[itemId].itemInfo[0]}
+                item = {currentCart[itemId].itemInfo}
                 quantity = {currentCart[itemId].quantity}
+                grandTotalObject = {grandTotalObject}
+                setGrandTotalObject = {setGrandTotalObject}
               ></CartItems>
             </>
           );
