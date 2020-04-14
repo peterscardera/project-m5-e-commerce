@@ -2,6 +2,7 @@
 // create new account
 
 import React, { useState, useReducer } from "react";
+import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 
@@ -10,9 +11,12 @@ import {
   requestUserInfo,
   receiveUserInfo,
   receiveUserInfoError,
+  requestCreateNewUser,
+  createNewUserSuccess,
+  createNewUserError,
 } from "../../actions";
 
-//login state
+//----------------------------------------------login reducer (tad excessive)---------------------------------
 const INITIAL_LOGIN = {
   email: "",
   password: "",
@@ -31,13 +35,34 @@ const loginReducer = (state, action) => {
 };
 
 function Account() {
+  let history = useHistory();
+
+  const pushToHome = () => {
+    history.push("/");
+  };
+
   const loggedInUser = useSelector((state) => state.user.user);
 
   const reduxDispatch = useDispatch();
-  //toggle create acct if true
+  //toggle create acct page if true
   const [createNew, setCreateNew] = useState(false);
-  //state for when the server sends us back an error
-  const [errorState, setErrorState] = useState(null);
+  //state for when the server sends us back an error for logging in*
+  const [errorStateLogIn, setErrorStateLogIn] = useState(null);
+  //state for when the server sends us bacl an error for creating an account
+  const [errorCreateState, setErrorCreateState] = useState(null);
+  //state for recording what the user inputed when creating a new account
+  const [createAccountUserInput, setcreateAccountUserInput] = useState({
+    email: "",
+    password: "",
+    firstName: "",
+    lastName: "",
+    houseNumber: "",
+    streetName: "",
+    postalCode: "",
+    city: "",
+    province: "",
+    country: "",
+  });
 
   //------------------Existing User Log in: keep track of what user  is typing------------------
   const [state, dispatch] = useReducer(loginReducer, INITIAL_LOGIN);
@@ -50,12 +75,12 @@ function Account() {
     });
   };
 
-  //handler for when user clicked login
-  const submitHandler = (e) => {
+  //-------------------------handler for when user clicked login---------------------------------
+  const submitHandlerLogIn = (e) => {
     e.preventDefault();
 
     //when clicking this the error state must be RESET to null incase it become of the other errors
-    setErrorState(null)
+    setErrorStateLogIn(null);
 
     reduxDispatch(requestUserInfo());
 
@@ -73,19 +98,78 @@ function Account() {
         });
       } else if (resp.status === 422) {
         reduxDispatch(receiveUserInfoError());
-        setErrorState("Password does not match our records");
+        setErrorStateLogIn("Password does not match our records");
       } else if (resp.status === 400) {
-        
         reduxDispatch(receiveUserInfoError());
-        setErrorState("Email doesnt seem to exist");
+        setErrorStateLogIn("Email doesnt seem to exist");
       } else {
         console.log("something went wrong but it shouldnt have ");
       }
     });
   };
 
+  //----------------------------------Handler for creating a new account----------------------------
 
-  //---------------------------------------------------------------------------------------------
+  //record input
+  const handleCreate = (e) => {
+    const values = e.target.value;
+    setcreateAccountUserInput({
+      ...createAccountUserInput,
+      [e.target.name]: values,
+    });
+  };
+
+  const handleCreateSubmit = (e) => {
+    e.preventDefault();
+
+    //when clicking this the error state must be RESET to null incase it become of the other errors
+    setErrorCreateState(null);
+    reduxDispatch(requestCreateNewUser());
+
+    fetch(`/createAccount/${createAccountUserInput.email}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ password: createAccountUserInput.password }),
+    }).then((resp) => {
+      if (resp.status === 200) {
+        resp
+          .json()
+          .then((userData) => {
+            console.log(userData, "IT WORKED ACCOUNT CREATED");
+
+            reduxDispatch(createNewUserSuccess());
+            return userData;
+            // once server says account is created successfully below we will automatically sign in the user
+          })
+          .then((newUserData) => {
+            console.log(newUserData);
+
+            fetch(`/logIn/${newUserData.email}`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ password: newUserData.password }),
+            }).then(() => {
+              pushToHome();
+            });
+          });
+      } else if (resp.status === 403) {
+        reduxDispatch(createNewUserError());
+        setErrorCreateState(
+          `Email: ${createAccountUserInput.email} already has an account`
+        );
+      } else {
+        console.log("something went wrong but it shouldnt have ");
+      }
+    });
+  };
+
+  console.log(createAccountUserInput);
+  //----------------------------------------------------------------------------------------------
+
   //handleClick below covers the createAccount and back to login
   const handleClick = () => {
     setCreateNew(!createNew);
@@ -104,10 +188,12 @@ function Account() {
       <>
         {!createNew ? (
           <Wrapper>
-            {errorState !== null && (<div>{errorState}</div>)}
             <Login>
-              LOGIN
-              <form onSubmit={submitHandler}>
+              {errorStateLogIn !== null && (
+                <StyledError>{errorStateLogIn}</StyledError>
+              )}
+              <span> LOGIN </span>
+              <form onSubmit={submitHandlerLogIn}>
                 <label htmlFor="email">
                   EMAIL:
                   <input
@@ -153,64 +239,123 @@ function Account() {
           </Wrapper>
         ) : (
           <Wrapper>
-            <div>
-              CREATE ACCOUNT
-              <form>
-                <label>
+            <FormContainer>
+              {errorCreateState !== null && (
+                <StyledError> {errorCreateState} </StyledError>
+              )}
+
+              <span>CREATE ACCOUNT</span>
+              <form onSubmit={handleCreateSubmit}>
+                <label htmlFor="email">
                   EMAIL
-                  <input type="email" name="email" />
+                  <input
+                    required
+                    type="email"
+                    name="email"
+                    value={createAccountUserInput.email}
+                    onChange={handleCreate}
+                  />
                 </label>
-              </form>
-              <form>
-                <label>
+
+                <label htmlFor="password">
                   PASSWORD
-                  <input type="password" name="password" />
+                  <input
+                    required
+                    type="password"
+                    name="password"
+                    onChange={handleCreate}
+                  />
                 </label>
-                <label>
+                <label htmlFor="confirm-password">
                   CONFIRM PASSWORD
-                  <input type="password" name="password" />
+                  <input required type="password" name="confirm-password" />
                 </label>
-                <label>
+                <label htmlFor="firstName">
                   FIRST NAME
-                  <input type="text" name="first name" />
+                  <input
+                    type="text"
+                    name="firstName"
+                    value={createAccountUserInput.firstName}
+                    onChange={handleCreate}
+                  />
                 </label>
-                <label>
+                <label htmlFor="lastName">
                   LAST NAME
-                  <input type="text" name="last name" />
+                  <input
+                    type="text"
+                    name="lastName"
+                    value={createAccountUserInput.lastName}
+                    onChange={handleCreate}
+                  />
                 </label>
-                <label>
+                <label htmlFor="houseNumber">
                   HOUSE NUMBER
-                  <input type="text" name="house number" />
+                  <input
+                    type="text"
+                    name="houseNumber"
+                    value={createAccountUserInput.houseNumber}
+                    onChange={handleCreate}
+                  />
                 </label>
-                <label>
+                <label htmlFor="streetName">
                   STREET NAME
-                  <input type="text" name="street name" />
+                  <input
+                    type="text"
+                    name="streetName"
+                    onChange={handleCreate}
+                    value={createAccountUserInput.streetName}
+                  />
                 </label>
-                <label>
+                <label htmlFor="postalCode">
                   POSTAL / ZIP CODE
-                  <input type="text" name="postal code" />
+                  <input
+                    type="text"
+                    name="postalCode"
+                    onChange={handleCreate}
+                    value={createAccountUserInput.postalCode}
+                  />
                 </label>
-                <label>
+                <label htmlFor="city">
                   CITY
-                  <input type="text" name="city" />
+                  <input
+                    type="text"
+                    name="city"
+                    value={createAccountUserInput.city}
+                    onChange={handleCreate}
+                  />
                 </label>
-                <label>
+                <label htmlFor="province">
                   PROVINCE / STATE
-                  <input type="text" name="province" />
+                  <input
+                    type="text"
+                    name="province"
+                    value={createAccountUserInput.province}
+                    onChange={handleCreate}
+                  />
                 </label>
-                <label>
+                <label htmlFor="country">
                   COUNTRY
-                  <input type="text" name="country" />
+                  <input
+                    type="text"
+                    name="country"
+                    value={createAccountUserInput.country}
+                    onChange={handleCreate}
+                  />
                 </label>
-                <input class="submitBtn" type="submit" value="CREATE ACCOUNT" />
+                <input class="submitBtn" type="submit" />
+                <input
+                  onClick={() => {
+                    handleClick()
+                    setErrorStateLogIn(null);
+                    setErrorCreateState(null);
+                  }}
+                  class="submitBtn"
+                  type="submit"
+                  value="BACK TO LOGIN"
+                  //we need to reset the error state
+                />
               </form>
-              <input
-                onClick={handleClick}
-                class="submitBtn"
-                type="submit"
-                value="BACK TO LOGIN"
-              />
-            </div>
+            </FormContainer>
           </Wrapper>
         )}
       </>
@@ -256,6 +401,12 @@ const Login = styled.div`
 const Create = styled.div`
   min-width: 500px;
   margin: 100px;
+`;
+
+const FormContainer = styled.div``;
+
+const StyledError = styled.div`
+  color: red;
 `;
 
 export default Account;

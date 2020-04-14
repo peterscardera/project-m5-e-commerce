@@ -7,7 +7,9 @@ console.log(loggedInUser)
 
   return (
     <>
-      <div>WELCOME BACK { loggedInUser.givenName} </div>
+      <div>WELCOME BACK  </div>
+      <div> account id: {loggedInUser.id}</div>
+      <div> Email: {loggedInUser.email}</div>
       {/* display past order and more user informatiom */}
     </>
   );
