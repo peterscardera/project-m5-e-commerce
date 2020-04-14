@@ -7,23 +7,10 @@ console.log(loggedInUser)
 
   return (
     <>
-<<<<<<< Updated upstream
       <div>WELCOME BACK  </div>
       <div> account id: {loggedInUser.id}</div>
       <div> Email: {loggedInUser.email}</div>
       {/* display past order and more user informatiom */}
-=======
-      <Wrapper>
-        <h1>WELCOME BACK</h1>
-        <div></div>
-        <li>ORDER HISTORY</li>
-        <div></div>
-        <li>SAVED SHOPPING CARTS</li>
-        <div></div>
-        <li>TRACK ORDER</li>
-        <div></div>
-      </Wrapper>
->>>>>>> Stashed changes
     </>
   );
 }
