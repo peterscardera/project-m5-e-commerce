@@ -64,6 +64,10 @@ export const receiveVendorsError = () => ({
 // END OF VENDORS ACTIONS
 
 // START OF ORDERS ACTIONS
+export const resetErrorStatus = () => ({
+  type: 'RESET_ERROR_STATUS',
+});
+
 export const requestOrders = () => ({
   type: 'REQUEST_ORDERS',
 });
@@ -96,12 +100,12 @@ export const requestDiscardItem = () => ({
   type: 'REQUEST_DISCARD_ITEM',
 });
 
-export const DiscardItemSuccess = (item) => ({
+export const discardItemSuccess = (item) => ({
   type: 'DISCARD_ITEM_SUCCESS',
   item,
 });
 
-export const DiscardItemError = () => ({
+export const discardItemError = () => ({
   type: 'DISCARD_ITEM_ERROR',
 });
 

@@ -395,7 +395,7 @@ express()
   // adds an item to cart or increases its quantity
   .get('/addItem/:email/:itemId/:quantity', handleAddItem)
 
-  // removes all or all cases of an item from a cart
+  // removes some or all cases of an item from a cart
   .put('/removeItem/:email/:itemId/:quantity', handleRemoveItem) 
 
   // removes all items from cart

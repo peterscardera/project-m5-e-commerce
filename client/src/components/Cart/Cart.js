@@ -5,12 +5,22 @@ import { useSelector } from "react-redux";
 import {CartContext} from  '../../cartContext';
 import CartItems from "./CartItems";
 
+import { 
+  resetErrorStatus,
+  requestEmptyCart,
+  emptyCartSuccess,
+  emptyCartError
+} from "../../actions";
+
 const Cart = () => {
   const { clickStatus } = React.useContext(CartContext);
   const { cartVisibilityPreHover } = React.useContext(CartContext);
   const currentCart = useSelector((state) => state.orders.currentCart);
   
-  // console.log('currentCart: ', currentCart);
+  const handleEmpty = () => {
+
+  };
+  // console.log('currentCart: ', Object.keys(currentCart).length);
 
   return (
     <React.Fragment>
@@ -19,18 +29,32 @@ const Cart = () => {
       hoverStatus = {cartVisibilityPreHover}
       >
         {Object.keys(currentCart).map((itemId, index) => {
-          console.log('item info?',currentCart[itemId].itemInfo);
+          // console.log('item info?',currentCart[itemId].itemInfo);
+          console.log('item info?',currentCart[itemId].quantity);
           return (
             <>
               <CartItems
                 key = {itemId}
+                itemForDispatch = {currentCart[itemId].itemInfo}
                 item = {currentCart[itemId].itemInfo[0]}
+                quantity = {currentCart[itemId].quantity}
               ></CartItems>
             </>
           );
         })}
-        {currentCart.length > 3 && <div> ".." more product</div>}
-        <button> See shopping cart</button>
+        <FinalLineOptions>
+          { Object.keys(currentCart).length > 0 ? (
+            <>
+            <button> CHECKOUT</button>
+            <button
+            onCLick = {handleEmpty}
+            >EMPTY CART</button>
+            </>
+          ) : (
+            "Your cart is empty"
+          )}
+
+        </FinalLineOptions>
       </Container>
     </React.Fragment>
   );
@@ -38,13 +62,20 @@ const Cart = () => {
 
 export default Cart;
 
+const FinalLineOptions = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding-left: 48.75%;
+`
 const Container = styled.div`
   opacity: '0.5';
-  height: 600px;
+  height: fill;
   /* change to flexible width */
   width: 400px;
   border: ${props => props.clickStatus ? "1px solid green" : "1px solid black"};
-  margin-left: auto;
+  padding: 10px;
+  /* margin-left: auto; */
   z-index: 5;
   position: absolute;
   right: 0px;

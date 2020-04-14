@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import VendorPage from "./VendorPage"
-import AddToCartButton from "../AddToCart"
+import AddToCartButton from "../AddToCart/AddToCartButton"
 
 
 //**Reminder itemDetails is not a child of any other component other then APP.js **/

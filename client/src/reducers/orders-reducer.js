@@ -20,7 +20,6 @@ const initialState = {
 export default function ordersReducer(state = initialState, action) {
   // console.log('action: ', action);
   switch (action.type) {
-
     // First three cases represent the obtaining of the carts.  This should be dispatched when a user logs in
     case 'REQUEST_ORDERS' : {
       return {
@@ -185,7 +184,13 @@ export default function ordersReducer(state = initialState, action) {
         status: 'error',
       }
     }
-
+    // Final type is to reset the error status, should an error have occured
+    case 'RESET_ERROR_STATUS' : {
+      return {
+        ...state,
+        status: 'idle',
+      }
+    }
 
     default: {
       return state;

@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import { Redirect, Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import {CartContext} from  '../../cartContext';
 
@@ -9,6 +10,9 @@ const NavBar = () => {
   const {cartVisible, setCartVisible} = React.useContext(CartContext);
   const {clickStatus, setClickStatus} = React.useContext(CartContext);
   const [cartVisibilityPreHover, setCartVisibilityPreHover] = React.useState(cartVisible);
+  const currentCart = useSelector((state) => state.orders.currentCart);
+  const user = useSelector((state) => state.user.user);
+  let cartNum = Object.keys(currentCart).length;
   return (
     <>
       <header>
@@ -19,8 +23,21 @@ const NavBar = () => {
           <NavLink to="/shop">
             SHOP
           </NavLink>
+          {user === null ? (
+              <NavLink to="/account">
+                MY ACCOUNT
+              </NavLink>
+            ) : (
+              <NavLink to="/userInformation">
+                MY ACCOUNT
+              </NavLink>
+            )}
           <NavLink to="/account">
-            ACCOUNT
+            {user === null ? (
+              "SIGN IN"
+            ) : (
+              "SIGN OUT"
+            )}
           </NavLink>
           <CartButton 
           onMouseEnter={()=>{
@@ -37,7 +54,12 @@ const NavBar = () => {
             setClickStatus(!clickStatus);
           }
           }>
-            CART
+            {cartNum > 0 ? (
+              `CART (${cartNum})`
+            ) : (
+              "CART"
+            )}
+            
           </CartButton>
         </NavWrapper>
       </header>

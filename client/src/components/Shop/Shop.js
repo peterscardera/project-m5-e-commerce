@@ -48,8 +48,6 @@ const Shop = () => {
           itemsPerPage={itemsPerPage}
           loadSpecificPageNumber={loadSpecificPageNumber}
         ></NextPage>
-        {/* for now well place cart bellow  */}
-        <Cart />
       </Layout>
     </React.Fragment>
   );
