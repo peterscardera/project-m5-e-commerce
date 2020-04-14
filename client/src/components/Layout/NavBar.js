@@ -1,8 +1,9 @@
-import React, {useContext, useState, useEffect} from "react";
+import React, { useContext, useState, useEffect } from "react";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
+<<<<<<< Updated upstream
 import ExistingAccount from "../Account/ExistingAccount";
 import { 
   logUserOut,
@@ -10,16 +11,25 @@ import {
 } from "../../actions";
 import {CartContext} from  '../../cartContext';
 
+=======
+import { CartContext } from "../../cartContext";
+>>>>>>> Stashed changes
 
 const NavBar = () => {
-  const {cartVisible, setCartVisible} = useContext(CartContext);
-  const {clickStatus, setClickStatus} = useContext(CartContext);
-  const [cartVisibilityPreHover, setCartVisibilityPreHover] = useState(cartVisible);
+  const { cartVisible, setCartVisible } = useContext(CartContext);
+  const { clickStatus, setClickStatus } = useContext(CartContext);
+  const [cartVisibilityPreHover, setCartVisibilityPreHover] = useState(
+    cartVisible
+  );
   const [accountTitle, setAccountTitle] = useState("MY ACCOUNT");
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.user);
+<<<<<<< Updated upstream
 
   useEffect(()=>{
+=======
+  useEffect(() => {
+>>>>>>> Stashed changes
     // if (user) console.log(user.givenName);
     if (user && user.givenName) {
       let name = user.givenName;
@@ -29,8 +39,9 @@ const NavBar = () => {
       setAccountTitle(newAccountTitle);
       console.log(accountTitle);
     }
-  },[user]);
+  }, [user]);
   const currentCart = useSelector((state) => state.orders.currentCart);
+<<<<<<< Updated upstream
   let cartNum = Object.keys(currentCart).length;
   
   const handleSignOut = () => {
@@ -38,18 +49,19 @@ const NavBar = () => {
     dispatch(logUserOut());
     dispatch(emptyCartSuccess());
   }
+=======
+
+  let cartNum = Object.keys(currentCart).length;
+>>>>>>> Stashed changes
 
   return (
     <>
       <header>
         <NavWrapper>
-          <NavLink to="/">
-            HOME 
-          </NavLink>
-          <NavLink to="/shop">
-            SHOP
-          </NavLink>
+          <NavLink to="/">HOME</NavLink>
+          <NavLink to="/shop">SHOP</NavLink>
           {user === null ? (
+<<<<<<< Updated upstream
               <NavLink to="/account">
                 ACCOUNT
               </NavLink>
@@ -69,28 +81,34 @@ const NavBar = () => {
                 "SIGN OUT"
               </button>
             )}
+=======
+            <NavLink to="/account">ACCOUNT</NavLink>
+          ) : (
+            <NavLink to="/userInformation">{accountTitle}</NavLink>
+          )}
+          <NavLink to="/account">
+            {user === null ? "SIGN IN" : "SIGN OUT"}
+>>>>>>> Stashed changes
           </NavLink>
-          <CartButton 
-          onMouseEnter={()=>{
-            setCartVisibilityPreHover(cartVisible)
-            setCartVisible(true)
-          }}
-          onMouseLeave={()=>{
-            if (cartVisibilityPreHover && clickStatus) setCartVisible(true);
-            else if (cartVisibilityPreHover && !clickStatus) setCartVisible(false);
-            else if (!cartVisibilityPreHover && clickStatus) setCartVisible(true);
-            else if (!cartVisibilityPreHover && !clickStatus) setCartVisible(false);
-          }} 
-          onClick={()=>{
-            setClickStatus(!clickStatus);
-          }
-          }>
-            {cartNum > 0 ? (
-              `CART (${cartNum})`
-            ) : (
-              "CART"
-            )}
-            
+          <CartButton
+            onMouseEnter={() => {
+              setCartVisibilityPreHover(cartVisible);
+              setCartVisible(true);
+            }}
+            onMouseLeave={() => {
+              if (cartVisibilityPreHover && clickStatus) setCartVisible(true);
+              else if (cartVisibilityPreHover && !clickStatus)
+                setCartVisible(false);
+              else if (!cartVisibilityPreHover && clickStatus)
+                setCartVisible(true);
+              else if (!cartVisibilityPreHover && !clickStatus)
+                setCartVisible(false);
+            }}
+            onClick={() => {
+              setClickStatus(!clickStatus);
+            }}
+          >
+            {cartNum > 0 ? `CART (${cartNum})` : "CART"}
           </CartButton>
         </NavWrapper>
       </header>
@@ -100,7 +118,6 @@ const NavBar = () => {
 
 // once you click on account, we can have our sign in / create account, and even a wishlist! //
 // hover menu over "shop" - shop all, shop categories
-
 const NavWrapper = styled.nav`
   background: lightgrey;
   margin-top: 10px;
@@ -123,12 +140,21 @@ const NavWrapper = styled.nav`
   }
   a:hover {
     color: white;
+    //text-decoration: underline;
+    border-bottom: 2px solid white;
   }
 `;
 const CartButton = styled.button`
+  background: black;
+  color: white;
+  min-width: 100px;
+  min-height: 45px;
+  font-size: 18px;
+  padding: 5px;
+  margin-top: -5px;
   &:hover {
+    background-color: rgba(0, 0, 0, 0.75);
     cursor: pointer;
   }
-`
-
+`;
 export default NavBar;

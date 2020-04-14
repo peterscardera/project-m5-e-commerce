@@ -3,11 +3,17 @@ import styled from "styled-components";
 import fit1 from "./fit1.png";
 import fit2 from "./fit-2.png";
 import fit3 from "./fit3.png";
+import sam1 from "./sam-1.png";
+import sam2 from "./sam-2.png";
+import sam3 from "./sam-3.png";
 
 const Home = () => {
   return (
     <>
       <Wrapper>
+        <section>
+          <h1>Featured Products</h1>
+        </section>
         <div class="home-item first">
           <div class="home-item-wrapper">
             <div class="home-item-image">
@@ -44,10 +50,10 @@ const Home = () => {
         <div class="home-item first">
           <div class="home-item-wrapper">
             <div class="home-item-image">
-              <img src={fit1} alt="fitbit" />
+              <img src={sam1} alt="samsung watch" />
               <span class="home-item-overlay"> </span>
               <div class="home-item-button">
-                <a href="/item/6682">SHOP</a>
+                <a href="/item/6583">SHOP</a>
               </div>
             </div>
           </div>
@@ -55,10 +61,10 @@ const Home = () => {
         <div class="home-item first">
           <div class="home-item-wrapper">
             <div class="home-item-image">
-              <img src={fit2} alt="fitbit" />
+              <img src={sam2} alt="samsung watch" />
               <span class="home-item-overlay"> </span>
               <div class="home-item-button">
-                <a href="/item/6682">SHOP</a>
+                <a href="/item/6999">SHOP</a>
               </div>
             </div>
           </div>
@@ -66,10 +72,10 @@ const Home = () => {
         <div class="home-item first">
           <div class="home-item-wrapper">
             <div class="home-item-image">
-              <img src={fit3} alt="fitbit" />
+              <img src={sam3} alt="samsung" />
               <span class="home-item-overlay"> </span>
               <div class="home-item-button">
-                <a href="/item/6543">SHOP</a>
+                <a href="/item/7002">SHOP</a>
               </div>
             </div>
           </div>
@@ -81,8 +87,21 @@ const Home = () => {
 const Wrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
-  max-width: 1440px;
-  margin: 50px auto 0 auto;
+  // max-width: 1440px;
+  margin: 0 auto;
+  section {
+    font-size: 35px;
+    display: flex;
+    background-color: black;
+    color: white;
+    width: 100%;
+    flex: 100%;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    text-transform: uppercase;
+    min-height: 300px;
+  }
   .home-item {
     flex: 33.33%;
     display: flex;

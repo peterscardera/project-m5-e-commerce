@@ -24,6 +24,8 @@ import Cart from "./Cart";
 import PurchaseModal from "./PurchaseModal";
 import ExistingAccount from "./Account/ExistingAccount";
 
+import Footer from "./Layout/Footer";
+
 function App() {
   const allOfTheItems = useSelector((state) => state.gallery.items);
   const allOfTheVendors = useSelector((state) => state.vendors.items);
@@ -93,6 +95,7 @@ function App() {
             <Route exact path="/:userId/profile"></Route>
           </Switch>
         )}
+        <Footer />
       </Router>
     </React.Fragment>
   );
