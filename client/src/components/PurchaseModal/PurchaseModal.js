@@ -14,14 +14,30 @@ import {PurchaseContext} from  '../../purchaseContext';
 const PurchaseModal = () => {
   const { purchaseModalVisible, setPurchaseModalVisible } = React.useContext(PurchaseContext);
   const currentCart = useSelector((state) => state.orders.currentCart);
-  const cartstate = useSelector((state) => state.orders.state);
+  const cartStatus = useSelector((state) => state.orders.status);
+  const escapeListener = (ev) => {
+    if (cartStatus === 'idle' && ( ev.key === "Escape" || ev.code === "Escape" || ev.keyCode === 27 )) {
+      setPurchaseModalVisible(false);
+      document.removeEventListener("keydown", (ev)=> escapeListener(ev));
+    }
+    console.log('button test');
+  };
+  React.useEffect(
+    () => {
+      document.addEventListener("keydown", (ev)=> escapeListener(ev));
+      return () => {
+        document.removeEventListener("keydown", (ev)=> escapeListener(ev));
+        console.log('removing????????????????????????')
+      }
+    },
+    []
+  );
+
   
   const closePurchase = () => {
     //add disabled if state is not idle
-    console.log('close working?');
     setPurchaseModalVisible(false);
   }
-  // console.log('currentCart: ', Object.keys(currentCart).length);
 
   return (
     <React.Fragment>
@@ -29,7 +45,7 @@ const PurchaseModal = () => {
         <InnerContainer>
           Purchase Modal
           <StyledButton
-          disabled = {cartstate !== 'idle'}
+          disabled = {cartStatus !== 'idle'}
           onClick = {closePurchase}
           >
             X
@@ -65,7 +81,7 @@ const InnerContainer = styled.div`
 `;
 
 const OuterContainer = styled.div`
-  position: absolute;
+  position: fixed;
   left: 0;
   top: 0;
   background-color: rgba(255, 255, 255, 0.5);

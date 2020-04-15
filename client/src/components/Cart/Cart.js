@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import {CartContext} from  '../../cartContext';
 import {PurchaseContext} from  '../../purchaseContext';
@@ -16,18 +16,87 @@ import {
 const Cart = () => {
   const [grandTotalObject, setGrandTotalObject] = React.useState({});
   const [grandTotal, setGrandTotal] = React.useState(0);
+  const [totalItemCount, setTotalItemCount] = React.useState(0);
   const { clickStatus, cartVisibilityPreHover } = React.useContext(CartContext);
   const { purchaseModalVisible, setPurchaseModalVisible } = React.useContext(PurchaseContext);
+  const dispatch = useDispatch();
   const currentCart = useSelector((state) => state.orders.currentCart);
-  
-  const handleEmpty = () => {
+  const user = useSelector((state) => state.user.user);
 
+  React.useEffect(()=>{
+    console.log('CHANGE IN CURRENT CART DETECTED, DOES TOTAL ITEM COUNT CHANGE?');
+    let cartKeys = Object.keys(currentCart);
+    let sumCount = 0;
+    cartKeys.forEach((id)=>{
+      console.log(currentCart[id].quantity);
+      sumCount += currentCart[id].quantity;
+    })
+    setTotalItemCount(sumCount);
+    console.log('The sum you are looking for:', sumCount);
+  },[currentCart]);
+
+  React.useEffect(()=>{
+    let keys = Object.keys(grandTotalObject);
+    if (keys.length === 0) {
+      setGrandTotal(0);
+    }
+    else {
+    let sum = 0;
+    keys.forEach((key)=>{
+      sum += grandTotalObject[key];
+    })
+    sum = parseInt(100*sum)/100;
+    sum = sum.toString();
+    if (sum.charAt(sum.length-2) === "."){
+      sum = `${sum}0`;
+    }
+    else if (sum.charAt(sum.length-3) != "."){
+      sum = `${sum}.00`;
+    }
+    setGrandTotal(sum);
+    }
+  },[grandTotalObject]);
+
+  const handleEmpty = () => {
+    dispatch(requestEmptyCart());
+    if (!user) {
+      dispatch(emptyCartSuccess());
+    }
+    else {
+      fetch(`/emptyCart/${user.email}`, {
+        method: "PUT",
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          dispatch(emptyCartSuccess());
+        } 
+        else if (res.status === 400) {
+          dispatch(emptyCartError());
+          // No account it attached to the email address
+        } 
+        else {
+          dispatch(emptyCartError());
+          console.log("something went wrong but it shouldnt have ");
+        }
+      })
+    }
   };
-  // console.log('currentCart: ', Object.keys(currentCart).length);
 
   const handlePurchase = () => {
     console.log('setting modal open');
     setPurchaseModalVisible(true);
+  };
+
+  let totalText = '';
+  
+  if (grandTotal > 0 && totalItemCount === 1) {
+    totalText = `Your cart contains ${totalItemCount} item.  Total : ${grandTotal}`;
+  }
+  else if (grandTotal > 0 && totalItemCount > 1) {
+    totalText = `Your cart contains ${totalItemCount} items.  Total : ${grandTotal}`;
+  }
+  else {
+    totalText = 'Your cart is empty.'
   }
 
   return (
@@ -36,10 +105,7 @@ const Cart = () => {
       clickStatus = {clickStatus}
       hoverStatus = {cartVisibilityPreHover}
       >
-        {console.log('The cart AS IT WERE   JIJIJIJIJI', currentCart)}
         {Object.keys(currentCart).map((itemId, index) => {
-          // console.log('item info?',currentCart[itemId].itemInfo);
-          console.log('item info?',currentCart[itemId].itemInfo);
           return (
             <>
               <CartItems
@@ -53,8 +119,11 @@ const Cart = () => {
             </>
           );
         })}
+        <Totals>
+          {totalText}
+        </Totals>
         <FinalLineOptions>
-          { Object.keys(currentCart).length > 0 ? (
+          {Object.keys(currentCart).length > 0 && (
             <>
             <button
             onClick = {handlePurchase}
@@ -63,10 +132,7 @@ const Cart = () => {
             onClick = {handleEmpty}
             >EMPTY CART</button>
             </>
-          ) : (
-            "Your cart is empty"
           )}
-
         </FinalLineOptions>
       </Container>
     </React.Fragment>
@@ -75,6 +141,9 @@ const Cart = () => {
 
 export default Cart;
 
+const Totals = styled.div`
+  text-align:right;
+`
 const FinalLineOptions = styled.div`
   display: flex;
   flex-direction: row;

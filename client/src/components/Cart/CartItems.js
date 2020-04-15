@@ -23,15 +23,21 @@ const CartItems = ({ itemForDispatch, item, quantity, grandTotalObject, setGrand
   const stateItem = useSelector((state) => state.orders.currentCart[item.id]);
   let stateQuantity = 0;
   if (stateItem) stateQuantity = stateItem.quantity;
-  // setGrandTotalObject({grandTotalObject});  //working on this
-  // const [stateQuantity, setStateQuantity] = useState(quantity);
+  else if (stateQuantity != 0) stateQuantity = 0;  //this line may be wrong
   React.useEffect(()=>{
-    setSubTotal(Math.floor(100*stateQuantity*parseFloat(item.price.substring(1)))/100);
+    let newSubTotal = Math.floor(100*stateQuantity*parseFloat(item.price.substring(1)))/100;
+    setSubTotal(newSubTotal);
+    let keys = Object.keys(grandTotalObject);
+    let newGrandTotalObject = {};
+    keys.forEach((key)=>{
+        newGrandTotalObject[key]=grandTotalObject[key];
+    })
+    newGrandTotalObject[item.id]=newSubTotal;
+    setGrandTotalObject(newGrandTotalObject);
   },[stateQuantity]);
   
   const user = useSelector((state) => state.user.user);
   const orders = useSelector((state) => state.orders);
-console.log('OOORRRDDEEERRSSS',orders);
   const dispatch = useDispatch();
   let linkAddress = `/item/${item.id}`;
 
@@ -41,7 +47,6 @@ console.log('OOORRRDDEEERRSSS',orders);
       dispatch(requestAddItemToCart());
       if (!user) {
         dispatch(addItemToCartSuccess([item], 1));
-        // setStateQuantity(stateQuantity+1)
       }
       else {
         fetch(`/addItem/${user.email}/${item.id}/1`, {
@@ -50,7 +55,6 @@ console.log('OOORRRDDEEERRSSS',orders);
         .then((res) => {
           if (res.status === 200) {
             dispatch(addItemToCartSuccess([item], 1));
-            // setStateQuantity(stateQuantity+1)
           } 
           else if (res.status === 400) {
             dispatch(addItemToCartError());
@@ -69,23 +73,20 @@ console.log('OOORRRDDEEERRSSS',orders);
       ev.target.style.disabled = false;
   };
 
-  const handleSubtract = (ev) => {  
+  const handleSubtract = (ev, x) => {  
     ev.preventDefault();
       ev.target.style.disabled = true;
       dispatch(requestRemoveItem());
       if (!user) {
-        dispatch(removeItemFromCartSuccess([item], 1));
-        // setStateQuantity(stateQuantity-1)
+        dispatch(removeItemFromCartSuccess([item], x));
       }
       else {
-
         fetch(`/removeItem/${user.email}/${item.id}/1`, {
           method: "PUT",
         })
         .then((res) => {
           if (res.status === 200) {
-            dispatch(removeItemFromCartSuccess([item], 1));
-            // setStateQuantity(stateQuantity-1)
+            dispatch(removeItemFromCartSuccess([item], x));
           } 
           else if (res.status === 400) {
             dispatch(removeItemFromCartError());
@@ -98,15 +99,20 @@ console.log('OOORRRDDEEERRSSS',orders);
         })
       }
       ev.target.style.disabled = false;
-  }
+  };
 
-  // console.log('quant type',typeof (quantity));
-  // console.log('item.price type',parseFloat(item.price.substring(1)));
-  console.log('numinstock',item.numInStock)
-  console.log('quant type', quantity);
+  const handleDelete = (ev) => {
+    handleSubtract(ev, stateQuantity);
+  };
+
   return (
     <React.Fragment>
       <Wrapper>
+        <DeleteButton
+        onClick = {(ev) => {handleDelete(ev, 1)}}
+        >
+          X
+        </DeleteButton>
         <div>
           <NavLink to={linkAddress}>
             <StyledImg src={item.imageSrc} />
@@ -126,7 +132,7 @@ console.log('OOORRRDDEEERRSSS',orders);
             <div>{stateQuantity}</div>
             <StyledButton
             disabled = {stateQuantity <= 0}
-            onClick = {(ev) => {handleSubtract(ev)}}
+            onClick = {(ev) => {handleSubtract(ev, 1)}}
             >-</StyledButton>
           </PlusMinusNumberWrapper>
           <div>
@@ -152,6 +158,15 @@ console.log('OOORRRDDEEERRSSS',orders);
 
 export default CartItems;
 
+const DeleteButton = styled.div`
+  text-align: center;
+  position: absolute;
+  right: 0;
+  /* top: 0; */
+  cursor: pointer;
+  background: red;
+`
+
 const StyledButton = styled.button`
   cursor: ${props => props.disabledStatus ? "not-allowed" : "pointer"};
 `
@@ -172,7 +187,6 @@ const PlusMinusNumberWrapper = styled.div`
 const Wrapper = styled.div`
   display: grid;
   grid-template-columns: 120px 1fr;
-  
 `;
 
 const StyledImg = styled.img`
