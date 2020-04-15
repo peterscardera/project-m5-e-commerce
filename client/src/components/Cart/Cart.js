@@ -15,9 +15,7 @@ import {
 
 const Cart = () => {
   const { clickStatus, cartVisibilityPreHover } = React.useContext(CartContext);
-  const { purchaseModalVisible, setPurchaseModalVisible } = React.useContext(
-    PurchaseContext
-  );
+  const { purchaseModalVisible, setPurchaseModalVisible } = React.useContext(PurchaseContext);
   const dispatch = useDispatch();
   const currentCart = useSelector((state) => state.orders.currentCart);
   const user = useSelector((state) => state.user.user);
@@ -41,10 +39,19 @@ const Cart = () => {
         sumPrice += currentCart[id].quantity * price;
       }
     });
+    sumPrice = parseInt(100*sumPrice)/100;
+    sumPrice = sumPrice.toString();
+    if (sumPrice.charAt(sumPrice.length-2) === "."){
+      sumPrice = `${sumPrice}0`;
+    }
+    else if (sumPrice.charAt(sumPrice.length-3) != "."){
+      sumPrice = `${sumPrice}.00`;
+    }
   }
-  console.log("dnjinijwjmdkoqmwkodmnjweindioqwejkmdijnewi", totalNumItems);
 
-  console.log("dnjinijwjmdkoqmwkodmnjweindioqwejkmdijnewi", sumPrice);
+  console.log("totalNumItemstotalNumItemstotalNumItemstotalNumItems", totalNumItems);
+
+  console.log("sumPricesumPricesumPricesumPricesumPricesumPrice", sumPrice);
 
   // React.useEffect(()=>{
   //   let keys = Object.keys(grandTotalObject);
@@ -97,9 +104,9 @@ const Cart = () => {
   let totalText = "";
 
   if (sumPrice > 0 && totalNumItems === 1) {
-    totalText = `Your cart contains ${totalNumItems} item.  Total : ${sumPrice}`;
+    totalText = `Your cart contains ${totalNumItems} item.  SubTotal : $${sumPrice}`;
   } else if (sumPrice > 0 && totalNumItems > 1) {
-    totalText = `Your cart contains ${totalNumItems} items.  Total : ${sumPrice}`;
+    totalText = `Your cart contains ${totalNumItems} items.  SubTotal : $${sumPrice}`;
   } else {
     totalText = "Your cart is empty.";
   }
@@ -112,7 +119,6 @@ const Cart = () => {
             <>
               <CartItems
                 key={itemId}
-                itemForDispatch={currentCart[itemId].itemInfo[0]}
                 item={currentCart[itemId].itemInfo}
                 quantity={currentCart[itemId].quantity}
               ></CartItems>

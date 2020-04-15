@@ -8,10 +8,6 @@ const AddToCartButton = ({ productChosen }) => {
   const loggedInStatus = useSelector((state) => state.user.user);
   const orderInfo = useSelector((state) => state.orders.currentCart);
   const [quantity, setQuantity] = useState(1);
-  // console.log(loggedInStatus);
-  console.log(quantity,'*******');
-  console.log(typeof(quantity),'type of quant idjejwiodemndjksen');
- 
 
   const dispatch = useDispatch();
 
@@ -22,27 +18,24 @@ const AddToCartButton = ({ productChosen }) => {
       dispatch(addItemToCartSuccess(productChosen, quantity));
     } else {
       dispatch(requestAddItemToCart());
-     fetch(`/addItem/${loggedInStatus.email}/${productChosen[0].id}/${quantity}`)
-     .then((res) => {
-      if (res.status === 200) {
-       
-        dispatch(addItemToCartSuccess(productChosen, quantity));
-      } 
-      else if (res.status === 400) {
-        dispatch(addItemToCartError());
-        // An error has occured
-      } 
-      else if (res.status === 409) {
-        dispatch(addItemToCartError());
-        // Insufficient quantity available
-      } 
-      else {
-        dispatch(addItemToCartError());
-        console.log("something went wrong but it shouldnt have ");
-      }
-    })
-  
-
+      fetch(`/addItem/${loggedInStatus.email}/${productChosen[0].id}/${quantity}`)
+      .then((res) => {
+        if (res.status === 200) {
+          dispatch(addItemToCartSuccess(productChosen, quantity));
+        } 
+        else if (res.status === 400) {
+          dispatch(addItemToCartError());
+          // An error has occured
+        } 
+        else if (res.status === 409) {
+          dispatch(addItemToCartError());
+          // Insufficient quantity available
+        } 
+        else {
+          dispatch(addItemToCartError());
+          console.log("something went wrong but it shouldnt have ");
+        }
+      })
 
     // fetch/addItem/:email/${productChosen[0].id}/${quantity}`)
       // to add to cart with a user being sign in we would fetch the /addItem/:email/:itemId/:quantity

@@ -18,9 +18,8 @@ import styled from "styled-components";
 
 
 
-const CartItems = ({ itemForDispatch, item, quantity }) => {
-  console.log(item, 'IM IN CART ITEMS')
-  const [subTotal, setSubTotal] = useState(quantity*parseFloat(item.price.substring(1)))
+const CartItems = ({ item, quantity }) => {
+  const [subTotal, setSubTotal] = useState(quantity*parseFloat(item.price.substring(1)));
   const stateItem = useSelector((state) => state.orders.currentCart[item.id]);
   let stateQuantity = 0;
   if (stateItem) stateQuantity = stateItem.quantity;

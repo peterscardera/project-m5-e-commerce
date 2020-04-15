@@ -15,7 +15,7 @@ const PurchaseModal = () => {
   const { purchaseModalVisible, setPurchaseModalVisible } = React.useContext(PurchaseContext);
   const currentCart = useSelector((state) => state.orders.currentCart);
   const cartStatus = useSelector((state) => state.orders.status);
-  const escapeListener = (ev) => {
+  const handleEscape = (ev) => {
     if (cartStatus === 'idle' && ( ev.key === "Escape" || ev.code === "Escape" || ev.keyCode === 27 )) {
       setPurchaseModalVisible(false);
     }
@@ -24,9 +24,9 @@ const PurchaseModal = () => {
   
   React.useEffect(
     () => {
-      document.addEventListener("keydown", (ev)=> escapeListener(ev));
+      document.addEventListener("keydown", (ev)=> handleEscape(ev));
       return () => {
-        document.removeEventListener("keydown", (ev)=> escapeListener(ev));
+        document.removeEventListener("keydown", (ev)=> handleEscape(ev));
         console.log('removing????????????????????????')
       }
     },
