@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addItemToCartSuccess } from "../../actions";
+import { addItemToCartSuccess,requestAddItemToCart, addItemToCartError} from "../../actions";
 
 //**reminder: Button is a child component in ItemDetails */
 
@@ -9,19 +9,38 @@ const AddToCartButton = ({ productChosen }) => {
   const orderInfo = useSelector((state) => state.orders.currentCart);
   const [quantity, setQuantity] = useState(1);
   // console.log(loggedInStatus);
-  // console.log(orderInfo)
-  // console.log(loggedInStatus)
+  console.log(quantity,'*******')
+ 
 
-  const disptach = useDispatch();
+  const dispatch = useDispatch();
 
   const addToCardHandler = () => {
     // console.log(productChosen);
     //see if user is logged in
     if (loggedInStatus === null) {
-      disptach(addItemToCartSuccess(productChosen, quantity));
+      dispatch(addItemToCartSuccess(productChosen, quantity));
     } else {
-      //dispatch request userInfo once we have it we:
-      //dispatch receive user info OR error
+      dispatch(requestAddItemToCart());
+     fetch(`/addItem/${loggedInStatus.email}/${productChosen[0].id}/${quantity}`)
+     .then((res) => {
+      if (res.status === 200) {
+       
+        dispatch(addItemToCartSuccess(productChosen, quantity));
+      } 
+      else if (res.status === 400) {
+        dispatch(addItemToCartError());
+        // An error has occured
+      } 
+      else if (res.status === 409) {
+        dispatch(addItemToCartError());
+        // Insufficient quantity available
+      } 
+      else {
+        dispatch(addItemToCartError());
+        console.log("something went wrong but it shouldnt have ");
+      }
+    })
+  
 
 
     // fetch/addItem/:email/${productChosen[0].id}/${quantity}`)
