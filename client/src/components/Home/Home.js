@@ -87,7 +87,6 @@ const Home = () => {
 const Wrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
-  // max-width: 1440px;
   margin: 0 auto;
   section {
     font-size: 35px;
