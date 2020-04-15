@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-<<<<<<< Updated upstream
 import ExistingAccount from "../Account/ExistingAccount";
 import { 
   logUserOut,
@@ -11,9 +10,6 @@ import {
 } from "../../actions";
 import {CartContext} from  '../../cartContext';
 
-=======
-import { CartContext } from "../../cartContext";
->>>>>>> Stashed changes
 
 const NavBar = () => {
   const { cartVisible, setCartVisible } = useContext(CartContext);
@@ -24,12 +20,8 @@ const NavBar = () => {
   const [accountTitle, setAccountTitle] = useState("MY ACCOUNT");
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.user);
-<<<<<<< Updated upstream
 
   useEffect(()=>{
-=======
-  useEffect(() => {
->>>>>>> Stashed changes
     // if (user) console.log(user.givenName);
     if (user && user.givenName) {
       let name = user.givenName;
@@ -41,7 +33,6 @@ const NavBar = () => {
     }
   }, [user]);
   const currentCart = useSelector((state) => state.orders.currentCart);
-<<<<<<< Updated upstream
   let cartNum = Object.keys(currentCart).length;
   
   const handleSignOut = () => {
@@ -49,10 +40,6 @@ const NavBar = () => {
     dispatch(logUserOut());
     dispatch(emptyCartSuccess());
   }
-=======
-
-  let cartNum = Object.keys(currentCart).length;
->>>>>>> Stashed changes
 
   return (
     <>
@@ -61,7 +48,6 @@ const NavBar = () => {
           <NavLink to="/">HOME</NavLink>
           <NavLink to="/shop">SHOP</NavLink>
           {user === null ? (
-<<<<<<< Updated upstream
               <NavLink to="/account">
                 ACCOUNT
               </NavLink>
@@ -81,14 +67,6 @@ const NavBar = () => {
                 "SIGN OUT"
               </button>
             )}
-=======
-            <NavLink to="/account">ACCOUNT</NavLink>
-          ) : (
-            <NavLink to="/userInformation">{accountTitle}</NavLink>
-          )}
-          <NavLink to="/account">
-            {user === null ? "SIGN IN" : "SIGN OUT"}
->>>>>>> Stashed changes
           </NavLink>
           <CartButton
             onMouseEnter={() => {

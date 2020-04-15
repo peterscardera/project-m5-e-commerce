@@ -9,7 +9,8 @@ const AddToCartButton = ({ productChosen }) => {
   const orderInfo = useSelector((state) => state.orders.currentCart);
   const [quantity, setQuantity] = useState(1);
   // console.log(loggedInStatus);
-  console.log(productChosen);
+  console.log(orderInfo)
+  console.log(loggedInStatus)
 
   const disptach = useDispatch();
 
@@ -19,9 +20,11 @@ const AddToCartButton = ({ productChosen }) => {
     if (loggedInStatus === null) {
       disptach(addItemToCartSuccess(productChosen, quantity));
     } else {
-      
       //dispatch request userInfo once we have it we:
       //dispatch receive user info OR error
+
+
+    // fetch/addItem/:email/${productChosen[0].id}/${quantity}`)
       // to add to cart with a user being sign in we would fetch the /addItem/:email/:itemId/:quantity
     }
 

@@ -35,10 +35,16 @@ const Shop = () => {
     setCurrentPage(individualPageNumber);
   };
 
+const filterHandler = () => {
+  console.log('i got fitlered')
+}
+
+
+
   return (
     <React.Fragment>
       <Layout>
-        <FilterBar setItemsPerPage={setItemsPerPage} />
+        <FilterBar filterHandler={filterHandler} allOfTheItems={allOfTheItems} setItemsPerPage={setItemsPerPage} />
         
 
         <ListingGrid itemList={currentPosts} loading={loading}></ListingGrid>

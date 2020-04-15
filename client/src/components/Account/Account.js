@@ -115,21 +115,22 @@ function Account() {
   //------------------------------Handler to retrieve previous cart and order history of a logged in user---
 
   const getPastInfo = (incomingUserData) => {
-    
-  //1- get the current cart and past cart
+    //1- get the current cart and past cart
     reduxDispatch(requestOrders());
 
     fetch(`/getOrders/${incomingUserData.email}`).then((response) => {
       if (response.status === 200) {
         response.json().then((jsonResp) => {
-          reduxDispatch(receiveOrdersSuccess(jsonResp.orderHistory, jsonResp.currentCart))
-          console.log(jsonResp,"SERVER RESPONSE OK WITH ORDER HISTORY");
+          reduxDispatch(
+            receiveOrdersSuccess(jsonResp.orderHistory, jsonResp.currentCart)
+          );
+          console.log(jsonResp, "SERVER RESPONSE OK WITH ORDER HISTORY");
         });
       } else if (response.status === 400) {
-        reduxDispatch(receiveOrdersError())
+        reduxDispatch(receiveOrdersError());
         console.log("user doesnt have existing orders which is fine");
       } else {
-        console.log("server isnt happy")
+        console.log("server isnt happy");
       }
     });
   };
@@ -148,12 +149,6 @@ function Account() {
   //       console.log("server isnt happy")
   //     }
   //   });
-
-
-
-
-
-
 
   //handler for hitting the end point to retrieve anything that was in the cart prior to logging in
 
@@ -177,33 +172,40 @@ function Account() {
   const handleCreateSubmit = (e) => {
     e.preventDefault();
 
-    //when clicking this the error state must be RESET to null incase it become of the other errors
+    //when clicking this the error state must be RESET to null incase user triggers a different error
     setErrorCreateState(null);
     reduxDispatch(requestCreateNewUser());
+    console.log("data about to submit for creation,",createAccountUserInput);
 
-    console.log('data about to submit for creation',createAccountUserInput)
-    
-    // one beautiful nested then to create user "then" log the user in
+    // one beautiful nested then to create a user and "then" log the user in
     fetch(`/createAccount/${createAccountUserInput.email}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ password: createAccountUserInput.password }),
+      body: JSON.stringify({
+        password: createAccountUserInput.password,
+        givenName: createAccountUserInput.givenName,
+        surName: createAccountUserInput.surName,
+        addressHouseNum: createAccountUserInput.addressHouseNum,
+        addressStreetName: createAccountUserInput.addressStreetName,
+        addressCity: createAccountUserInput.addressCity,
+        addressProvince: createAccountUserInput.addressProvince,
+        addressCountry: createAccountUserInput.addressCountry,
+        addressPostalCode: createAccountUserInput.addressPostalCode,
+      }),
     }).then((resp) => {
       if (resp.status === 200) {
         resp
           .json()
           .then((userData) => {
-            console.log(userData, "IT WORKED ACCOUNT CREATED");
+            // console.log(userData, "IT WORKED ACCOUNT CREATED");
 
             reduxDispatch(createNewUserSuccess());
             return userData;
-            // once server says account is created successfully below we will automatically sign in the user
+            // once server says account is created successfully, below we will automatically sign in the user
           })
           .then((newUserData) => {
-            // console.log(newUserData);
-
             fetch(`/logIn/${newUserData.email}`, {
               method: "POST",
               headers: {
