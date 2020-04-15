@@ -9,7 +9,8 @@ const AddToCartButton = ({ productChosen }) => {
   const orderInfo = useSelector((state) => state.orders.currentCart);
   const [quantity, setQuantity] = useState(1);
   // console.log(loggedInStatus);
-  console.log(quantity,'*******')
+  console.log(quantity,'*******');
+  console.log(typeof(quantity),'type of quant idjejwiodemndjksen');
  
 
   const dispatch = useDispatch();

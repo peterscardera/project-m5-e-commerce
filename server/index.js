@@ -198,7 +198,7 @@ const handleAddItem = (req, res) => {
           .json(`Insufficient quantity of item id ${itemId} in stock.`);
       } else {
         orders[email].currentCart[itemId] = {
-          itemInfo: { itemInfo },
+          itemInfo: itemInfo,  // made a change here
           quantity: (
             parseInt(quantity) +
             parseInt(orders[email].currentCart[itemId].quantity)
@@ -212,8 +212,8 @@ const handleAddItem = (req, res) => {
         .json(`Insufficient quantity of item id ${itemId} in stock.`);
     } else {
       orders[email].currentCart[itemId] = {
-        itemInfo: { itemInfo },
-        quantity: quantity,
+        itemInfo: itemInfo,
+        quantity: parseInt(quantity),
       };
       res.status(200).json(orders[email].currentCart[itemId]);
     }
@@ -257,8 +257,8 @@ const handleRemoveItem = (req, res) => {
       let newQuantity = currentQuantity - parseInt(quantity);
       newQuantity = newQuantity.toString();
       orders[email].currentCart[itemId] = {
-        itemInfo: { itemInfo },
-        quantity: newQuantity,
+        itemInfo: itemInfo,
+        quantity: parseInt(newQuantity),
       };
       res.status(200).json(orders[email].currentCart[itemId]);
     } else {

@@ -18,10 +18,10 @@ const PurchaseModal = () => {
   const escapeListener = (ev) => {
     if (cartStatus === 'idle' && ( ev.key === "Escape" || ev.code === "Escape" || ev.keyCode === 27 )) {
       setPurchaseModalVisible(false);
-      document.removeEventListener("keydown", (ev)=> escapeListener(ev));
     }
     console.log('button test');
   };
+  
   React.useEffect(
     () => {
       document.addEventListener("keydown", (ev)=> escapeListener(ev));
