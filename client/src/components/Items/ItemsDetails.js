@@ -3,9 +3,8 @@ import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-import VendorPage from "./VendorPage"
-import AddToCartButton from "../AddToCart/AddToCartButton"
-
+import VendorPage from "./VendorPage";
+import AddToCartButton from "../AddToCart/AddToCartButton";
 
 //**Reminder itemDetails is not a child of any other component other then APP.js **/
 const ItemDetails = () => {
@@ -81,7 +80,9 @@ const ItemDetails = () => {
                   <div>Body location : {item.body_location}</div>
                   <div>Category : {item.category}</div>
                   <div>Num in stock: {item.numInStock}</div>
-                  <AddToCartButton productChosen={productChosen}>  </AddToCartButton>
+                  <AddToCartButton productChosen={productChosen}>
+                    {" "}
+                  </AddToCartButton>
                 </DetailsContainer>
                 <RelatedProduct>
                   <div>Related Item</div>

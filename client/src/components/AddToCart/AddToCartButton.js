@@ -1,12 +1,17 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addItemToCartSuccess,requestAddItemToCart, addItemToCartError} from "../../actions";
+import {
+  addItemToCartSuccess,
+  requestAddItemToCart,
+  addItemToCartError,
+} from "../../actions";
 
 //**reminder: Button is a child component in ItemDetails */
 
 const AddToCartButton = ({ productChosen }) => {
   const loggedInStatus = useSelector((state) => state.user.user);
   const orderInfo = useSelector((state) => state.orders.currentCart);
+  const inventory = useSelector((state)=> state.gallery.items)
   const [quantity, setQuantity] = useState(1);
 
   const dispatch = useDispatch();
@@ -18,31 +23,45 @@ const AddToCartButton = ({ productChosen }) => {
       dispatch(addItemToCartSuccess(productChosen, quantity));
     } else {
       dispatch(requestAddItemToCart());
-      fetch(`/addItem/${loggedInStatus.email}/${productChosen[0].id}/${quantity}`)
-      .then((res) => {
+      fetch(
+        `/addItem/${loggedInStatus.email}/${productChosen[0].id}/${quantity}`
+      ).then((res) => {
         if (res.status === 200) {
           dispatch(addItemToCartSuccess(productChosen, quantity));
-        } 
-        else if (res.status === 400) {
+        } else if (res.status === 400) {
           dispatch(addItemToCartError());
           // An error has occured
-        } 
-        else if (res.status === 409) {
+        } else if (res.status === 409) {
           dispatch(addItemToCartError());
           // Insufficient quantity available
-        } 
-        else {
+        } else {
           dispatch(addItemToCartError());
           console.log("something went wrong but it shouldnt have ");
         }
-      })
-
-    // fetch/addItem/:email/${productChosen[0].id}/${quantity}`)
-      // to add to cart with a user being sign in we would fetch the /addItem/:email/:itemId/:quantity
+      });
     }
-
-    // console.log(orderInfo, "ORDER");
   };
+
+  console.log(orderInfo, "ORDER INFO");
+  let orderKeys = Object.keys(orderInfo);
+  let foundQuantity = 0;
+
+  orderKeys.forEach((eachKey) => {
+    let tempFound = undefined;
+    if (orderInfo[eachKey]) {
+      tempFound = orderInfo[eachKey].itemInfo.id;
+    }
+    if (tempFound) {
+      foundQuantity = orderInfo[eachKey].quantity;
+    }
+    console.log(tempFound);
+  });
+
+
+   const numInStock = productChosen[0].numInStock
+
+   const  maxNumVar = parseInt(numInStock) - parseInt(foundQuantity);
+
 
   const handleInputChange = (keypress) => {
     if (typeof parseInt(keypress.value) != "number") {
@@ -50,21 +69,9 @@ const AddToCartButton = ({ productChosen }) => {
     } else {
       setQuantity(parseInt(keypress.value));
     }
+    let quantityInCart = 0;
 
-
-    // let currentQuantity = 0;
-
-    // if (orderInfo[productChosen[0].id]) {
-
-    //   currentQuantity = parseInt(orderInfo[productChosen[0].id].quantity);
-    // }
-
-    // if (
-    //   parseInt(keypress.value) + currentQuantity <=
-    //   productChosen[0].numInStock
-    // ) {
-
-    //  }
+  
   };
 
   return (
@@ -75,6 +82,7 @@ const AddToCartButton = ({ productChosen }) => {
           <input
             type="number"
             min="0"
+            max={maxNumVar}
             // placeholder={typeof quantity === "number" ? quantity : "0"}
             onChange={(e) => {
               handleInputChange(e.target);
