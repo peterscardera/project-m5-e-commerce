@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from "react";
+import React, { useEffect, useContext, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   requestGalleryItems,
@@ -30,9 +30,9 @@ function App() {
   const allOfTheItems = useSelector((state) => state.gallery.items);
   const allOfTheVendors = useSelector((state) => state.vendors.items);
   const loggedInUser = useSelector((state) => state.user.user);
-
+  const cartStatus = useSelector((state) => state.orders.status);
   const { cartVisible } = useContext(CartContext);
-  const { purchaseModalVisible } = useContext(PurchaseContext);
+  const { purchaseModalVisible ,setPurchaseModalVisible } = useContext(PurchaseContext);
 
   const dispatch = useDispatch();
 
@@ -66,11 +66,27 @@ function App() {
     //**add Promise all and dispatch that BOTH have been received so they both come in at same time
   }, []);
 
+  const handleEscape = useCallback((ev) => {
+    if (purchaseModalVisible === false && cartStatus === 'idle' && ( ev.key === "Escape" || ev.code === "Escape" || ev.keyCode === 27 )) {
+      setPurchaseModalVisible(false);
+    }
+    console.log('button test');
+  });
+  React.useEffect(
+    () => {
+      document.addEventListener("keydown", (ev)=> handleEscape(ev));
+      return () => {
+        document.removeEventListener("keydown", (ev)=> handleEscape(ev));
+      }
+    },
+    []
+  );
+
   return (
     <React.Fragment>
       <Router>
         <NavBar />
-        {cartVisible && <Cart />}
+        {cartVisible && <Cart right="0px"/>}
         {purchaseModalVisible && <PurchaseModal />}
         <GlobalStyles />
         {allOfTheItems && allOfTheVendors && (

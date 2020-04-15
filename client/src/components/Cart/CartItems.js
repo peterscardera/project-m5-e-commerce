@@ -105,7 +105,7 @@ const CartItems = ({ item, quantity }) => {
         <DeleteButton
         onClick = {(ev) => {handleDelete(ev, 1)}}
         >
-          X
+          x
         </DeleteButton>
         <div>
           <NavLink to={linkAddress}>
@@ -130,7 +130,7 @@ const CartItems = ({ item, quantity }) => {
             >-</StyledButton>
           </PlusMinusNumberWrapper>
           <div>
-            X
+            x
           </div>
           {item.price} 
           <div>
@@ -156,7 +156,9 @@ const DeleteButton = styled.div`
   text-align: center;
   position: absolute;
   right: 0;
-  /* top: 0; */
+  width: 20px;
+  height: 20px;
+  top: 0;
   cursor: pointer;
   background: red;
 `

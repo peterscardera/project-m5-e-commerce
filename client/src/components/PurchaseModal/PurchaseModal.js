@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useCallback } from "react";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 
 import {PurchaseContext} from  '../../purchaseContext';
+import Cart from '../Cart';
 
 // import { 
 //   resetErrorStatus,
@@ -15,27 +16,9 @@ const PurchaseModal = () => {
   const { purchaseModalVisible, setPurchaseModalVisible } = React.useContext(PurchaseContext);
   const currentCart = useSelector((state) => state.orders.currentCart);
   const cartStatus = useSelector((state) => state.orders.status);
-  const handleEscape = (ev) => {
-    if (cartStatus === 'idle' && ( ev.key === "Escape" || ev.code === "Escape" || ev.keyCode === 27 )) {
-      setPurchaseModalVisible(false);
-    }
-    console.log('button test');
-  };
-  
-  React.useEffect(
-    () => {
-      document.addEventListener("keydown", (ev)=> handleEscape(ev));
-      return () => {
-        document.removeEventListener("keydown", (ev)=> handleEscape(ev));
-        console.log('removing????????????????????????')
-      }
-    },
-    []
-  );
 
   
   const closePurchase = () => {
-    //add disabled if state is not idle
     setPurchaseModalVisible(false);
   }
 
@@ -43,13 +26,15 @@ const PurchaseModal = () => {
     <React.Fragment>
       <OuterContainer>
         <InnerContainer>
-          Purchase Modal
           <StyledButton
           disabled = {cartStatus !== 'idle'}
           onClick = {closePurchase}
           >
             X
           </StyledButton>
+          <Cart>
+            
+          </Cart>
         </InnerContainer>
       </OuterContainer>
     </React.Fragment>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -13,9 +13,10 @@ import {
   emptyCartError,
 } from "../../actions";
 
-const Cart = () => {
-  const { clickStatus, cartVisibilityPreHover } = React.useContext(CartContext);
-  const { purchaseModalVisible, setPurchaseModalVisible } = React.useContext(PurchaseContext);
+const Cart = ( right ) => {
+  const { setCartVisible } = useContext(CartContext);
+  const { clickStatus, cartVisibilityPreHover } = useContext(CartContext);
+  const { purchaseModalVisible, setPurchaseModalVisible } = useContext(PurchaseContext);
   const dispatch = useDispatch();
   const currentCart = useSelector((state) => state.orders.currentCart);
   const user = useSelector((state) => state.user.user);
@@ -48,33 +49,7 @@ const Cart = () => {
       sumPrice = `${sumPrice}.00`;
     }
   }
-
-  console.log("totalNumItemstotalNumItemstotalNumItemstotalNumItems", totalNumItems);
-
-  console.log("sumPricesumPricesumPricesumPricesumPricesumPrice", sumPrice);
-
-  // React.useEffect(()=>{
-  //   let keys = Object.keys(grandTotalObject);
-  //   if (keys.length === 0) {
-  //     setGrandTotal(0);
-  //   }
-  //   else {
-  //   let sum = 0;
-  //   keys.forEach((key)=>{
-  //     sum += grandTotalObject[key];
-  //   })
-  //   sum = parseInt(100*sum)/100;
-  //   sum = sum.toString();
-  //   if (sum.charAt(sum.length-2) === "."){
-  //     sum = `${sum}0`;
-  //   }
-  //   else if (sum.charAt(sum.length-3) != "."){
-  //     sum = `${sum}.00`;
-  //   }
-  //   setGrandTotal(sum);
-  //   }
-  // },[grandTotalObject]);
-
+  
   const handleEmpty = () => {
     dispatch(requestEmptyCart());
     if (!user) {
@@ -98,6 +73,7 @@ const Cart = () => {
 
   const handlePurchase = () => {
     console.log("setting modal open");
+    setCartVisible(false);
     setPurchaseModalVisible(true);
   };
 
@@ -113,7 +89,7 @@ const Cart = () => {
 
   return (
     <React.Fragment>
-      <Container clickStatus={clickStatus} hoverStatus={cartVisibilityPreHover}>
+      <Container right = {right.right} clickStatus={clickStatus} hoverStatus={cartVisibilityPreHover}>
       {Object.keys(currentCart).length > 0 && Object.keys(currentCart).map((itemId, index) => {
           return (
             <>
@@ -129,8 +105,8 @@ const Cart = () => {
         <FinalLineOptions>
           {Object.keys(currentCart).length > 0 && (
             <>
-              <button onClick={handlePurchase}> CHECKOUT</button>
-              <button onClick={handleEmpty}>EMPTY CART</button>
+              <StyledButton onClick={handlePurchase}> CHECKOUT</StyledButton>
+              <StyledButton onClick={handleEmpty}>EMPTY CART</StyledButton>
             </>
           )}
         </FinalLineOptions>
@@ -140,6 +116,10 @@ const Cart = () => {
 };
 
 export default Cart;
+
+const StyledButton = styled.button`
+  cursor: pointer;
+`
 
 const Totals = styled.div`
   text-align: right;
@@ -161,7 +141,7 @@ const Container = styled.div`
   /* margin-left: auto; */
   z-index: 5;
   position: absolute;
-  right: 0px;
+  right: ${props => props.right};
   background-color: ${(props) =>
     !props.clickStatus && !props.cartVisibilityPreHover
       ? "rgba(0,255,0,0.5)"
