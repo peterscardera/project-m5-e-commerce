@@ -9,13 +9,13 @@ const AddToCartButton = ({ productChosen }) => {
   const orderInfo = useSelector((state) => state.orders.currentCart);
   const [quantity, setQuantity] = useState(1);
   // console.log(loggedInStatus);
-  console.log(orderInfo)
-  console.log(loggedInStatus)
+  // console.log(orderInfo)
+  // console.log(loggedInStatus)
 
   const disptach = useDispatch();
 
   const addToCardHandler = () => {
-    console.log(productChosen);
+    // console.log(productChosen);
     //see if user is logged in
     if (loggedInStatus === null) {
       disptach(addItemToCartSuccess(productChosen, quantity));

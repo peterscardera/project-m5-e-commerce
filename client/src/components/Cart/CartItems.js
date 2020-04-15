@@ -18,7 +18,7 @@ import styled from "styled-components";
 
 
 
-const CartItems = ({ itemForDispatch, item, quantity, grandTotalObject, setGrandTotalObject }) => {
+const CartItems = ({ itemForDispatch, item, quantity }) => {
   const [subTotal, setSubTotal] = useState(quantity*parseFloat(item.price.substring(1)))
   const stateItem = useSelector((state) => state.orders.currentCart[item.id]);
   let stateQuantity = 0;
@@ -27,13 +27,6 @@ const CartItems = ({ itemForDispatch, item, quantity, grandTotalObject, setGrand
   React.useEffect(()=>{
     let newSubTotal = Math.floor(100*stateQuantity*parseFloat(item.price.substring(1)))/100;
     setSubTotal(newSubTotal);
-    let keys = Object.keys(grandTotalObject);
-    let newGrandTotalObject = {};
-    keys.forEach((key)=>{
-        newGrandTotalObject[key]=grandTotalObject[key];
-    })
-    newGrandTotalObject[item.id]=newSubTotal;
-    setGrandTotalObject(newGrandTotalObject);
   },[stateQuantity]);
   
   const user = useSelector((state) => state.user.user);
@@ -81,7 +74,7 @@ const CartItems = ({ itemForDispatch, item, quantity, grandTotalObject, setGrand
         dispatch(removeItemFromCartSuccess([item], x));
       }
       else {
-        fetch(`/removeItem/${user.email}/${item.id}/1`, {
+        fetch(`/removeItem/${user.email}/${item.id}/${x}`, {
           method: "PUT",
         })
         .then((res) => {
@@ -103,6 +96,7 @@ const CartItems = ({ itemForDispatch, item, quantity, grandTotalObject, setGrand
 
   const handleDelete = (ev) => {
     handleSubtract(ev, stateQuantity);
+    console.log('dnjasdbnjasndjsanjkdnsajnda',stateQuantity);
   };
 
   return (

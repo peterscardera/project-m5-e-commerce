@@ -14,48 +14,58 @@ import {
 } from "../../actions";
 
 const Cart = () => {
-  const [grandTotalObject, setGrandTotalObject] = React.useState({});
-  const [grandTotal, setGrandTotal] = React.useState(0);
-  const [totalItemCount, setTotalItemCount] = React.useState(0);
   const { clickStatus, cartVisibilityPreHover } = React.useContext(CartContext);
   const { purchaseModalVisible, setPurchaseModalVisible } = React.useContext(PurchaseContext);
   const dispatch = useDispatch();
   const currentCart = useSelector((state) => state.orders.currentCart);
   const user = useSelector((state) => state.user.user);
 
-  React.useEffect(()=>{
-    console.log('CHANGE IN CURRENT CART DETECTED, DOES TOTAL ITEM COUNT CHANGE?');
-    let cartKeys = Object.keys(currentCart);
-    let sumCount = 0;
+  let sumPrice = 0;
+  let totalNumItems = 0;
+  const cartKeys = Object.keys(currentCart);
+  if (cartKeys.length === 0) {
+    sumPrice = 0;
+    totalNumItems = 0;
+  }
+  else {
     cartKeys.forEach((id)=>{
-      console.log(currentCart[id].quantity);
-      sumCount += currentCart[id].quantity;
-    })
-    setTotalItemCount(sumCount);
-    console.log('The sum you are looking for:', sumCount);
-  },[currentCart]);
+      totalNumItems += currentCart[id].quantity;
 
-  React.useEffect(()=>{
-    let keys = Object.keys(grandTotalObject);
-    if (keys.length === 0) {
-      setGrandTotal(0);
-    }
-    else {
-    let sum = 0;
-    keys.forEach((key)=>{
-      sum += grandTotalObject[key];
+      // const [subTotal, setSubTotal] = useState(quantity*parseFloat(item.price.substring(1)))
+      // console.log(currentCart[id]);
+      let price = currentCart[id].itemInfo.price;
+      price = price.substring(1);
+      price = parseFloat(price);
+      sumPrice += currentCart[id].quantity * price;
     })
-    sum = parseInt(100*sum)/100;
-    sum = sum.toString();
-    if (sum.charAt(sum.length-2) === "."){
-      sum = `${sum}0`;
-    }
-    else if (sum.charAt(sum.length-3) != "."){
-      sum = `${sum}.00`;
-    }
-    setGrandTotal(sum);
-    }
-  },[grandTotalObject]);
+  }
+  console.log('dnjinijwjmdkoqmwkodmnjweindioqwejkmdijnewi', totalNumItems);
+
+  console.log('dnjinijwjmdkoqmwkodmnjweindioqwejkmdijnewi', sumPrice);
+
+
+
+  // React.useEffect(()=>{
+  //   let keys = Object.keys(grandTotalObject);
+  //   if (keys.length === 0) {
+  //     setGrandTotal(0);
+  //   }
+  //   else {
+  //   let sum = 0;
+  //   keys.forEach((key)=>{
+  //     sum += grandTotalObject[key];
+  //   })
+  //   sum = parseInt(100*sum)/100;
+  //   sum = sum.toString();
+  //   if (sum.charAt(sum.length-2) === "."){
+  //     sum = `${sum}0`;
+  //   }
+  //   else if (sum.charAt(sum.length-3) != "."){
+  //     sum = `${sum}.00`;
+  //   }
+  //   setGrandTotal(sum);
+  //   }
+  // },[grandTotalObject]);
 
   const handleEmpty = () => {
     dispatch(requestEmptyCart());
@@ -89,11 +99,11 @@ const Cart = () => {
 
   let totalText = '';
   
-  if (grandTotal > 0 && totalItemCount === 1) {
-    totalText = `Your cart contains ${totalItemCount} item.  Total : ${grandTotal}`;
+  if (sumPrice > 0 && totalNumItems === 1) {
+    totalText = `Your cart contains ${totalNumItems} item.  Total : ${sumPrice}`;
   }
-  else if (grandTotal > 0 && totalItemCount > 1) {
-    totalText = `Your cart contains ${totalItemCount} items.  Total : ${grandTotal}`;
+  else if (sumPrice > 0 && totalNumItems > 1) {
+    totalText = `Your cart contains ${totalNumItems} items.  Total : ${sumPrice}`;
   }
   else {
     totalText = 'Your cart is empty.'
@@ -113,8 +123,6 @@ const Cart = () => {
                 itemForDispatch = {currentCart[itemId].itemInfo[0]}
                 item = {currentCart[itemId].itemInfo}
                 quantity = {currentCart[itemId].quantity}
-                grandTotalObject = {grandTotalObject}
-                setGrandTotalObject = {setGrandTotalObject}
               ></CartItems>
             </>
           );

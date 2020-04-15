@@ -122,7 +122,13 @@ export default function ordersReducer(state = initialState, action) {
       // console.log('qant in state:', state.currentCart[action.item[0].id].quantity );
       // console.log('action.quantity', parseInt(action.quantity));
       if (parseInt(state.currentCart[action.item[0].id].quantity) === parseInt(action.quantity)) {
-        const newState = { ...state, status: 'idle',};
+        let stateKeys = Object.keys(state);
+        let newState = {};
+        stateKeys.forEach((element)=>{
+          newState[element] = state[element];
+        });
+
+        newState = { ...newState, status: 'idle',};
         delete newState.currentCart[action.item[0].id];
         return {...newState};
       }
