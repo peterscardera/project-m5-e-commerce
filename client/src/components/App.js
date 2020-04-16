@@ -32,7 +32,9 @@ function App() {
   const loggedInUser = useSelector((state) => state.user.user);
   const cartStatus = useSelector((state) => state.orders.status);
   const { cartVisible } = useContext(CartContext);
-  const { purchaseModalVisible ,setPurchaseModalVisible } = useContext(PurchaseContext);
+  const { purchaseModalVisible, setPurchaseModalVisible } = useContext(
+    PurchaseContext
+  );
 
   const dispatch = useDispatch();
 
@@ -67,26 +69,27 @@ function App() {
   }, []);
 
   const handleEscape = useCallback((ev) => {
-    if (purchaseModalVisible === false && cartStatus === 'idle' && ( ev.key === "Escape" || ev.code === "Escape" || ev.keyCode === 27 )) {
+    if (
+      purchaseModalVisible === false &&
+      cartStatus === "idle" &&
+      (ev.key === "Escape" || ev.code === "Escape" || ev.keyCode === 27)
+    ) {
       setPurchaseModalVisible(false);
     }
-    console.log('button test');
+    console.log("button test");
   });
-  React.useEffect(
-    () => {
-      document.addEventListener("keydown", (ev)=> handleEscape(ev));
-      return () => {
-        document.removeEventListener("keydown", (ev)=> handleEscape(ev));
-      }
-    },
-    []
-  );
+  React.useEffect(() => {
+    document.addEventListener("keydown", (ev) => handleEscape(ev));
+    return () => {
+      document.removeEventListener("keydown", (ev) => handleEscape(ev));
+    };
+  }, []);
 
   return (
     <React.Fragment>
       <Router>
         <NavBar />
-        {cartVisible && <Cart right="0px"/>}
+        {cartVisible && <Cart right="0px" />}
         {purchaseModalVisible && <PurchaseModal />}
         <GlobalStyles />
         {allOfTheItems && allOfTheVendors && (
@@ -102,8 +105,8 @@ function App() {
               {/* only if fully loaded because we are not fetching on itemDetails */}
               <ItemDetails />
             </Route>
-            <Route exact path ="/userInformation">
-              <ExistingAccount loggedInUser={loggedInUser} ></ExistingAccount>
+            <Route exact path="/userInformation">
+              <ExistingAccount loggedInUser={loggedInUser}></ExistingAccount>
             </Route>
             <Route exact path="/account">
               <Account />

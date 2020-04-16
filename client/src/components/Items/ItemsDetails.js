@@ -2,15 +2,12 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
-
 import VendorPage from "./VendorPage";
 import AddToCartButton from "../AddToCart/AddToCartButton";
-
 //**Reminder itemDetails is not a child of any other component other then APP.js **/
 const ItemDetails = () => {
   const allOfTheItems = useSelector((state) => state.gallery.items);
   const allOfTheVendors = useSelector((state) => state.vendors.items);
-
   //setting the selected product into its own state. So when the user changes the ulr on top the page gets rerender or
   // if we wouldneed to change a state and re-render
   const [productChosen, setProductChosen] = useState(null);
@@ -19,7 +16,6 @@ const ItemDetails = () => {
   // console.log(productChosen);
   const { itemId } = useParams();
   // console.log(itemId);
-
   //-----------useEffect to find the object of the selected item based on the params id-----------
   useEffect(() => {
     // *NO NEED FOR AN 'IF' AS I CONDITIONALLY RENDERED THIS PAGE IN APPs
@@ -28,7 +24,6 @@ const ItemDetails = () => {
     });
     setProductChosen([selectedItem]);
   }, [itemId]); //**if i add the use params the conditional render doesnt work as state needs to change**
-
   //-----------useEffect to find company associated with the item selected-----------
   useEffect(() => {
     if (productChosen !== null) {
@@ -42,7 +37,6 @@ const ItemDetails = () => {
       return;
     }
   }, [productChosen]); //retriggered when product changes
-
   return (
     <React.Fragment>
       {associatedComp != null &&
@@ -67,14 +61,12 @@ const ItemDetails = () => {
             <React.Fragment>
               <GridContainer>
                 <TopRow>
-                  <div> {item.name}</div>
+                  <h1> {item.name}</h1>
                   <div>Modal Number: {item.id} </div>
                 </TopRow>
-
                 <ImgContainer>
                   <img src={item.imageSrc} />
                 </ImgContainer>
-
                 <DetailsContainer>
                   <div>{item.price}</div>
                   <div>Body location : {item.body_location}</div>
@@ -97,10 +89,10 @@ const ItemDetails = () => {
   );
 };
 
-export default ItemDetails;
-
 const GridContainer = styled.div`
   display: grid;
+  background: white;
+  min-height: 100vh;
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: repeat(4, minmax(200px, 1fr));
   /* gap: 1px 1px; */
@@ -109,7 +101,6 @@ const GridContainer = styled.div`
     "Imgcontainer Imgcontainer DetailsContainer DetailsContainer"
     "Imgcontainer Imgcontainer DetailsContainer DetailsContainer"
     "Relatedproducts Relatedproducts Relatedproducts Relatedproducts";
-
   @media only screen and (max-width: 375px) {
     grid-template-areas:
       "Toprow Toprow Toprow Toprow"
@@ -118,32 +109,50 @@ const GridContainer = styled.div`
       "Relatedproducts Relatedproducts Relatedproducts Relatedproducts";
   }
 `;
-
 const TopRow = styled.div`
-  background: red;
+  background: black;
+  color: white;
   grid-area: Toprow;
   display: flex;
   justify-content: space-around;
   align-items: center;
+  padding: 50px;
 `;
-
 const ImgContainer = styled.div`
   grid-area: Imgcontainer;
-  background: grey;
+  background: white;
   display: flex;
   justify-content: center;
   align-items: center;
 `;
-
 const DetailsContainer = styled.div`
   grid-area: DetailsContainer;
-  background: pink;
+  background: white;
+  padding: 0px 100px 0px 0px;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  button {
+    background: black;
+    color: white;
+    min-width: 100px;
+    min-height: 45px;
+    font-size: 18px;
+    padding: 5px;
+    margin-top: 15px;
+  }
+  input {
+    padding: 10px;
+    font-size: 14px;
+    text-align: center;
+  }
 `;
-
 const RelatedProduct = styled.div`
-  background: purple;
+  background: white;
+  color: black;
+  display: flex;
+  justify-content: space-around;
   grid-area: Relatedproducts;
 `;
+
+export default ItemDetails;

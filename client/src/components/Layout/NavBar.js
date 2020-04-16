@@ -2,14 +2,19 @@ import React, { useContext, useState, useEffect } from "react";
 import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-
 import ExistingAccount from "../Account/ExistingAccount";
+<<<<<<< Updated upstream
 import { 
   logUserOut,
   emptyCartSuccess
 } from "../../actions";
 import {CartContext} from  '../../cartContext';
 
+=======
+import { logUserOut, emptyCartSuccess } from "../../actions";
+import { CartContext } from "../../cartContext";
+import supermarket from "./supermarket.png";
+>>>>>>> Stashed changes
 
 const NavBar = () => {
   const { cartVisible, setCartVisible } = useContext(CartContext);
@@ -20,8 +25,12 @@ const NavBar = () => {
   const [accountTitle, setAccountTitle] = useState("MY ACCOUNT");
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.user);
+<<<<<<< Updated upstream
 
   useEffect(()=>{
+=======
+  useEffect(() => {
+>>>>>>> Stashed changes
     // if (user) console.log(user.givenName);
     if (user && user.givenName) {
       let name = user.givenName;
@@ -34,13 +43,15 @@ const NavBar = () => {
   }, [user]);
   const currentCart = useSelector((state) => state.orders.currentCart);
   let cartNum = Object.keys(currentCart).length;
-
   const handleSignOut = () => {
     console.log("signing out...");
     dispatch(logUserOut());
     dispatch(emptyCartSuccess());
   };
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
   return (
     <>
       <header>
@@ -48,6 +59,7 @@ const NavBar = () => {
           <NavLink to="/">HOME</NavLink>
           <NavLink to="/shop">SHOP</NavLink>
           {user === null ? (
+<<<<<<< Updated upstream
               <NavLink to="/account">
                 ACCOUNT
               </NavLink>
@@ -57,37 +69,51 @@ const NavBar = () => {
            
               </NavLink>
             )}
+=======
+            <NavLink to="/account">ACCOUNT</NavLink>
+          ) : (
+            <NavLink to="/userInformation">{accountTitle}</NavLink>
+          )}
+>>>>>>> Stashed changes
           <NavLink to="/account">
             {user === null ? (
               "SIGN IN"
             ) : (
+<<<<<<< Updated upstream
               <button
               onClick = {handleSignOut}
               >
                 "SIGN OUT"
+=======
+              <button onClick={handleSignOut} class="signOutBtn">
+                SIGN OUT
+>>>>>>> Stashed changes
               </button>
             )}
           </NavLink>
-          <CartButton
-            onMouseEnter={() => {
-              setCartVisibilityPreHover(cartVisible);
-              setCartVisible(true);
-            }}
-            onMouseLeave={() => {
-              if (cartVisibilityPreHover && clickStatus) setCartVisible(true);
-              else if (cartVisibilityPreHover && !clickStatus)
-                setCartVisible(false);
-              else if (!cartVisibilityPreHover && clickStatus)
+          <CartBtnWrapper>
+            <img src={supermarket} alt="cart button" />
+            <CartButton
+              onMouseEnter={() => {
+                setCartVisibilityPreHover(cartVisible);
                 setCartVisible(true);
-              else if (!cartVisibilityPreHover && !clickStatus)
-                setCartVisible(false);
-            }}
-            onClick={() => {
-              setClickStatus(!clickStatus);
-            }}
-          >
-            {cartNum > 0 ? `CART (${cartNum})` : "CART"}
-          </CartButton>
+              }}
+              onMouseLeave={() => {
+                if (cartVisibilityPreHover && clickStatus) setCartVisible(true);
+                else if (cartVisibilityPreHover && !clickStatus)
+                  setCartVisible(false);
+                else if (!cartVisibilityPreHover && clickStatus)
+                  setCartVisible(true);
+                else if (!cartVisibilityPreHover && !clickStatus)
+                  setCartVisible(false);
+              }}
+              onClick={() => {
+                setClickStatus(!clickStatus);
+              }}
+            >
+              {cartNum > 0 ? `CART (${cartNum})` : "CART"}
+            </CartButton>
+          </CartBtnWrapper>
         </NavWrapper>
       </header>
     </>
@@ -96,6 +122,7 @@ const NavBar = () => {
 
 // once you click on account, we can have our sign in / create account, and even a wishlist! //
 // hover menu over "shop" - shop all, shop categories
+
 const NavWrapper = styled.nav`
   background: lightgrey;
   margin-top: 10px;
@@ -121,18 +148,40 @@ const NavWrapper = styled.nav`
     //text-decoration: underline;
     border-bottom: 2px solid white;
   }
+  img {
+    width: auto;
+    height: 25px;
+    margin-top: 10px;
+  }
+  .signOutBtn {
+    margin: -10px;
+    padding: 5px;
+    border: none;
+    background: none;
+    min-width: 100px;
+    min-height: 45px;
+    font-size: 20px;
+    padding: 5px;
+  }
 `;
+
+const CartBtnWrapper = styled.div``;
+
 const CartButton = styled.button`
-  background: black;
-  color: white;
+  color: black;
+  padding: 0;
+  border: none;
+  background: none;
   min-width: 100px;
   min-height: 45px;
   font-size: 18px;
   padding: 5px;
   margin-top: -5px;
   &:hover {
-    background-color: rgba(0, 0, 0, 0.75);
+    color: white;
+    border-bottom: 2px solid white;
     cursor: pointer;
   }
 `;
+
 export default NavBar;

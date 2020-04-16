@@ -155,22 +155,21 @@ const Wrapper = styled.div`
     opacity: 0.3;
   }
   .home-item-button {
-    // there's an issue here:
-    height: 150px;
+    padding: 20px;
     width: 150px;
     text-align: center;
     position: absolute;
     left: 50%;
-    margin-left: -25px;
+    margin-left: -20%;
   }
   .home-item-button a {
-    border-radius: 50%;
-    -webkit-border-radius: 50%;
     background: black;
     text-transform: uppercase;
     font-family: "Oswald", sans-serif;
     color: #ffffff;
-    font-size: 1.2em;
+    font-size: 18px;
+    padding-top: 7px;
+    padding-bottom: 7px;
     -webkit-transition: all 0.2s ease-in 0s;
     -moz-transition: all 0.2s ease-in 0s;
     -o-transition: all 0.2s ease-in 0s;

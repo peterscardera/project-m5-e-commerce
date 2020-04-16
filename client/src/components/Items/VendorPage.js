@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-
 //****Reminder: VendorPage is a child component of the ItemsDetails page**
 const VendorPage = ({ name, itsWebSite, itsCountry, itsId }) => {
   return (
@@ -13,13 +12,18 @@ const VendorPage = ({ name, itsWebSite, itsCountry, itsId }) => {
   );
 };
 
-export default VendorPage;
-
 const StyledAnchor = styled.a`
   text-decoration: none;
-  color: black;
-
+  color: white;
+  div {
+    padding-left: 25px;
+    padding-top: 10px;
+    font-style: italic;
+    background-color: black;
+  }
   &:hover {
     text-decoration: underline;
   }
 `;
+
+export default VendorPage;

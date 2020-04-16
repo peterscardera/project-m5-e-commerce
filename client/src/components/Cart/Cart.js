@@ -13,10 +13,12 @@ import {
   emptyCartError,
 } from "../../actions";
 
-const Cart = ( right ) => {
+const Cart = (right) => {
   const { setCartVisible } = useContext(CartContext);
   const { clickStatus, cartVisibilityPreHover } = useContext(CartContext);
-  const { purchaseModalVisible, setPurchaseModalVisible } = useContext(PurchaseContext);
+  const { purchaseModalVisible, setPurchaseModalVisible } = useContext(
+    PurchaseContext
+  );
   const dispatch = useDispatch();
   const currentCart = useSelector((state) => state.orders.currentCart);
   const user = useSelector((state) => state.user.user);
@@ -40,16 +42,15 @@ const Cart = ( right ) => {
         sumPrice += currentCart[id].quantity * price;
       }
     });
-    sumPrice = parseInt(100*sumPrice)/100;
+    sumPrice = parseInt(100 * sumPrice) / 100;
     sumPrice = sumPrice.toString();
-    if (sumPrice.charAt(sumPrice.length-2) === "."){
+    if (sumPrice.charAt(sumPrice.length - 2) === ".") {
       sumPrice = `${sumPrice}0`;
-    }
-    else if (sumPrice.charAt(sumPrice.length-3) != "."){
+    } else if (sumPrice.charAt(sumPrice.length - 3) != ".") {
       sumPrice = `${sumPrice}.00`;
     }
   }
-  
+
   const handleEmpty = () => {
     dispatch(requestEmptyCart());
     if (!user) {
@@ -89,18 +90,23 @@ const Cart = ( right ) => {
 
   return (
     <React.Fragment>
-      <Container right = {right.right} clickStatus={clickStatus} hoverStatus={cartVisibilityPreHover}>
-      {Object.keys(currentCart).length > 0 && Object.keys(currentCart).map((itemId, index) => {
-          return (
-            <>
-              <CartItems
-                key={itemId}
-                item={currentCart[itemId].itemInfo}
-                quantity={currentCart[itemId].quantity}
-              ></CartItems>
-            </>
-          );
-        })}
+      <Container
+        right={right.right}
+        clickStatus={clickStatus}
+        hoverStatus={cartVisibilityPreHover}
+      >
+        {Object.keys(currentCart).length > 0 &&
+          Object.keys(currentCart).map((itemId, index) => {
+            return (
+              <>
+                <CartItems
+                  key={itemId}
+                  item={currentCart[itemId].itemInfo}
+                  quantity={currentCart[itemId].quantity}
+                ></CartItems>
+              </>
+            );
+          })}
         <Totals>{totalText}</Totals>
         <FinalLineOptions>
           {Object.keys(currentCart).length > 0 && (
@@ -115,12 +121,9 @@ const Cart = ( right ) => {
   );
 };
 
-export default Cart;
-
 const StyledButton = styled.button`
   cursor: pointer;
-`
-
+`;
 const Totals = styled.div`
   text-align: right;
 `;
@@ -131,19 +134,20 @@ const FinalLineOptions = styled.div`
   padding-left: 48.75%;
 `;
 const Container = styled.div`
-  opacity: "0.5";
   height: fill;
   /* change to flexible width */
   width: 400px;
   border: ${(props) =>
     props.clickStatus ? "1px solid green" : "1px solid black"};
-  padding: 10px;
+  padding: 25px;
   /* margin-left: auto; */
   z-index: 5;
   position: absolute;
-  right: ${props => props.right};
+  right: ${(props) => props.right};
   background-color: ${(props) =>
     !props.clickStatus && !props.cartVisibilityPreHover
-      ? "rgba(0,255,0,0.5)"
-      : "rgba(0,255,0,1)"};
+      ? "rgb(255,255,255)"
+      : "rgb(255,255,255)"};
 `;
+
+export default Cart;
