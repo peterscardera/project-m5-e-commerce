@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addItemToCartSuccess,
@@ -10,15 +11,18 @@ import {
 //**reminder: Button is a child component in ItemDetails */
 
 const AddToCartButton = ({ productChosen }) => {
+
+  const { itemId } = useParams();
+
   const loggedInStatus = useSelector((state) => state.user.user);
   const orderInfo = useSelector((state) => state.orders.currentCart);
   const inventory = useSelector((state) => state.gallery.items);
   const [quantity, setQuantity] = useState(1);
-  // console.log(loggedInStatus);
-  // console.log(quantity, "*******");
-
+  const [ tempFound, setTempFound] = useState(null)
+  const [foundQuantity, setFoundQuantity] = useState(0);
+  
   const dispatch = useDispatch();
-
+  
   const addToCardHandler = () => {
     // console.log(productChosen);
     //see if user is logged in
@@ -28,39 +32,64 @@ const AddToCartButton = ({ productChosen }) => {
       dispatch(requestAddItemToCart());
       fetch(
         `/addItem/${loggedInStatus.email}/${productChosen[0].id}/${quantity}`
-      ).then((res) => {
-        if (res.status === 200) {
-          dispatch(addItemToCartSuccess(productChosen, quantity));
-        } else if (res.status === 400) {
-          dispatch(addItemToCartError());
-          // An error has occured
-        } else if (res.status === 409) {
-          dispatch(addItemToCartError());
-          // Insufficient quantity available
-        } else {
-          dispatch(addItemToCartError());
-          console.log("something went wrong but it shouldnt have ");
+        ).then((res) => {
+          if (res.status === 200) {
+            dispatch(addItemToCartSuccess(productChosen, quantity));
+          } else if (res.status === 400) {
+            dispatch(addItemToCartError());
+            // An error has occured
+          } else if (res.status === 409) {
+            dispatch(addItemToCartError());
+            // Insufficient quantity available
+          } else {
+            dispatch(addItemToCartError());
+            console.log("something went wrong but it shouldnt have ");
+          }
+        });
+      }
+    };
+    
+    useEffect(() => {
+      console.log(orderInfo, "ORDER INFO");
+      let orderKeys = Object.keys(orderInfo);
+      orderKeys.forEach((eachKey) => {
+        
+        if (orderInfo[eachKey]) {
+          
+          setTempFound(orderInfo[eachKey].itemInfo.id)
+          console.log(tempFound)
         }
+        
+        if (tempFound) {
+          setFoundQuantity(orderInfo[eachKey].quantity);
+        }
+        // console.log(tempFound);
       });
-    }
-  };
-
-  // console.log(orderInfo, "ORDER INFO");
-  let orderKeys = Object.keys(orderInfo);
-  let foundQuantity = 0;
-
-  orderKeys.forEach((eachKey) => {
-    let tempFound = undefined;
-    if (orderInfo[eachKey]) {
-      tempFound = orderInfo[eachKey].itemInfo.id;
-    }
-    if (tempFound) {
-      foundQuantity = orderInfo[eachKey].quantity;
-    }
-    // console.log(tempFound);
-  });
+    },[itemId]);
+    
+    
+    useEffect(() => {
+      console.log(orderInfo, "ORDER INFO");
+      let orderKeys = Object.keys(orderInfo);
+      orderKeys.forEach((eachKey) => {
+        
+        if (orderInfo[eachKey]) {
+          
+          setTempFound(orderInfo[eachKey].itemInfo.id)
+          console.log(tempFound)
+        }
+        
+        if (tempFound) {
+          setFoundQuantity(orderInfo[eachKey].quantity);
+        }
+        // console.log(tempFound);
+      });
+    },[orderInfo]);
+    
+    console.log(foundQuantity, "foundQuantity in cart");
 
   const numInStock = productChosen[0].numInStock;
+  console.log(numInStock, "NUMINSTOCK")
 
   const maxNumVar = parseInt(numInStock) - parseInt(foundQuantity);
 
@@ -81,7 +110,6 @@ const AddToCartButton = ({ productChosen }) => {
             disabled={numInStock < quantity + foundQuantity}
             onClick={addToCardHandler}
           >
-            {" "}
             {numInStock < quantity + foundQuantity
               ? "Request exceeds inventory"
               : "Add to Cart"}

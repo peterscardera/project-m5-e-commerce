@@ -35,18 +35,19 @@ const Shop = () => {
     setCurrentPage(individualPageNumber);
   };
 
-const filterHandler = () => {
-  console.log('i got fitlered')
-}
-
-
+  const filterHandler = () => {
+    console.log("i got fitlered");
+  };
 
   return (
     <React.Fragment>
-      
-        <FilterBar filterHandler={filterHandler} allOfTheItems={allOfTheItems} setItemsPerPage={setItemsPerPage} />
-        
+      <FilterBar
+        filterHandler={filterHandler}
+        allOfTheItems={allOfTheItems}
+        setItemsPerPage={setItemsPerPage}
+      />
 
+      <Wrapper>
         <ListingGrid itemList={currentPosts} loading={loading}></ListingGrid>
         <NextPage
           currentPage={currentPage}
@@ -54,9 +55,11 @@ const filterHandler = () => {
           itemsPerPage={itemsPerPage}
           loadSpecificPageNumber={loadSpecificPageNumber}
         ></NextPage>
- 
+      </Wrapper>
     </React.Fragment>
   );
 };
 
 export default Shop;
+
+const Wrapper = styled.div``;
