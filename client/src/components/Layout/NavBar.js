@@ -16,8 +16,7 @@ const NavBar = () => {
   const [accountTitle, setAccountTitle] = useState("MY ACCOUNT");
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.user);
-
-  useEffect(()=>{
+  useEffect(() => {
     // if (user) console.log(user.givenName);
     if (user && user.givenName) {
       let name = user.givenName;
@@ -42,20 +41,15 @@ const NavBar = () => {
           <NavLink to="/">HOME</NavLink>
           <NavLink to="/shop">SHOP</NavLink>
           {user === null ? (
-              <NavLink to="/account">
-                ACCOUNT
-              </NavLink>
-            ) : (
-              <NavLink to="/userInformation">
-                {accountTitle}
-           
-              </NavLink>
-            )}
+            <NavLink to="/account">ACCOUNT</NavLink>
+          ) : (
+            <NavLink to="/userInformation">{accountTitle}</NavLink>
+          )}
           <NavLink to="/account">
             {user === null ? (
               "SIGN IN"
             ) : (
-              <button onClick={handleSignOut} class="signOutBtn">
+              <button class="signOutBtn" onClick={handleSignOut}>
                 SIGN OUT
               </button>
             )}
