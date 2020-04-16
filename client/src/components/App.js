@@ -86,7 +86,7 @@ function App() {
       <Router>
         <NavBar />
         {cartVisible && <Cart right="0px" position="absolute" />}
-        {purchaseModalVisible && <PurchaseModal />}
+        {purchaseModalVisible ? <PurchaseModal /> : null}
         <GlobalStyles />
         {allOfTheItems && allOfTheVendors && (
           <Switch>

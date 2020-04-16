@@ -151,27 +151,6 @@ const Forms = ({
                   </option>
                 </select>
               </label>
-              <label htmlFor="postalCode">
-                POSTAL / ZIP CODE
-                <input
-                  type="text"
-                  name="addressPostalCode"
-                  onChange={handleCreate}
-                  value={createAccountUserInput.addressPostalCode}
-                />
-              </label>
-              <label htmlFor="city">
-                CITY
-                <input
-                  type="text"
-                  name="addressCity"
-                  value={createAccountUserInput.addressCity}
-                  onChange={handleCreate}
-                />
-              </label>
-
-              {/* {createAccountUserInput.addressCountry !== "Choose a country" &&     } */}
-
               {createAccountUserInput.addressCountry === "Canada" &&
               createAccountUserInput.addressCountry !== "Choose a country" ? (
                 <label htmlFor="province">
@@ -265,6 +244,41 @@ const Forms = ({
               ) : (
                 ""
               )}
+              {createAccountUserInput.addressCountry === "Canada" &&
+              createAccountUserInput.addressCountry !== "Choose a country" ? (
+                <label htmlFor="postalCode">
+                  POSTAL CODE
+                  <input
+                    type="text"
+                    name="addressPostalCode"
+                    onChange={handleCreate}
+                    value={createAccountUserInput.addressPostalCode}
+                  />
+                </label>
+              ) : createAccountUserInput.addressCountry === "United-States" &&
+                createAccountUserInput.addressCountry !== "Choose a country" ? (
+                <label htmlFor="postalCode">
+                  ZIP CODE
+                  <input
+                    type="text"
+                    name="addressPostalCode"
+                    onChange={handleCreate}
+                    value={createAccountUserInput.addressPostalCode}
+                  />
+                </label>
+              ) : (
+                ""
+              )}
+
+              <label htmlFor="city">
+                CITY
+                <input
+                  type="text"
+                  name="addressCity"
+                  value={createAccountUserInput.addressCity}
+                  onChange={handleCreate}
+                />
+              </label>
 
               <input class="submitBtn" type="submit" />
               <input
