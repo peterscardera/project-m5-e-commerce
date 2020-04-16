@@ -1,10 +1,8 @@
-// sign in to existing account
-// create new account
-
 import React, { useState, useReducer } from "react";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import styled from "styled-components";
+
+import Forms from "./Forms";
 
 import ExistingAccount from "./ExistingAccount";
 import {
@@ -78,7 +76,7 @@ function Account() {
     });
   };
 
-  //-------------------------handler for when user clicked login---------------------------------
+  // //-------------------------handler for when user clicked login---------------------------------
   const submitHandlerLogIn = (e) => {
     e.preventDefault();
 
@@ -112,7 +110,7 @@ function Account() {
       }
     });
   };
-  //------------------------------Handler to retrieve previous cart and order history of a logged in user---
+  // //------------------------------Handler to retrieve previous cart and order history of a logged in user---
 
   const getPastInfo = (incomingUserData) => {
     //1- get the current cart and past cart
@@ -135,28 +133,28 @@ function Account() {
     });
   };
 
-  // 2- merge existing cart to cart user had before closing tab or logging out
+  // // 2- merge existing cart to cart user had before closing tab or logging out
 
-  // fetch(`/mergeCartGetOrders/incomingUserData.email`).then((responseTwo) => {
-  //     if (responseTwo.status === 200) {
-  //       responseTwo.json().then((jsonRespTwo) => {
-  //        console.log(jsonRespTwo)
-  //       });
-  //     } else if (response.status === 400) {
-  //       reduxDispatch(receiveOrdersError())
-  //       console.log("user doesnt have existing orders which is fine");
-  //     } else {
-  //       console.log("server isnt happy")
-  //     }
-  //   });
+  // // fetch(`/mergeCartGetOrders/incomingUserData.email`).then((responseTwo) => {
+  // //     if (responseTwo.status === 200) {
+  // //       responseTwo.json().then((jsonRespTwo) => {
+  // //        console.log(jsonRespTwo)
+  // //       });
+  // //     } else if (response.status === 400) {
+  // //       reduxDispatch(receiveOrdersError())
+  // //       console.log("user doesnt have existing orders which is fine");
+  // //     } else {
+  // //       console.log("server isnt happy")
+  // //     }
+  // //   });
 
-  //handler for hitting the end point to retrieve anything that was in the cart prior to logging in
+  // //handler for hitting the end point to retrieve anything that was in the cart prior to logging in
 
-  //requestOrders redux dispatch
-  //'/getOrders/userData.email'
-  //receiveOrdersSuccess redux dispatch or receiveOrdersError
+  // //requestOrders redux dispatch
+  // //'/getOrders/userData.email'
+  // //receiveOrdersSuccess redux dispatch or receiveOrdersError
 
-  // '/mergeCartGetOrders/:email'
+  // // '/mergeCartGetOrders/:email'
 
   //----------------------------------Handler for creating a new account----------------------------
 
@@ -175,7 +173,7 @@ function Account() {
     //when clicking this the error state must be RESET to null incase user triggers a different error
     setErrorCreateState(null);
     reduxDispatch(requestCreateNewUser());
-    console.log("data about to submit for creation,",createAccountUserInput);
+    console.log("data about to submit for creation,", createAccountUserInput);
 
     // one beautiful nested then to create a user and "then" log the user in
     fetch(`/createAccount/${createAccountUserInput.email}`, {
@@ -252,228 +250,23 @@ function Account() {
   } else {
     return (
       <>
-        {!createNew ? (
-          <Wrapper>
-            <Login>
-              {errorStateLogIn !== null && (
-                <StyledError>{errorStateLogIn}</StyledError>
-              )}
-              <span> LOGIN </span>
-              <form onSubmit={submitHandlerLogIn}>
-                <label htmlFor="email">
-                  EMAIL:
-                  <input
-                    required
-                    type="text"
-                    name="email"
-                    value={state.email}
-                    onChange={handleLoginInfo("email")}
-                  />
-                </label>
-
-                <label htmlFor="password">
-                  PASSWORD:
-                  <input
-                    required
-                    type="password"
-                    name="password"
-                    value={state.password}
-                    onChange={handleLoginInfo("password")}
-                  />
-                </label>
-                <input class="submitBtn" type="submit" value="LOGIN" />
-              </form>
-              {/* once login, redirect to userName endpoint */}
-            </Login>
-            <Create>
-              DON'T HAVE AN ACCOUNT WITH US?
-              <form>
-                <label>
-                  <div />
-                  TRACK YOUR CURRENT ORDER, SEE YOUR ORDER HISTORY,
-                  <div />
-                  AND SAVE YOUR SHOPPING CART.
-                </label>
-                <input
-                  onClick={handleClick}
-                  class="submitBtn"
-                  type="submit"
-                  value="CREATE ACCOUNT HERE"
-                />
-              </form>
-            </Create>
-          </Wrapper>
-        ) : (
-          <Wrapper>
-            <FormContainer>
-              {errorCreateState !== null && (
-                <StyledError> {errorCreateState} </StyledError>
-              )}
-
-              <span>CREATE ACCOUNT</span>
-              <form onSubmit={handleCreateSubmit}>
-                <label htmlFor="email">
-                  EMAIL
-                  <input
-                    required
-                    type="email"
-                    name="email"
-                    value={createAccountUserInput.email}
-                    onChange={handleCreate}
-                  />
-                </label>
-
-                <label htmlFor="password">
-                  PASSWORD
-                  <input
-                    required
-                    type="password"
-                    name="password"
-                    value={createAccountUserInput.password}
-                    onChange={handleCreate}
-                  />
-                </label>
-                <label htmlFor="confirm-password">
-                  CONFIRM PASSWORD
-                  <input required type="password" name="confirm-password" />
-                </label>
-                <label htmlFor="givenName">
-                  FIRST NAME
-                  <input
-                    type="text"
-                    name="givenName"
-                    value={createAccountUserInput.givenName}
-                    onChange={handleCreate}
-                  />
-                </label>
-                <label htmlFor="surName">
-                  LAST NAME
-                  <input
-                    type="text"
-                    name="surName"
-                    value={createAccountUserInput.surName}
-                    onChange={handleCreate}
-                  />
-                </label>
-                <label htmlFor="addressHouseNum">
-                  HOUSE NUMBER
-                  <input
-                    type="text"
-                    name="addressHouseNum"
-                    value={createAccountUserInput.addressHouseNum}
-                    onChange={handleCreate}
-                  />
-                </label>
-                <label htmlFor="streetName">
-                  STREET NAME
-                  <input
-                    type="text"
-                    name="addressStreetName"
-                    onChange={handleCreate}
-                    value={createAccountUserInput.addressStreetName}
-                  />
-                </label>
-                <label htmlFor="postalCode">
-                  POSTAL / ZIP CODE
-                  <input
-                    type="text"
-                    name="addressPostalCode"
-                    onChange={handleCreate}
-                    value={createAccountUserInput.addressPostalCode}
-                  />
-                </label>
-                <label htmlFor="city">
-                  CITY
-                  <input
-                    type="text"
-                    name="addressCity"
-                    value={createAccountUserInput.addressCity}
-                    onChange={handleCreate}
-                  />
-                </label>
-                <label htmlFor="province">
-                  PROVINCE / STATE
-                  <input
-                    type="text"
-                    name="addressProvince"
-                    value={createAccountUserInput.addressProvince}
-                    onChange={handleCreate}
-                  />
-                </label>
-                <label htmlFor="country">
-                  COUNTRY
-                  <input
-                    type="text"
-                    name="addressCountry"
-                    value={createAccountUserInput.addressCountry}
-                    onChange={handleCreate}
-                  />
-                </label>
-                <input class="submitBtn" type="submit" />
-                <input
-                  onClick={() => {
-                    handleClick();
-                    setErrorStateLogIn(null);
-                    setErrorCreateState(null);
-                  }}
-                  class="submitBtn"
-                  type="submit"
-                  value="BACK TO LOGIN"
-                  //we need to reset the error state
-                />
-              </form>
-            </FormContainer>
-          </Wrapper>
-        )}
+        <Forms
+          createNew={createNew}
+          errorStateLogIn={errorStateLogIn}
+          submitHandlerLogIn={submitHandlerLogIn}
+          state={state}
+          handleLoginInfo={handleLoginInfo}
+          handleClick={handleClick}
+          errorCreateState={errorCreateState}
+          handleCreateSubmit={handleCreateSubmit}
+          createAccountUserInput={createAccountUserInput}
+          handleCreate={handleCreate}
+          setErrorCreateState={setErrorCreateState}
+          setErrorStateLogIn={setErrorStateLogIn}
+        ></Forms>
       </>
     );
   }
 }
-
-const Wrapper = styled.div`
-  justify-content: center;
-  align-content: center;
-  display: flex;
-  flex-wrap: wrap;
-  form {
-    display: flex;
-    flex-direction: column;
-    max-width: 500px;
-  }
-  label {
-    font-size: 14px;
-    margin: 3px 0;
-  }
-  input {
-    width: 100%;
-  }
-  .submitBtn {
-    background-color: black;
-    color: white;
-    padding: 10px;
-    max-width: 150px;
-    margin: 10px auto;
-  }
-  .submitBtn:hover {
-    background-color: rgba(0, 0, 0, 0.75);
-    cursor: pointer;
-  }
-`;
-
-const Login = styled.div`
-  min-width: 500px;
-  margin: 50px;
-`;
-
-const Create = styled.div`
-  min-width: 500px;
-  margin: 100px;
-`;
-
-const FormContainer = styled.div``;
-
-const StyledError = styled.div`
-  color: red;
-`;
 
 export default Account;

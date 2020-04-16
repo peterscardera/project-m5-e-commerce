@@ -45,7 +45,7 @@ const handleCreateAccount = (req, res) => {
   else if (id < 100) id = `00${id}`;
   else if (id < 1000) id = `0${id}`;
   else id = `${id}`;
-  // console.log(req.params);
+  console.log(req.params);
   let password = req.body.password;
   let userName = req.body.userName;
   let givenName = req.body.givenName;

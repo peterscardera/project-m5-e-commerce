@@ -13,6 +13,8 @@ const AddToCartButton = ({ productChosen }) => {
   const orderInfo = useSelector((state) => state.orders.currentCart);
   const inventory = useSelector((state)=> state.gallery.items)
   const [quantity, setQuantity] = useState(1);
+  // console.log(loggedInStatus);
+  console.log(quantity, "*******");
 
   const dispatch = useDispatch();
 
