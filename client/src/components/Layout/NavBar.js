@@ -3,18 +3,9 @@ import styled from "styled-components";
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import ExistingAccount from "../Account/ExistingAccount";
-<<<<<<< Updated upstream
-import { 
-  logUserOut,
-  emptyCartSuccess
-} from "../../actions";
-import {CartContext} from  '../../cartContext';
-
-=======
 import { logUserOut, emptyCartSuccess } from "../../actions";
 import { CartContext } from "../../cartContext";
 import supermarket from "./supermarket.png";
->>>>>>> Stashed changes
 
 const NavBar = () => {
   const { cartVisible, setCartVisible } = useContext(CartContext);
@@ -25,12 +16,8 @@ const NavBar = () => {
   const [accountTitle, setAccountTitle] = useState("MY ACCOUNT");
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.user);
-<<<<<<< Updated upstream
 
   useEffect(()=>{
-=======
-  useEffect(() => {
->>>>>>> Stashed changes
     // if (user) console.log(user.givenName);
     if (user && user.givenName) {
       let name = user.givenName;
@@ -48,10 +35,6 @@ const NavBar = () => {
     dispatch(logUserOut());
     dispatch(emptyCartSuccess());
   };
-<<<<<<< Updated upstream
-
-=======
->>>>>>> Stashed changes
   return (
     <>
       <header>
@@ -59,7 +42,6 @@ const NavBar = () => {
           <NavLink to="/">HOME</NavLink>
           <NavLink to="/shop">SHOP</NavLink>
           {user === null ? (
-<<<<<<< Updated upstream
               <NavLink to="/account">
                 ACCOUNT
               </NavLink>
@@ -69,25 +51,12 @@ const NavBar = () => {
            
               </NavLink>
             )}
-=======
-            <NavLink to="/account">ACCOUNT</NavLink>
-          ) : (
-            <NavLink to="/userInformation">{accountTitle}</NavLink>
-          )}
->>>>>>> Stashed changes
           <NavLink to="/account">
             {user === null ? (
               "SIGN IN"
             ) : (
-<<<<<<< Updated upstream
-              <button
-              onClick = {handleSignOut}
-              >
-                "SIGN OUT"
-=======
               <button onClick={handleSignOut} class="signOutBtn">
                 SIGN OUT
->>>>>>> Stashed changes
               </button>
             )}
           </NavLink>

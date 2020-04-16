@@ -69,12 +69,8 @@ function App() {
   }, []);
 
   const handleEscape = useCallback((ev) => {
-    if (
-      purchaseModalVisible === false &&
-      cartStatus === "idle" &&
-      (ev.key === "Escape" || ev.code === "Escape" || ev.keyCode === 27)
-    ) {
-      setPurchaseModalVisible(false);
+    if (!purchaseModalVisible && cartStatus === 'idle' && ( ev.key === "Escape" || ev.code === "Escape" || ev.keyCode === 27 )) {
+      setPurchaseModalVisible(0);
     }
     console.log("button test");
   });
@@ -89,7 +85,7 @@ function App() {
     <React.Fragment>
       <Router>
         <NavBar />
-        {cartVisible && <Cart right="0px" />}
+        {cartVisible && <Cart right="0px" position="absolute" />}
         {purchaseModalVisible && <PurchaseModal />}
         <GlobalStyles />
         {allOfTheItems && allOfTheVendors && (

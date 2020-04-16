@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { CartContext } from "../../cartContext";
 import { PurchaseContext } from "../../purchaseContext";
 import CartItems from "./CartItems";
+import PurchaseButtons from "../PurchaseModal/PurchaseButtons";
 
 import {
   resetErrorStatus,
@@ -13,12 +14,16 @@ import {
   emptyCartError,
 } from "../../actions";
 
-const Cart = (right) => {
+const Cart = ( {right, position} ) => {
   const { setCartVisible } = useContext(CartContext);
   const { clickStatus, cartVisibilityPreHover } = useContext(CartContext);
-  const { purchaseModalVisible, setPurchaseModalVisible } = useContext(
-    PurchaseContext
-  );
+  const { purchaseModalVisible, 
+    setPurchaseModalVisible, 
+    itemsQuantityInCart, 
+    setItemsQuantityInCart, 
+    subTotalInCart, 
+    setSubTotalInCart  
+  } = useContext(PurchaseContext);
   const dispatch = useDispatch();
   const currentCart = useSelector((state) => state.orders.currentCart);
   const user = useSelector((state) => state.user.user);
@@ -42,7 +47,8 @@ const Cart = (right) => {
         sumPrice += currentCart[id].quantity * price;
       }
     });
-    sumPrice = parseInt(100 * sumPrice) / 100;
+    setItemsQuantityInCart(totalNumItems);
+    sumPrice = parseInt(100*sumPrice)/100;
     sumPrice = sumPrice.toString();
     if (sumPrice.charAt(sumPrice.length - 2) === ".") {
       sumPrice = `${sumPrice}0`;
@@ -50,7 +56,8 @@ const Cart = (right) => {
       sumPrice = `${sumPrice}.00`;
     }
   }
-
+  setSubTotalInCart(sumPrice);
+  
   const handleEmpty = () => {
     dispatch(requestEmptyCart());
     if (!user) {
@@ -75,47 +82,49 @@ const Cart = (right) => {
   const handlePurchase = () => {
     console.log("setting modal open");
     setCartVisible(false);
-    setPurchaseModalVisible(true);
+    setPurchaseModalVisible(1);
   };
 
   let totalText = "";
 
-  if (sumPrice > 0 && totalNumItems === 1) {
-    totalText = `Your cart contains ${totalNumItems} item.  SubTotal : $${sumPrice}`;
-  } else if (sumPrice > 0 && totalNumItems > 1) {
-    totalText = `Your cart contains ${totalNumItems} items.  SubTotal : $${sumPrice}`;
+  if (subTotalInCart > 0 && itemsQuantityInCart === 1) {
+    totalText = `Your cart contains ${itemsQuantityInCart} item.  SubTotal : $${subTotalInCart}`;
+  } else if (subTotalInCart > 0 && itemsQuantityInCart > 1) {
+    totalText = `Your cart contains ${itemsQuantityInCart} items.  SubTotal : $${subTotalInCart}`;
   } else {
     totalText = "Your cart is empty.";
   }
-
   return (
     <React.Fragment>
-      <Container
-        right={right.right}
-        clickStatus={clickStatus}
-        hoverStatus={cartVisibilityPreHover}
-      >
-        {Object.keys(currentCart).length > 0 &&
-          Object.keys(currentCart).map((itemId, index) => {
-            return (
-              <>
-                <CartItems
-                  key={itemId}
-                  item={currentCart[itemId].itemInfo}
-                  quantity={currentCart[itemId].quantity}
-                ></CartItems>
-              </>
-            );
-          })}
-        <Totals>{totalText}</Totals>
-        <FinalLineOptions>
-          {Object.keys(currentCart).length > 0 && (
+      <Container right = {right} position = {position} clickStatus={clickStatus} hoverStatus={cartVisibilityPreHover}>
+      {Object.keys(currentCart).length > 0 && Object.keys(currentCart).map((itemId, index) => {
+          return (
             <>
-              <StyledButton onClick={handlePurchase}> CHECKOUT</StyledButton>
-              <StyledButton onClick={handleEmpty}>EMPTY CART</StyledButton>
+              <CartItems
+                key={itemId}
+                item={currentCart[itemId].itemInfo}
+                quantity={currentCart[itemId].quantity}
+              ></CartItems>
             </>
-          )}
-        </FinalLineOptions>
+          )
+      })}
+        {purchaseModalVisible === 0 ? (
+          <>
+            <Totals>{totalText}</Totals>
+            <FinalLineOptions>
+              {Object.keys(currentCart).length > 0 && (
+                <>
+                  <StyledButton onClick={handlePurchase}> CHECKOUT</StyledButton>
+                  <StyledButton onClick={handleEmpty}>EMPTY CART</StyledButton>
+                </>
+              )}
+            </FinalLineOptions>
+          </>
+        ) : (
+          null
+          
+          // <PurchaseButtons/>
+        )}
       </Container>
     </React.Fragment>
   );
@@ -142,8 +151,8 @@ const Container = styled.div`
   padding: 25px;
   /* margin-left: auto; */
   z-index: 5;
-  position: absolute;
-  right: ${(props) => props.right};
+  position: ${props => props.position};
+  right: ${props => props.right};
   background-color: ${(props) =>
     !props.clickStatus && !props.cartVisibilityPreHover
       ? "rgb(255,255,255)"

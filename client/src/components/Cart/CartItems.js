@@ -100,7 +100,7 @@ const CartItems = ({ item, quantity }) => {
             handleDelete(ev, 1);
           }}
         >
-          x
+          X
         </DeleteButton>
         <div>
           <NavLink to={linkAddress}>
@@ -155,9 +155,7 @@ const DeleteButton = styled.div`
   text-align: center;
   position: absolute;
   right: 0;
-  width: 20px;
-  height: 20px;
-  top: 0;
+  /* top: 0; */
   cursor: pointer;
   font-size: 20px;
   margin-right: 20px;

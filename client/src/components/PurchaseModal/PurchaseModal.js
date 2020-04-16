@@ -1,9 +1,16 @@
-import React, { useCallback } from "react";
+import React from "react";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 
 import {PurchaseContext} from  '../../purchaseContext';
+
 import Cart from '../Cart';
+import PurchaseNavBar from './PurchaseNavBar';
+import PurchaseButtons from './PurchaseButtons';
+import AddressChoices from './AddressChoices';
+import NewAddress from './NewAddress';
+import Payment from './Payment';
+import Confirmation from './Confirmation';
 
 // import { 
 //   resetErrorStatus,
@@ -13,31 +20,61 @@ import Cart from '../Cart';
 // } from "../../actions";
 
 const PurchaseModal = () => {
-  const { purchaseModalVisible, setPurchaseModalVisible } = React.useContext(PurchaseContext);
+  const { 
+    purchaseModalVisible, 
+    setPurchaseModalVisible,
+    shipToAddress,
+    setShipToAddress, 
+  } = React.useContext(PurchaseContext);
   const currentCart = useSelector((state) => state.orders.currentCart);
   const cartStatus = useSelector((state) => state.orders.status);
 
   
   const closePurchase = () => {
-    setPurchaseModalVisible(false);
-  }
+    setPurchaseModalVisible(0);
+  };
+  const handleClickPrev = () => {
+    setPurchaseModalVisible(purchaseModalVisible-1);
+  };
+  const handleClickNext = () => {
+    if (PurchaseModal !== 3) {
+      setPurchaseModalVisible(purchaseModalVisible+1);
+    }
+  };
+
 
   return (
-    <React.Fragment>
-      <OuterContainer>
-        <InnerContainer>
-          <StyledButton
-          disabled = {cartStatus !== 'idle'}
-          onClick = {closePurchase}
-          >
-            X
-          </StyledButton>
-          <Cart>
-            
-          </Cart>
-        </InnerContainer>
-      </OuterContainer>
-    </React.Fragment>
+    <OuterContainer>
+      <InnerContainer>
+        <PurchaseNavBar/>
+        {purchaseModalVisible === 1 &&
+          <RowDiv>
+            <Cart
+            right = "50%"
+            >
+            </Cart>
+            <PurchaseButtons/>
+          </RowDiv>
+        }
+        {purchaseModalVisible === 2 &&
+          <RowDiv>
+            <AddressChoices/>
+            <NewAddress/>
+          </RowDiv>
+        }
+        {purchaseModalVisible === 3 &&
+          <>
+            <Payment/>
+          </>
+        }
+        {purchaseModalVisible === 4 &&
+          <>
+            <Confirmation/>
+            <PurchaseButtons/>
+          </>
+        }
+      </InnerContainer>
+    </OuterContainer>
   );
 };
 
@@ -46,12 +83,28 @@ export default PurchaseModal;
 
 // background-color: ${props => (!props.clickStatus && !props.cartVisibilityPreHover) ? "rgba(0,255,0,0.5)" : "rgba(0,255,0,1)"};
 
-const StyledButton = styled.button`
+const NextPrevButtons = styled.button`
+  text-align: center;
+  width: 20px;
+  height: 20px;
   cursor: pointer;
+  color: white;
+  background: black;
 `
+
+const RowDiv = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  text-align: center;
+
+`
+
 const InnerContainer = styled.div`
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: top;
   text-align: center;
   align-items: center;
   opacity: 1;
@@ -62,7 +115,7 @@ const InnerContainer = styled.div`
   border: 1px solid black;
   margin: 50px 25%;
   z-index: 10;
-  /* position: absolute; */
+  position: relative;
 `;
 
 const OuterContainer = styled.div`

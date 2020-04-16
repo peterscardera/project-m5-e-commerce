@@ -1,11 +1,35 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 export const PurchaseContext = React.createContext()
 
 export const PurchaseProvider = ({children}) => {
-  const [purchaseModalVisible, setPurchaseModalVisible] = useState(false);
+  let initialAddress = {
+  address : '',
+  houseNum : '',
+  streetName : '',
+  city : '',
+  province : '',
+  country : '',
+  postalCode : '',
+  }
+
+  const [shipToAddress , setShipToAddress] = useState(initialAddress);
+  const [purchaseModalVisible, setPurchaseModalVisible] = useState(0);
+  const [itemsQuantityInCart, setItemsQuantityInCart] = useState(0);
+  const [subTotalInCart, setSubTotalInCart] = useState(0);
+
   return (
-    <PurchaseContext.Provider value={{ purchaseModalVisible, setPurchaseModalVisible }}>
+    <PurchaseContext.Provider value={{
+      shipToAddress,
+      setShipToAddress,
+      purchaseModalVisible, 
+      setPurchaseModalVisible, 
+      itemsQuantityInCart, 
+      setItemsQuantityInCart, 
+      subTotalInCart, 
+      setSubTotalInCart 
+    }}>
       {children}
     </PurchaseContext.Provider>
   );

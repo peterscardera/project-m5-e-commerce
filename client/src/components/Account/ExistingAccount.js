@@ -7,19 +7,12 @@ function ExistingAccount({ loggedInUser }) {
 
   return (
     <>
-<<<<<<< Updated upstream
-      <div>WELCOME BACK {loggedInUser.givenName} </div>
-      <div> account id: {loggedInUser.id}</div>
-      <div> Email: {loggedInUser.email}</div>
-      {/* display past order and more user informatiom */}
-=======
       <Wrapper>
         <div>WELCOME BACK {loggedInUser.givenName} </div>
         <div> account id: {loggedInUser.id}</div>
         <div> Email: {loggedInUser.email}</div>
         {/* display past order and more user informatiom */}
       </Wrapper>
->>>>>>> Stashed changes
     </>
   );
 }
