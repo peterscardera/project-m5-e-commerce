@@ -14,6 +14,7 @@ export const PurchaseProvider = ({children}) => {
   postalCode : '',
   }
 
+  const [paymentInfo, setPaymentInfo] = useState({});
   const [shipToAddress , setShipToAddress] = useState(initialAddress);
   const [purchaseModalVisible, setPurchaseModalVisible] = useState(0);
   const [itemsQuantityInCart, setItemsQuantityInCart] = useState(0);
@@ -21,6 +22,8 @@ export const PurchaseProvider = ({children}) => {
 
   return (
     <PurchaseContext.Provider value={{
+      paymentInfo,
+      setPaymentInfo,
       shipToAddress,
       setShipToAddress,
       purchaseModalVisible, 
