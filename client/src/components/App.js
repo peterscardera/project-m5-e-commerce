@@ -69,7 +69,11 @@ function App() {
   }, []);
 
   const handleEscape = useCallback((ev) => {
-    if (!purchaseModalVisible && cartStatus === 'idle' && ( ev.key === "Escape" || ev.code === "Escape" || ev.keyCode === 27 )) {
+    if (
+      !purchaseModalVisible &&
+      cartStatus === "idle" &&
+      (ev.key === "Escape" || ev.code === "Escape" || ev.keyCode === 27)
+    ) {
       setPurchaseModalVisible(0);
     }
     console.log("button test");
@@ -86,7 +90,6 @@ function App() {
       <Router>
         <NavBar />
         {cartVisible && <Cart right="0px" position="absolute" />}
-        {/* {purchaseModalVisible > 0 && <PurchaseModal />} */}
         {!!purchaseModalVisible && <PurchaseModal />}
         <GlobalStyles />
         {allOfTheItems && allOfTheVendors && (
