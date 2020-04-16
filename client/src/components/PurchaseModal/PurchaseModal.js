@@ -28,6 +28,7 @@ const PurchaseModal = () => {
   } = React.useContext(PurchaseContext);
   const currentCart = useSelector((state) => state.orders.currentCart);
   const cartStatus = useSelector((state) => state.orders.status);
+  // const user = useSelector((state)=> state.user.user);
 
   
   const closePurchase = () => {

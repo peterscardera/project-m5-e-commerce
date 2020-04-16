@@ -20,9 +20,27 @@
       "HouseNum": "123",
       "StreetName": "Happy Street",
       "City": "Smileton",
-      "Province": "Quebec",
+      "Province": "QC",
       "Country": "Canada",
       "PostalCode": "A1B2C3"
+    },
+    "address2" :  
+    {
+      "HouseNum": "555",
+      "StreetName": "Grumpy Street",
+      "City": "Muchwit",
+      "Province": "WA",
+      "Country": "United-States",
+      "PostalCode": "B4S3H1"
+    },
+    "address3" :  
+    {
+      "HouseNum": "100",
+      "StreetName": "Frozen Blvd",
+      "City": "Frosty",
+      "Province": "NU",
+      "Country": "Canada",
+      "PostalCode": "H0H0H0"
     }
   },
   {

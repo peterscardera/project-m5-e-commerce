@@ -119,7 +119,7 @@ const handleMergeCartGetOrders = (req, res) => {
       .status(400)
       .json(`User name ${userName} does not have existing orders...`);
   } else if (incomingKeys.length === 0) {
-    res.status(200).json(userOrders);
+    res.status(200).json({userOrders: userOrders});
   }
   // case below: user has added items to cart before logging in but their account's cart is empty
   else if (
@@ -127,7 +127,7 @@ const handleMergeCartGetOrders = (req, res) => {
     Object.keys(userOrders.currentCart).length === 0
   ) {
     userOrders.currentCart = incomingCart;
-    res.status(200).json(userOrders);
+    res.status(200).json({userOrders: userOrders});
   }
   // case below: user added items to cart before logging in and they already have unpurchased items in their account from another time
   else if (
