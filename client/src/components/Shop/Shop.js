@@ -43,7 +43,7 @@ const filterHandler = () => {
 
   return (
     <React.Fragment>
-      <Layout>
+      
         <FilterBar filterHandler={filterHandler} allOfTheItems={allOfTheItems} setItemsPerPage={setItemsPerPage} />
         
 
@@ -54,7 +54,7 @@ const filterHandler = () => {
           itemsPerPage={itemsPerPage}
           loadSpecificPageNumber={loadSpecificPageNumber}
         ></NextPage>
-      </Layout>
+ 
     </React.Fragment>
   );
 };

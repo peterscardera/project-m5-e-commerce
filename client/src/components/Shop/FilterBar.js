@@ -31,9 +31,7 @@ console.log(matchedItems) //for now this return doesnt prop up back up to parent
       <select onChange={submitHandler} id="viewAmount">
         <option value="4">4</option>
         <option value="6">6</option>
-        <option selected value="8">
-          8
-        </option>
+        <option selected value="8">8 </option>
       </select>
       <label htmlFor="search"></label>
       <input placeholder="search"id="search" value ={searchState} onChange={(e)=> {setSearchState(e.target.value)}} />
@@ -44,6 +42,7 @@ console.log(matchedItems) //for now this return doesnt prop up back up to parent
 export default FilterBar;
 
 const Container = styled.div`
-  background: lightblue;
+  background: black;
   height: 50px;
+  color:white;
 `;

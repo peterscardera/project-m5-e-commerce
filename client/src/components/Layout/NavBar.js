@@ -23,9 +23,9 @@ const NavBar = () => {
       let name = user.givenName;
       name = name.toUpperCase();
       let newAccountTitle = `${name}'S ACCOUNT`;
-      console.log(name);
+      // console.log(name);
       setAccountTitle(newAccountTitle);
-      console.log(accountTitle);
+      // console.log(accountTitle);
     }
   }, [user]);
   const currentCart = useSelector((state) => state.orders.currentCart);

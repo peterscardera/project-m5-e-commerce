@@ -1,6 +1,6 @@
 import { createGlobalStyle } from "styled-components";
 
-const GlobalStyles  = createGlobalStyle`
+const GlobalStyles = createGlobalStyle`
   html,
   body,
   div,
@@ -85,6 +85,10 @@ const GlobalStyles  = createGlobalStyle`
 
 body {
   height: 100vh;
+  width: 100vw;
+}
+html {
+    height: 100vh;
   width: 100vw;
 }
 

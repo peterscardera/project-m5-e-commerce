@@ -28,6 +28,7 @@ export default function ordersReducer(state = initialState, action) {
       }
     }
     case 'RECEIVE_ORDERS_SUCCESS' : {
+      // console.log(action, 'IM IN THE ORDER DISPATCH')
       return {
         orderHistory: action.orderHistory,
         currentCart: action.currentCart,

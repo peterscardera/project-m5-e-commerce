@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addItemToCartSuccess,
@@ -11,10 +12,10 @@ import {
 const AddToCartButton = ({ productChosen }) => {
   const loggedInStatus = useSelector((state) => state.user.user);
   const orderInfo = useSelector((state) => state.orders.currentCart);
-  const inventory = useSelector((state)=> state.gallery.items)
+  const inventory = useSelector((state) => state.gallery.items);
   const [quantity, setQuantity] = useState(1);
   // console.log(loggedInStatus);
-  console.log(quantity, "*******");
+  // console.log(quantity, "*******");
 
   const dispatch = useDispatch();
 
@@ -44,7 +45,7 @@ const AddToCartButton = ({ productChosen }) => {
     }
   };
 
-  console.log(orderInfo, "ORDER INFO");
+  // console.log(orderInfo, "ORDER INFO");
   let orderKeys = Object.keys(orderInfo);
   let foundQuantity = 0;
 
@@ -56,14 +57,12 @@ const AddToCartButton = ({ productChosen }) => {
     if (tempFound) {
       foundQuantity = orderInfo[eachKey].quantity;
     }
-    console.log(tempFound);
+    // console.log(tempFound);
   });
 
+  const numInStock = productChosen[0].numInStock;
 
-   const numInStock = productChosen[0].numInStock
-
-   const  maxNumVar = parseInt(numInStock) - parseInt(foundQuantity);
-
+  const maxNumVar = parseInt(numInStock) - parseInt(foundQuantity);
 
   const handleInputChange = (keypress) => {
     if (typeof parseInt(keypress.value) != "number") {
@@ -72,15 +71,21 @@ const AddToCartButton = ({ productChosen }) => {
       setQuantity(parseInt(keypress.value));
     }
     let quantityInCart = 0;
-
-  
   };
 
   return (
     <React.Fragment>
       {productChosen[0].numInStock !== 0 ? (
         <>
-          <button onClick={addToCardHandler}>Add to Cart</button>
+          <AddToCButton
+            disabled={numInStock < quantity + foundQuantity}
+            onClick={addToCardHandler}
+          >
+            {" "}
+            {numInStock < quantity + foundQuantity
+              ? "Request exceeds inventory"
+              : "Add to Cart"}
+          </AddToCButton>
           <input
             type="number"
             min="0"
@@ -99,3 +104,9 @@ const AddToCartButton = ({ productChosen }) => {
   );
 };
 export default AddToCartButton;
+
+//we want the add to cart button to not only be disable but to also let the user know he has has hold the max amt in his cart
+const AddToCButton = styled.button`
+  opacity: ${(props) => (props.disabled ? ".5" : "1")};
+  cursor: pointer;
+`;

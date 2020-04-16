@@ -43,6 +43,7 @@ function Account() {
   };
 
   const loggedInUser = useSelector((state) => state.user.user);
+  const currentCart = useSelector((state) => state.orders.currentCart);
 
   const reduxDispatch = useDispatch();
   //toggle create acct page if true
@@ -97,7 +98,7 @@ function Account() {
           console.log(userData, "IM IN USERDATA LOGGED IN");
           reduxDispatch(receiveUserInfo(userData));
           //handler below will get the order history and merge a previous cart to then existing cart
-          getPastInfo(userData);
+          getPastInfo();
         });
       } else if (resp.status === 422) {
         reduxDispatch(receiveUserInfoError());
@@ -110,51 +111,39 @@ function Account() {
       }
     });
   };
-  // //------------------------------Handler to retrieve previous cart and order history of a logged in user---
+  //------------------------------Handler to retrieve previous cart and order history of a logged in user---
 
-  const getPastInfo = (incomingUserData) => {
+  const getPastInfo = () => {
     //1- get the current cart and past cart
     reduxDispatch(requestOrders());
 
-    fetch(`/getOrders/${incomingUserData.email}`).then((response) => {
-      if (response.status === 200) {
-        response.json().then((jsonResp) => {
+    fetch(`/mergeCartGetOrders/${state.email}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ currentCart: currentCart }),
+    }).then((resp) => {
+      if (resp.status === 200) {
+        resp.json().then((jsonResponse) => {
+          console.log(jsonResponse.userOrders);
           reduxDispatch(
-            receiveOrdersSuccess(jsonResp.orderHistory, jsonResp.currentCart)
+            receiveOrdersSuccess(
+              jsonResponse.userOrders.orderHistory,
+              jsonResponse.userOrders.currentCart
+            )
           );
-          console.log(jsonResp, "SERVER RESPONSE OK WITH ORDER HISTORY");
         });
-      } else if (response.status === 400) {
-        reduxDispatch(receiveOrdersError());
-        console.log("user doesnt have existing orders which is fine");
       } else {
-        console.log("server isnt happy");
+        reduxDispatch(receiveOrdersError());
+        console.log("Error 400; cant access email info");
       }
     });
   };
 
   // // 2- merge existing cart to cart user had before closing tab or logging out
 
-  // // fetch(`/mergeCartGetOrders/incomingUserData.email`).then((responseTwo) => {
-  // //     if (responseTwo.status === 200) {
-  // //       responseTwo.json().then((jsonRespTwo) => {
-  // //        console.log(jsonRespTwo)
-  // //       });
-  // //     } else if (response.status === 400) {
-  // //       reduxDispatch(receiveOrdersError())
-  // //       console.log("user doesnt have existing orders which is fine");
-  // //     } else {
-  // //       console.log("server isnt happy")
-  // //     }
-  // //   });
-
-  // //handler for hitting the end point to retrieve anything that was in the cart prior to logging in
-
-  // //requestOrders redux dispatch
-  // //'/getOrders/userData.email'
-  // //receiveOrdersSuccess redux dispatch or receiveOrdersError
-
-  // // '/mergeCartGetOrders/:email'
+  // fetch(`/mergeCartGetOrders/${incomingUserData.email}`)
 
   //----------------------------------Handler for creating a new account----------------------------
 

@@ -122,4 +122,3 @@ function App() {
 
 export default App;
 
-//fetch to back end with id with with useParams
