@@ -113,7 +113,6 @@ const Wrapper = styled.div`
   width: 50%;
   min-height: 400px;
   /* border: 1px solid black; */
-  margin: 50px 25%;
-  z-index: 10;
+  /* z-index: 10; */
   /* position: absolute; */
 `;

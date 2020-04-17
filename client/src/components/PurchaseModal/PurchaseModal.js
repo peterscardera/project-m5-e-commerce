@@ -12,11 +12,17 @@ import Payment from "./Payment";
 import Confirmation from "./Confirmation";
 
 const PurchaseModal = () => {
-  const {
-    purchaseModalVisible,
-  } = React.useContext(PurchaseContext);
+  const { purchaseModalVisible } = React.useContext(PurchaseContext);
 
+<<<<<<< Updated upstream
 // SOMEWHERE THIS MODAL NEEDS AN EMAIL INPUT IF USER NOT SIGNED IN
+=======
+  const currentCart = useSelector((state) => state.orders.currentCart);
+  const cartStatus = useSelector((state) => state.orders.status);
+  // const user = useSelector((state)=> state.user.user);
+
+  // SOMEWHERE THIS MODAL NEEDS AN EMAIL INPUT IF USER NOT SIGNED IN
+>>>>>>> Stashed changes
   return (
     <OuterContainer>
       <InnerContainer>
@@ -62,10 +68,13 @@ const PurchaseModal = () => {
 
 const RowDiv = styled.div`
   display: flex;
+  flex-wrap: wrap;
+  width: 100%;
   flex-direction: row;
   justify-content: space-evenly;
   align-items: center;
   text-align: center;
+  border-right: 1px solid black;
 `;
 
 const OuterContainer = styled.div`
@@ -80,6 +89,8 @@ const OuterContainer = styled.div`
   height: 100%;
   width: 100%;
   z-index: 1;
+  text-transform: uppercase;
+  border-right: 1px solid black;
 `;
 
 const InnerContainer = styled.div`
@@ -91,10 +102,10 @@ const InnerContainer = styled.div`
   opacity: 1;
   background-color: white;
   height: fill;
-  width: 50%;
+  width: 100%;
   min-height: 400px;
-  border: 1px solid black;
   position: fixed;
+  border-right: 1px solid black;
 `;
 
 export default PurchaseModal;

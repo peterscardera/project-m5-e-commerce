@@ -44,21 +44,21 @@ const ItemDetails = () => {
         associatedComp.map((eachComp) => {
           // console.log(eachComp);
           return (
-              <VendorPage
-                key={eachComp.name}
-                name={eachComp.name}
-                itsWebSite={eachComp.url}
-                itsCountry={eachComp.country}
-                itsId={eachComp.id}
-              >
-                <div>{eachComp.name}</div>
-              </VendorPage>
+            <VendorPage
+              key={eachComp.name}
+              name={eachComp.name}
+              itsWebSite={eachComp.url}
+              itsCountry={eachComp.country}
+              itsId={eachComp.id}
+            >
+              <div>{eachComp.name}</div>
+            </VendorPage>
           );
         })}
       {productChosen != null &&
         productChosen.map((item, index) => {
           return (
-            <GridContainer key = {index}>
+            <GridContainer key={index}>
               <TopRow>
                 <h1> {item.name}</h1>
                 <div>Modal Number: {item.id} </div>
@@ -71,15 +71,18 @@ const ItemDetails = () => {
                 <div>Body location : {item.body_location}</div>
                 <div>Category : {item.category}</div>
                 <div>Num in stock: {item.numInStock}</div>
-                <AddToCartButton productChosen={productChosen} currentCart={currentCart}>
+                <AddToCartButton
+                  productChosen={productChosen}
+                  currentCart={currentCart}
+                >
                   {" "}
                 </AddToCartButton>
               </DetailsContainer>
-              <RelatedProduct>
+              {/* <RelatedProduct>
                 <div>Related Item</div>
                 <div>Related Item</div>
                 <div>Related Item</div>
-              </RelatedProduct>
+              </RelatedProduct> */}
             </GridContainer>
           );
         })}
@@ -145,12 +148,12 @@ const DetailsContainer = styled.div`
     text-align: center;
   }
 `;
-const RelatedProduct = styled.div`
-  background: white;
-  color: black;
-  display: flex;
-  justify-content: space-around;
-  grid-area: Relatedproducts;
-`;
+// const RelatedProduct = styled.div`
+//   background: white;
+//   color: black;
+//   display: flex;
+//   justify-content: space-around;
+//   grid-area: Relatedproducts;
+// `;
 
 export default ItemDetails;

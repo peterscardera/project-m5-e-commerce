@@ -180,14 +180,13 @@ const PlusMinusNumberWrapper = styled.div`
 `;
 
 const Wrapper = styled.div`
-  display: grid;
-  grid-template-columns: 120px 1fr;
+  display: flex;
+  flex-wrap: wrap;
 `;
 
 const StyledImg = styled.img`
   height: 100px;
   width: 100px;
-  grid-column: 1 / 2;
 `;
 
 const Quantity = styled.input`
