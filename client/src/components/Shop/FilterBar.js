@@ -17,6 +17,7 @@ const FilterBar = ({ allOfTheItems, setItemsPerPage }) => {
     ) {
       return item;
     }
+    return null
   });
 
   //remove the slice and

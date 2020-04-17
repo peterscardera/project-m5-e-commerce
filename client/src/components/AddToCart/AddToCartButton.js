@@ -10,13 +10,12 @@ import {
 
 //**reminder: Button is a child component in ItemDetails */
 
-const AddToCartButton = ({ productChosen }) => {
+const AddToCartButton = ({ productChosen, currentCart }) => {
 
   const { itemId } = useParams();
 
   const loggedInStatus = useSelector((state) => state.user.user);
   const orderInfo = useSelector((state) => state.orders.currentCart);
-  const inventory = useSelector((state) => state.gallery.items);
   const [quantity, setQuantity] = useState(1);
   const [ tempFound, setTempFound] = useState(null)
   const [foundQuantity, setFoundQuantity] = useState(0);
@@ -48,48 +47,26 @@ const AddToCartButton = ({ productChosen }) => {
         });
       }
     };
-    
     useEffect(() => {
-      console.log(orderInfo, "ORDER INFO");
-      let orderKeys = Object.keys(orderInfo);
-      orderKeys.forEach((eachKey) => {
-        
-        if (orderInfo[eachKey]) {
-          
-          setTempFound(orderInfo[eachKey].itemInfo.id)
-          console.log(tempFound)
-        }
-        
-        if (tempFound) {
-          setFoundQuantity(orderInfo[eachKey].quantity);
-        }
-        // console.log(tempFound);
-      });
-    },[itemId]);
-    
-    
-    useEffect(() => {
-      console.log(orderInfo, "ORDER INFO");
-      let orderKeys = Object.keys(orderInfo);
-      orderKeys.forEach((eachKey) => {
-        
-        if (orderInfo[eachKey]) {
-          
-          setTempFound(orderInfo[eachKey].itemInfo.id)
-          console.log(tempFound)
-        }
-        
-        if (tempFound) {
-          setFoundQuantity(orderInfo[eachKey].quantity);
-        }
-        // console.log(tempFound);
-      });
-    },[orderInfo]);
-    
-    console.log(foundQuantity, "foundQuantity in cart");
+      if (orderInfo[itemId]){
+        setFoundQuantity(orderInfo[itemId].quantity)
+      }
+    },[currentCart, orderInfo, itemId]);
 
+    // useEffect(() => {
+    //   let orderKeys = Object.keys(orderInfo);
+    //   orderKeys.forEach((eachKey) => {
+    //     if (orderInfo[itemId]) {
+    //       setTempFound(orderInfo[eachKey].itemInfo.id)
+    //       // console.log(tempFound)
+    //     }
+    //     if (tempFound) {
+    //       setFoundQuantity(orderInfo[eachKey].quantity);
+    //     }
+    //   });
+    // },[itemId]);
+    
   const numInStock = productChosen[0].numInStock;
-  console.log(numInStock, "NUMINSTOCK")
 
   const maxNumVar = parseInt(numInStock) - parseInt(foundQuantity);
 
@@ -101,7 +78,7 @@ const AddToCartButton = ({ productChosen }) => {
     }
     let quantityInCart = 0;
   };
-
+  
   return (
     <React.Fragment>
       {productChosen[0].numInStock !== 0 ? (

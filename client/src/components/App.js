@@ -9,15 +9,14 @@ import {
   receiveVendorsError,
 } from "../actions";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import styled from "styled-components";
 import GlobalStyles from "./GlobalStyles";
 import { CartContext } from "../cartContext";
 import { PurchaseContext } from "../purchaseContext";
 
 import NavBar from "./Layout/NavBar";
 
-import Shop from "./Shop/Shop";
-import Home from "./Home/Home";
+import Shop from "./Shop";
+import Home from "./Home";
 import ItemDetails from "../components/Items/ItemsDetails";
 import Account from "./Account";
 import Cart from "./Cart";

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import Layout from "../Layout";
 import ListingGrid from "../Items";
 import NextPage from "./NextPage";
 import FilterBar from "./FilterBar";

@@ -8,6 +8,7 @@ import AddToCartButton from "../AddToCart/AddToCartButton";
 const ItemDetails = () => {
   const allOfTheItems = useSelector((state) => state.gallery.items);
   const allOfTheVendors = useSelector((state) => state.vendors.items);
+  const currentCart = useSelector((state) => state.orders.currentCart);
   //setting the selected product into its own state. So when the user changes the ulr on top the page gets rerender or
   // if we wouldneed to change a state and re-render
   const [productChosen, setProductChosen] = useState(null);
@@ -23,7 +24,7 @@ const ItemDetails = () => {
       return element.id === parseInt(itemId);
     });
     setProductChosen([selectedItem]);
-  }, [itemId]); //**if i add the use params the conditional render doesnt work as state needs to change**
+  }, [itemId, allOfTheItems]);
   //-----------useEffect to find company associated with the item selected-----------
   useEffect(() => {
     if (productChosen !== null) {
@@ -36,15 +37,15 @@ const ItemDetails = () => {
     } else {
       return;
     }
-  }, [productChosen]); //retriggered when product changes
+  }, [productChosen, allOfTheVendors]); //retriggered when product changes
   return (
     <React.Fragment>
       {associatedComp != null &&
         associatedComp.map((eachComp) => {
           // console.log(eachComp);
           return (
-            <>
               <VendorPage
+                key={eachComp.name}
                 name={eachComp.name}
                 itsWebSite={eachComp.url}
                 itsCountry={eachComp.country}
@@ -52,37 +53,34 @@ const ItemDetails = () => {
               >
                 <div>{eachComp.name}</div>
               </VendorPage>
-            </>
           );
         })}
       {productChosen != null &&
-        productChosen.map((item) => {
+        productChosen.map((item, index) => {
           return (
-            <React.Fragment>
-              <GridContainer>
-                <TopRow>
-                  <h1> {item.name}</h1>
-                  <div>Modal Number: {item.id} </div>
-                </TopRow>
-                <ImgContainer>
-                  <img src={item.imageSrc} />
-                </ImgContainer>
-                <DetailsContainer>
-                  <div>{item.price}</div>
-                  <div>Body location : {item.body_location}</div>
-                  <div>Category : {item.category}</div>
-                  <div>Num in stock: {item.numInStock}</div>
-                  <AddToCartButton productChosen={productChosen}>
-                    {" "}
-                  </AddToCartButton>
-                </DetailsContainer>
-                <RelatedProduct>
-                  <div>Related Item</div>
-                  <div>Related Item</div>
-                  <div>Related Item</div>
-                </RelatedProduct>
-              </GridContainer>
-            </React.Fragment>
+            <GridContainer key = {index}>
+              <TopRow>
+                <h1> {item.name}</h1>
+                <div>Modal Number: {item.id} </div>
+              </TopRow>
+              <ImgContainer>
+                <img src={item.imageSrc} />
+              </ImgContainer>
+              <DetailsContainer>
+                <div>{item.price}</div>
+                <div>Body location : {item.body_location}</div>
+                <div>Category : {item.category}</div>
+                <div>Num in stock: {item.numInStock}</div>
+                <AddToCartButton productChosen={productChosen} currentCart={currentCart}>
+                  {" "}
+                </AddToCartButton>
+              </DetailsContainer>
+              <RelatedProduct>
+                <div>Related Item</div>
+                <div>Related Item</div>
+                <div>Related Item</div>
+              </RelatedProduct>
+            </GridContainer>
           );
         })}
     </React.Fragment>
