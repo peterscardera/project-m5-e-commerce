@@ -17,7 +17,8 @@ const ListingGrid = ({ itemList }) => {
 export default ListingGrid;
 
 const Wrapper = styled.div`
+  /* height:300px; */
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   grid-gap: 24px;
 `;

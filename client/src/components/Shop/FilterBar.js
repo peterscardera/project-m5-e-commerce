@@ -17,7 +17,7 @@ const FilterBar = ({ allOfTheItems, setItemsPerPage }) => {
     ) {
       return item;
     }
-    return null
+    return null;
   });
 
   //remove the slice and
@@ -31,8 +31,9 @@ const FilterBar = ({ allOfTheItems, setItemsPerPage }) => {
         <option value="4">4</option>
         <option value="6">6</option>
         <option selected value="8">
-          8{" "}
+          8
         </option>
+        <option value="16">16</option>
       </select>
 
       <label htmlFor="search"></label>
@@ -45,6 +46,10 @@ const FilterBar = ({ allOfTheItems, setItemsPerPage }) => {
           setSearchState(e.target.value);
         }}
       />
+      <form >
+        <label htmlFor="lifestyle"> lifestyle </label>
+        <input id="lifestyle" name="lifestyle" type='checkbox'></input>
+      </form>
     </Container>
   );
 };
@@ -53,7 +58,7 @@ export default FilterBar;
 
 const Container = styled.div`
   background: black;
-  height: 50px;
+  height: 100px;
   color: white;
 `;
 

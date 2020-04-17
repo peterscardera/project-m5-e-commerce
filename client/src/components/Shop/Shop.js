@@ -34,31 +34,40 @@ const Shop = () => {
     setCurrentPage(individualPageNumber);
   };
 
-  const filterHandler = () => {
-    console.log("i got fitlered");
-  };
+const filterHandler = () => {
+  console.log('i got fitlered')
+}
+
+
 
   return (
     <React.Fragment>
-      <FilterBar
-        filterHandler={filterHandler}
-        allOfTheItems={allOfTheItems}
-        setItemsPerPage={setItemsPerPage}
-      />
-
       <Wrapper>
-        <ListingGrid itemList={currentPosts} loading={loading}></ListingGrid>
+        <FilterBar filterHandler={filterHandler} allOfTheItems={allOfTheItems} setItemsPerPage={setItemsPerPage} />
+        
+        
+           <ListingGrid itemList={currentPosts} loading={loading}></ListingGrid>
         <NextPage
           currentPage={currentPage}
           totalItems={itemList.length}
           itemsPerPage={itemsPerPage}
           loadSpecificPageNumber={loadSpecificPageNumber}
         ></NextPage>
-      </Wrapper>
+        </Wrapper>
+
+       
+ 
     </React.Fragment>
   );
 };
 
 export default Shop;
 
-const Wrapper = styled.div``;
+
+const Wrapper = styled.div`
+ display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 0.4fr 2.2fr 0.4fr;
+  gap: 1px 1px;
+  grid-template-areas: "." "." ".";
+`
