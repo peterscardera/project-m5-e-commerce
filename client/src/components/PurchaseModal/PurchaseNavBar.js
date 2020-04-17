@@ -29,7 +29,6 @@ const PurchaseNavBar = () => {
     <Bar>
       <div>{/* literally a place holder */}</div>
       <ColumnDiv>
-        <RowDiv>Step {purchaseModalVisible} of 4</RowDiv>
         <RowDiv>
           Step {purchaseModalVisible} of 4
         </RowDiv>

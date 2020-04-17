@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { CartContext } from "../../cartContext";
 import { PurchaseContext } from "../../purchaseContext";
-import CartItems from "../Cart/CartItems";
+import CartItems from "./CartItems";
 
 import {
   resetErrorStatus,

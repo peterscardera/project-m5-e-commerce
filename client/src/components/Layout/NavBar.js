@@ -34,6 +34,7 @@ const NavBar = () => {
     dispatch(logUserOut());
     dispatch(emptyCartSuccess());
   };
+  // activeStyle={{fontWeight: "bold", color: "white"}}
   return (
     <>
       <header>
