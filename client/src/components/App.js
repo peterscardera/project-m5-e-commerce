@@ -8,7 +8,7 @@ import {
   receiveVendors,
   receiveVendorsError,
 } from "../actions";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 import GlobalStyles from "./GlobalStyles";
 import { CartContext } from "../cartContext";
 import { PurchaseContext } from "../purchaseContext";
@@ -102,12 +102,17 @@ function App() {
               <Shop />
             </Route>
             <Route exact path="/login"></Route>
+              {/* <Redirect to="/account" /> */}
             <Route exact path="/item/:itemId">
               {/* only if fully loaded because we are not fetching on itemDetails */}
               <ItemDetails />
             </Route>
             <Route exact path="/userInformation">
+              {loggedInUser === null ? ( 
+                <Redirect to="/account" />
+              ) : (
               <ExistingAccount loggedInUser={loggedInUser}></ExistingAccount>
+              )}
             </Route>
             <Route exact path="/account">
               <Account />

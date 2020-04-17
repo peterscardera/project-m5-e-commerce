@@ -17,7 +17,6 @@ const AddToCartButton = ({ productChosen, currentCart }) => {
   const loggedInStatus = useSelector((state) => state.user.user);
   const orderInfo = useSelector((state) => state.orders.currentCart);
   const [quantity, setQuantity] = useState(1);
-  const [ tempFound, setTempFound] = useState(null)
   const [foundQuantity, setFoundQuantity] = useState(0);
   
   const dispatch = useDispatch();
@@ -114,4 +113,7 @@ export default AddToCartButton;
 const AddToCButton = styled.button`
   opacity: ${(props) => (props.disabled ? ".5" : "1")};
   cursor: pointer;
+  &:hover {
+    background: grey;
+  }
 `;

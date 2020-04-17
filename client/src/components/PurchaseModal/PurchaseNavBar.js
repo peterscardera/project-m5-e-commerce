@@ -64,6 +64,9 @@ const EscapeButton = styled.div`
   padding: 5px;
   background-color: black;
   color: white;
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.75);
+  }
 `;
 const NextPrevButtons = styled.button`
   text-align: center;

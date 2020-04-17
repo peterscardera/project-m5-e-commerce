@@ -9,15 +9,14 @@ const AddressChoices = () => {
   const {
     purchaseModalVisible,
     setPurchaseModalVisible,
-    shipToAddress,
     setShipToAddress,
   } = React.useContext(PurchaseContext);
   const [addressNum, setAddressNum] = React.useState(0);
-  const currentCart = useSelector((state) => state.orders.currentCart);
-  const cartStatus = useSelector((state) => state.orders.status);
   const user = useSelector((state) => state.user.user);
 
   const handleNavigation = () => {
+
+
     setPurchaseModalVisible(0);
   };
 
@@ -117,15 +116,25 @@ const AddressChoices = () => {
       ) : (
         <ColDiv>
           <div>You are not signed in.</div>
-          <NavLink onClick={handleNavigation} to="/account">
-            SIGN IN or MAKE ACCOUNT
-          </NavLink>
+          <StyledNavLink onClick={handleNavigation} to="/account">
+            <StyledButton>
+              SIGN IN HERE
+            </StyledButton>
+          </StyledNavLink>
+          <div>
+            or
+          </div>
+          <div>
+            CHECKOUT WITHOUT AN ACCOUNT →
+          </div>
         </ColDiv>
       )}
     </RowDiv>
   );
 };
-
+const StyledNavLink = styled(NavLink)`
+  text-decoration: none;
+`
 const AddressConst = styled.div`
   color: lightgray;
 `;
@@ -142,6 +151,18 @@ const Address = styled.div`
 const ChangeOption = styled.div``;
 const StyledButton = styled.button`
   cursor: pointer;
+  background-color: black;
+  color: white;
+  padding: 10px;
+  max-width: 150px;
+  margin: 10px auto;
+  &:hover {
+    background: grey;
+  }
+  &:disabled {
+    cursor: not-allowed;
+    background: grey;
+  }
 `;
 const ColDiv = styled.div`
   display: flex;

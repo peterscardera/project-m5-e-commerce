@@ -1,19 +1,12 @@
 import styled from "styled-components";
 import React from "react";
 import { useSelector } from "react-redux";
-import { PurchaseContext } from "../../purchaseContext";
+
+import OrderHistoryComponent from './OrderHistory';
 
 //reminder: This is a child component of Account.js if user !null then take the user info and render this
 function ExistingAccount({ loggedInUser }) {
-  const {
-    purchaseModalVisible,
-    setPurchaseModalVisible,
-    shipToAddress,
-    setShipToAddress,
-  } = React.useContext(PurchaseContext);
   const [addressNum, setAddressNum] = React.useState(0);
-  const currentCart = useSelector((state) => state.orders.currentCart);
-  const cartStatus = useSelector((state) => state.orders.status);
   const user = useSelector((state) => state.user.user);
 
   let addressArray = [];
@@ -112,10 +105,9 @@ function ExistingAccount({ loggedInUser }) {
         <OrderHistory>
           <h2>ORDER DETAILS</h2>
           <ColDiv>
-            <AddressConst>ORDER TRACKING</AddressConst>
-            <AddressModular>TRACK YOUR CURRENT ORDER HERE</AddressModular>
-            <AddressConst>PREVIOUS ORDERS</AddressConst>
-            <AddressModular>SEE PREVIOUS ORDERS HERE</AddressModular>
+            <OrderHistoryComponent>
+
+            </OrderHistoryComponent>
           </ColDiv>
         </OrderHistory>
       </MidWrapper>
@@ -178,6 +170,10 @@ const StyledButton = styled.button`
   padding: 10px;
   max-width: 150px;
   margin: 10px auto;
+  &:disabled {
+    cursor: not-allowed;
+    background: grey;
+  }
 `;
 const ColDiv = styled.div`
   display: flex;
@@ -190,15 +186,15 @@ const ColDiv = styled.div`
   margin: 20px;
 `;
 
-const RowDiv = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  height: 50vh;
-  min-height: 400px;
-  margin: 20px;
-`;
+// const RowDiv = styled.div`
+//   display: flex;
+//   flex-direction: row;
+//   justify-content: center;
+//   align-items: center;
+//   text-align: center;
+//   height: 50vh;
+//   min-height: 400px;
+//   margin: 20px;
+// `;
 
 export default ExistingAccount;

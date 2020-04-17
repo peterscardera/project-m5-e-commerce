@@ -15,67 +15,67 @@ const Home = () => {
         <section>
           <h1>Featured Products</h1>
         </section>
-        <div class="home-item first">
-          <div class="home-item-wrapper">
-            <div class="home-item-image">
+        <div className="home-item first">
+          <div className="home-item-wrapper">
+            <div className="home-item-image">
               <img src={fit1} alt="fitbit" />
-              <span class="home-item-overlay"> </span>
-              <div class="home-item-button">
+              <span className="home-item-overlay"> </span>
+              <div className="home-item-button">
                 <NavLink to="/item/6678">SHOP</NavLink>
               </div>
             </div>
           </div>
         </div>
-        <div class="home-item first">
-          <div class="home-item-wrapper">
-            <div class="home-item-image">
+        <div className="home-item first">
+          <div className="home-item-wrapper">
+            <div className="home-item-image">
               <img src={fit2} alt="fitbit" />
-              <span class="home-item-overlay"> </span>
-              <div class="home-item-button">
+              <span className="home-item-overlay"> </span>
+              <div className="home-item-button">
                 <NavLink to="/item/6682">SHOP</NavLink>
               </div>
             </div>
           </div>
         </div>
-        <div class="home-item first">
-          <div class="home-item-wrapper">
-            <div class="home-item-image">
+        <div className="home-item first">
+          <div className="home-item-wrapper">
+            <div className="home-item-image">
               <img src={fit3} alt="fitbit" />
-              <span class="home-item-overlay"> </span>
-              <div class="home-item-button">
+              <span className="home-item-overlay"> </span>
+              <div className="home-item-button">
                 <NavLink to="/item/6551">SHOP</NavLink>
               </div>
             </div>
           </div>
         </div>
-        <div class="home-item first">
-          <div class="home-item-wrapper">
-            <div class="home-item-image">
+        <div className="home-item first">
+          <div className="home-item-wrapper">
+            <div className="home-item-image">
               <img src={sam1} alt="samsung watch" />
-              <span class="home-item-overlay"> </span>
-              <div class="home-item-button">
+              <span className="home-item-overlay"> </span>
+              <div className="home-item-button">
                 <NavLink to="/item/6583">SHOP</NavLink>
               </div>
             </div>
           </div>
         </div>
-        <div class="home-item first">
-          <div class="home-item-wrapper">
-            <div class="home-item-image">
+        <div className="home-item first">
+          <div className="home-item-wrapper">
+            <div className="home-item-image">
               <img src={sam2} alt="samsung watch" />
-              <span class="home-item-overlay"> </span>
-              <div class="home-item-button">
+              <span className="home-item-overlay"> </span>
+              <div className="home-item-button">
                 <NavLink to="/item/6999">SHOP</NavLink>
               </div>
             </div>
           </div>
         </div>
-        <div class="home-item first">
-          <div class="home-item-wrapper">
-            <div class="home-item-image">
+        <div className="home-item first">
+          <div className="home-item-wrapper">
+            <div className="home-item-image">
               <img src={sam3} alt="samsung" />
-              <span class="home-item-overlay"> </span>
-              <div class="home-item-button">
+              <span className="home-item-overlay"> </span>
+              <div className="home-item-button">
                 <NavLink to="/item/7002">SHOP</NavLink>
               </div>
             </div>

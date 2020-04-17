@@ -6,23 +6,12 @@ import taxRates from "../../constants";
 import {PurchaseContext} from  '../../purchaseContext';
 
 import {
-
   requestPurchase,
   purchaseSuccess,
   purchaseError,
-
-  requestUserInfo,
   receiveUserInfo,
-  receiveUserInfoError,
-
-  requestGalleryItems,
   receiveGalleryItems,
-  receiveGalleryItemsError,
-
-  requestOrders,
   receiveOrdersSuccess,
-  receiveOrdersError,
-
 } from "../../actions";
 
 const Payment = () => {
@@ -32,12 +21,10 @@ const Payment = () => {
     setPurchaseModalVisible,
     shipToAddress,
     setShipToAddress,
-    paymentInfo,
     setPaymentInfo, 
   } = React.useContext(PurchaseContext);
 
   const currentCart = useSelector((state) => state.orders.currentCart);
-  const cartStatus = useSelector((state) => state.orders.status);
   const userInfo = useSelector((state) => state.user.user);
   const [paymentType, setPaymentType] = React.useState(null);
   const [creditCardNumber, setCreditCardNumber] = React.useState(null);
@@ -140,7 +127,7 @@ const Payment = () => {
   if (shipToAddress.Country === "Canada") {
     shippingCost = 6;
   }
-  let totalCost = shippingCost + provTaxCost + fedTaxCost + subTotal;
+  let totalCost = (Math.floor(100*(shippingCost + provTaxCost + fedTaxCost + subTotal)))/100;
 
   const handleConfirmPurchase = (ev) => {
     ev.preventDefault();
@@ -254,7 +241,7 @@ const Payment = () => {
         <RowDiv>
           <ColDiv>
             <label for="creditCardNumber">CARD NUMBER</label>
-              <StyledInput
+              <StyledInputCreditCard
               onChange = {handleCreditCardNum}
               type = "Number"
               min = "0"
@@ -262,7 +249,7 @@ const Payment = () => {
               id = "creditCardNumber"
               valid = {validCardNum}
               >
-              </StyledInput>
+              </StyledInputCreditCard>
             </ColDiv>
           </RowDiv>
           <RowDiv>
@@ -376,23 +363,30 @@ const Wrapper = styled.div`
   margin: 10px;
 `
 const StyledInput = styled.input`
-  background : ${props => props.valid === true ? 'white' : 'pink'};
+  background : ${props => props.valid === true ? 'white' : '#ffe6ff'};
+`
+
+const StyledInputCreditCard = styled.input`
+  background : ${props => props.valid === true ? 'white' : '#ffe6ff'};
+  font-size: 1.3rem;
+  width: 250px;
 `
 
 const StyledButton = styled.button`
-  padding: 5px;
-  margin: 5px;
   cursor: pointer;
-  border-radius: 5px;
-  background: black;
+  background-color: black;
   color: white;
+  padding: 10px;
+  max-width: 150px;
+  margin: 10px auto;
   &:hover {
     background: grey;
   }
   &:disabled {
     cursor: not-allowed;
+    background: grey;
   }
-`
+`;
 const CreditCardButton = styled.button`
   padding: 5px;
   margin: 5px;

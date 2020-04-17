@@ -284,13 +284,16 @@ const handleEmptyCart = (req, res) => {
 const handlePurchase = (req, res) => {
   let email = req.params.email.toLowerCase();
   if (!email) {
+    console.log('11111111111111111111111111111');
     res.status(400).json("Email must be provided.");
   }
   if (!orders[email]) {
+    console.log('2222222222222222222222222222');
     res
       .status(400)
       .json(`Account linked to: ${email}, does not have any orders...`);
   } else if (Object.keys(orders[email].currentCart).length === 0) {
+    console.log('33333333333333333333333');
     res.status(400).json(`Nothing in the shopping cart to purchase`);
   } else if (Object.keys(orders[email].currentCart).length > 0) {
     let cartKeys = Object.keys(orders[email].currentCart);
@@ -312,10 +315,12 @@ const handlePurchase = (req, res) => {
       }
     });
     if (notFoundError) {
+      console.log('55555555555555555555');
       res
         .status(400)
         .json(`An item inside the cart was not found in the store`);
     } else if (insufficient) {
+      console.log('6666666666666666666666');
       res.status(400).json(insufficientItems);
     } else {
       let addAddress = req.body.addAddress;
@@ -334,6 +339,7 @@ const handlePurchase = (req, res) => {
         !addressCountry ||
         !addressPostalCode
       ) {
+        console.log('777777777777777777777777');
         res.status(400).json("Address is incomplete");
         
       }
@@ -359,6 +365,7 @@ const handlePurchase = (req, res) => {
         !shippingCost ||
         !totalCost
       ) {
+        console.log('88888888888888888888888');
         res.status(400).json("Shipping details are incomplete");
         
       }
@@ -412,9 +419,11 @@ const handlePurchase = (req, res) => {
       let orderId = `${date} - ${randNum}`;
       orders[email].orderHistory.push({ [orderId]: orders[email].currentCart });
       orders[email].currentCart = {};
+      console.log('200200200200200200200200200');
       res.status(200).json({ orderId: orderId, orders: orders[email], user: userInfo, items: items });
     }
   } else {
+    console.log('999999999999999999');
     res.status(400).json(`Unknown error.`);
   }
 };

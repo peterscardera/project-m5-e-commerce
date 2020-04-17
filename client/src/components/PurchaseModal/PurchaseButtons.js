@@ -82,11 +82,26 @@ const PriceWrapper = styled.div`
   flex-direction: column;
 `;
 
+// const StyledButton = styled.button`
+//   cursor: pointer;
+//   background-color: black;
+//   color: white;
+//   padding: 5px;
+// `;
 const StyledButton = styled.button`
   cursor: pointer;
   background-color: black;
   color: white;
-  padding: 5px;
+  padding: 10px;
+  max-width: 150px;
+  margin: 10px auto;
+  &:hover {
+    background: grey;
+  }
+  &:disabled {
+    cursor: not-allowed;
+    background: grey;
+  }
 `;
 const Wrapper = styled.div`
   display: flex;

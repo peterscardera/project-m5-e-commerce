@@ -50,7 +50,7 @@ const NavBar = () => {
             {user === null ? (
               "SIGN IN"
             ) : (
-              <button class="signOutBtn" onClick={handleSignOut}>
+              <button className="signOutBtn" onClick={handleSignOut}>
                 SIGN OUT
               </button>
             )}

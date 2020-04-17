@@ -5,18 +5,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { CartContext } from "../../cartContext";
 import { PurchaseContext } from "../../purchaseContext";
 import CartItems from "./CartItems";
-import PurchaseButtons from "../PurchaseModal/PurchaseButtons";
 
 import {
-  resetErrorStatus,
   requestEmptyCart,
   emptyCartSuccess,
   emptyCartError,
 } from "../../actions";
 
 const Cart = () => {
-  const { setCartVisible } = useContext(CartContext);
-  const { clickStatus, cartVisibilityPreHover } = useContext(CartContext);
+  const { setCartVisible, setClickStatus, clickStatus, cartVisible  } = useContext(CartContext);
   const {
     purchaseModalVisible,
     setPurchaseModalVisible,
@@ -81,7 +78,7 @@ const Cart = () => {
   };
 
   const handlePurchase = () => {
-    console.log("setting modal open");
+    setClickStatus(false);
     setCartVisible(false);
     setPurchaseModalVisible(1);
   };
@@ -97,7 +94,7 @@ const Cart = () => {
   }
   return (
     <React.Fragment>
-      <Container clickStatus={clickStatus} hoverStatus={cartVisibilityPreHover}>
+      <Container clickStatus={clickStatus} hoverStatus={cartVisible}>
         {Object.keys(currentCart).length > 0 &&
           Object.keys(currentCart).map((itemId, index) => {
             return (
@@ -161,7 +158,7 @@ const Container = styled.div`
   position: absolute;
   right: 0;
   background-color: ${(props) =>
-    !props.clickStatus && !props.cartVisibilityPreHover
+    !props.clickStatus && !props.cartVisible
       ? "rgb(255,255,255)"
       : "rgb(255,255,255)"};
 `;

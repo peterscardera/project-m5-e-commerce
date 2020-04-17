@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import { useSelector } from "react-redux";
 
 import { PurchaseContext } from "../../purchaseContext";
 
@@ -12,28 +11,10 @@ import NewAddress from "./NewAddress";
 import Payment from "./Payment";
 import Confirmation from "./Confirmation";
 
-import {
-  resetErrorStatus,
-  requestEmptyCart,
-  emptyCartSuccess,
-  emptyCartError,
-} from "../../actions";
-
-// import {
-//   resetErrorStatus,
-//   requestEmptyCart,
-//   emptyCartSuccess,
-//   emptyCartError
-// } from "../../actions";
-
 const PurchaseModal = () => {
   const {
     purchaseModalVisible,
   } = React.useContext(PurchaseContext);
-
-  const currentCart = useSelector((state) => state.orders.currentCart);
-  const cartStatus = useSelector((state) => state.orders.status);
-  // const user = useSelector((state)=> state.user.user);
 
 // SOMEWHERE THIS MODAL NEEDS AN EMAIL INPUT IF USER NOT SIGNED IN
   return (
@@ -70,14 +51,14 @@ const PurchaseModal = () => {
 
 // background-color: ${props => (!props.clickStatus && !props.cartVisibilityPreHover) ? "rgba(0,255,0,0.5)" : "rgba(0,255,0,1)"};
 
-const NextPrevButtons = styled.button`
-  text-align: center;
-  width: 20px;
-  height: 20px;
-  cursor: pointer;
-  color: white;
-  background: black;
-`;
+// const NextPrevButtons = styled.button`
+//   text-align: center;
+//   width: 20px;
+//   height: 20px;
+//   cursor: pointer;
+//   color: white;
+//   background: black;
+// `;
 
 const RowDiv = styled.div`
   display: flex;

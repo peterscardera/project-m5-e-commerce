@@ -48,7 +48,7 @@ const Forms = ({
                   onChange={handleLoginInfo("password")}
                 />
               </label>
-              <input class="submitBtn" type="submit" value="LOGIN" />
+              <input className="submitBtn" type="submit" value="LOGIN" />
             </form>
             {/* once login, redirect to userName endpoint */}
           </Login>
@@ -61,7 +61,7 @@ const Forms = ({
               </label>
               <input
                 onClick={handleClick}
-                class="submitBtn"
+                className="submitBtn"
                 type="submit"
                 value="CREATE ACCOUNT HERE"
               />
@@ -280,14 +280,14 @@ const Forms = ({
                 />
               </label>
 
-              <input class="submitBtn" type="submit" />
+              <input className="submitBtn" type="submit" />
               <input
                 onClick={() => {
                   handleClick();
                   setErrorStateLogIn(null);
                   setErrorCreateState(null);
                 }}
-                class="submitBtn"
+                className="submitBtn"
                 type="submit"
                 value="BACK TO LOGIN"
                 //we need to reset the error state

@@ -7,7 +7,6 @@ import { PurchaseContext } from "../../purchaseContext";
 import CartItems from "./CartItems";
 
 import {
-  resetErrorStatus,
   requestEmptyCart,
   emptyCartSuccess,
   emptyCartError,
