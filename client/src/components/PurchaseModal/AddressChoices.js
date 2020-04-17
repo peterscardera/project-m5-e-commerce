@@ -39,7 +39,15 @@ const AddressChoices = () => {
     setAddressNum(addressNum - 1);
   };
   const handleShipPreExisting = () => {
-    setShipToAddress(addressArray[addressNum]);
+    let addressKeys = Object.keys(addressArray[addressNum]);
+    let newAddressObject = {};
+    addressKeys.forEach((key)=>{
+      newAddressObject[key]= addressArray[addressNum][key]
+    })
+    newAddressObject.addAddress = false;
+    // console.log('This object has addAddress',newAddressObject)
+    // console.log('Not the same reference test',addressArray[addressNum])
+    setShipToAddress(newAddressObject);
     setPurchaseModalVisible(purchaseModalVisible + 1);
   };
 

@@ -30,7 +30,7 @@ function App() {
   const allOfTheVendors = useSelector((state) => state.vendors.items);
   const loggedInUser = useSelector((state) => state.user.user);
   const cartStatus = useSelector((state) => state.orders.status);
-  const { cartVisible } = useContext(CartContext);
+  const { cartVisible, setCartVisible, setClickStatus } = useContext(CartContext);
   const { purchaseModalVisible, setPurchaseModalVisible } = useContext(
     PurchaseContext
   );
@@ -73,6 +73,8 @@ function App() {
       cartStatus === "idle" &&
       (ev.key === "Escape" || ev.code === "Escape" || ev.keyCode === 27)
     ) {
+      setCartVisible(false);
+      setClickStatus(false);
       setPurchaseModalVisible(0);
     }
     // console.log("button test");

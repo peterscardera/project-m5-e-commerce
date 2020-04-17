@@ -31,12 +31,14 @@ const Payment = () => {
     purchaseModalVisible,
     setPurchaseModalVisible,
     shipToAddress,
+    setShipToAddress,
     paymentInfo,
     setPaymentInfo, 
   } = React.useContext(PurchaseContext);
 
   const currentCart = useSelector((state) => state.orders.currentCart);
   const cartStatus = useSelector((state) => state.orders.status);
+  const userInfo = useSelector((state) => state.user.user);
   const [paymentType, setPaymentType] = React.useState(null);
   const [creditCardNumber, setCreditCardNumber] = React.useState(null);
   const [expirationMonth, setExpirationMonth] = React.useState("01");
@@ -46,6 +48,8 @@ const Payment = () => {
   const [validCardNum, setValidCardNum] = React.useState(false);
   const [validSrcNum, setValidSrcNum] = React.useState(false);
   const [readyToPurchase, setReadyToPurchase] = React.useState(false);
+
+  const reduxDispatch = useDispatch();
 
   React.useEffect(()=>{
     const today = Date();
@@ -140,31 +144,85 @@ const Payment = () => {
 
   const handleConfirmPurchase = (ev) => {
     ev.preventDefault();
-    console.log(ev);
-    setPaymentInfo({
-      creditCardType : paymentType,
-      creditCardNumber : creditCardNumber,
-      expirationMonth : expirationMonth,
-      expirationYear : expirationYear,
-      srcNumber : srcNumber,
-      subTotal : subTotal,
-      provTaxCost : provTaxCost,
-      fedTaxCost : fedTaxCost,
-      shippingCost: shippingCost,
-      totalCost : totalCost,
+    // setPaymentInfo({
+    //   creditCardType : paymentType,
+    //   creditCardNumber : creditCardNumber,
+    //   expirationMonth : expirationMonth,
+    //   expirationYear : expirationYear,
+    //   srcNumber : srcNumber,
+    //   subTotal : subTotal,
+    //   provTaxCost : provTaxCost,
+    //   fedTaxCost : fedTaxCost,
+    //   shippingCost: shippingCost,
+    //   totalCost : totalCost,
+    // })
+    let email = null;
+    if (userInfo) email = userInfo.email;
+    reduxDispatch(requestPurchase());
+      
+    fetch(`/purchase/${email}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        addAddress: shipToAddress.addAddress,
+        addressHouseNum: shipToAddress.HouseNum,
+        addressStreetName: shipToAddress.StreetName,
+        addressCity: shipToAddress.City,
+        addressProvince: shipToAddress.Province,
+        addressCountry: shipToAddress.Country,
+        addressPostalCode: shipToAddress.PostalCode,
+        creditCardType : paymentType,
+        creditCardNumber : creditCardNumber,
+        expirationMonth : expirationMonth,
+        expirationYear : expirationYear,
+        srcNumber : srcNumber,
+        subTotal : subTotal,
+        provTaxCost : provTaxCost,
+        fedTaxCost : fedTaxCost,
+        shippingCost: shippingCost,
+        totalCost : totalCost,
+      }),
+    }).then((resp) => {
+      // console.log(resp)
+      if (resp.status !== 200) {
+        reduxDispatch(purchaseError());
+        console.log("something went wrong...");
+      }
+      else {
+        resp.json().then((data) => {
+          // console.log('THE RES FROM PURCHASE!!!!', data);
+          reduxDispatch(purchaseSuccess(data.orderId));
+          reduxDispatch(receiveUserInfo(data.user));
+          reduxDispatch(receiveGalleryItems(data.items));
+          reduxDispatch(receiveOrdersSuccess(data.orders.orderHistory, data.orders.currentCart));
+          setShipToAddress({
+            address : null,
+            houseNum : null,
+            streetName : null,
+            city : null,
+            province : null,
+            country : null,
+            postalCode : null,
+            });
+          setPaymentInfo({
+            creditCardType : null,
+            creditCardNumber : null,
+            expirationMonth : null,
+            expirationYear : null,
+            srcNumber : null,
+            subTotal : null,
+            provTaxCost : null,
+            fedTaxCost : null,
+            shippingCost: null,
+            totalCost : null,
+          });
+          // Needs to be tested in event that user does not have an account
+          setPurchaseModalVisible(purchaseModalVisible+1);
+        })
+      }
     })
-    
-    // appropriate dispatches for the following:
-    // fetch api purchase
-    // api get userInfo (address update)
-    // api get gallery
-    // api get orders
-    
-    // clear Address context and payment context
-    // move to page 4 of modal
-    // disable nav bar buttons
-    // if logged in refetch user info
-    // if logged in refetch order history
   }
 
   return (

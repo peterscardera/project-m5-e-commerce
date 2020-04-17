@@ -13,8 +13,6 @@ export default function userReducer(state = initialState, action) {
       }
     }
     case 'RECEIVE_USER_INFO' : {
-      
-      console.log(state.action)
       return {
         user: action.user,
         status: 'idle',

@@ -326,7 +326,7 @@ const handlePurchase = (req, res) => {
       let addressCountry = req.body.addressCountry;
       let addressPostalCode = req.body.addressPostalCode;
       if (
-        !addAddress ||
+        addAddress === undefined ||
         !addressHouseNum ||
         !addressStreetName ||
         !addressCity ||
@@ -335,6 +335,32 @@ const handlePurchase = (req, res) => {
         !addressPostalCode
       ) {
         res.status(400).json("Address is incomplete");
+        
+      }
+      let creditCardType = req.body.creditCardType;
+      let creditCardNumber = req.body.creditCardNumber;
+      let expirationMonth = req.body.expirationMonth;
+      let expirationYear = req.body.expirationYear;
+      let srcNumber = req.body.srcNumber;
+      let subTotal = req.body.subTotal;
+      let provTaxCost = req.body.provTaxCost;
+      let fedTaxCost = req.body.fedTaxCost;
+      let shippingCost = req.body.shippingCost;
+      let totalCost = req.body.totalCost;
+      if (
+        !creditCardType ||
+        !creditCardNumber ||
+        !expirationMonth ||
+        !expirationYear ||
+        !srcNumber ||
+        !subTotal ||
+        !provTaxCost ||
+        !fedTaxCost ||
+        !shippingCost ||
+        !totalCost
+      ) {
+        res.status(400).json("Shipping details are incomplete");
+        
       }
       let address = {
         HouseNum: addressHouseNum,
@@ -344,6 +370,18 @@ const handlePurchase = (req, res) => {
         Country: addressCountry,
         PostalCode: addressPostalCode,
       };
+      let shippingInfo = {
+        creditCardType : creditCardType,
+        creditCardNumber : creditCardNumber,
+        expirationMonth : expirationMonth,
+        expirationYear : expirationYear,
+        srcNumber : srcNumber,
+        subTotal : subTotal,
+        provTaxCost : provTaxCost,
+        fedTaxCost : fedTaxCost,
+        shippingCost : shippingCost,
+        totalCost : totalCost,
+      }
       // addAddress should only be available if the user is logged in, and, if true, adds the given address into the user's profile information
       let userInfo = users.find((element) => element.email === email);
       if (addAddress) {
@@ -361,6 +399,7 @@ const handlePurchase = (req, res) => {
         userInfo[nextAddressNum] = address;
       }
       orders[email].currentCart.shippingAddress = address;
+      orders[email].currentCart.shippingInfo = shippingInfo;
       cartKeys.forEach((id) => {
         let idInt = parseInt(id);
         let itemInStore = items.find((element) => element.id === idInt);
@@ -373,7 +412,7 @@ const handlePurchase = (req, res) => {
       let orderId = `${date} - ${randNum}`;
       orders[email].orderHistory.push({ [orderId]: orders[email].currentCart });
       orders[email].currentCart = {};
-      res.status(200).json({ orders: orders[email], user: userInfo });
+      res.status(200).json({ orderId: orderId, orders: orders[email], user: userInfo, items: items });
     }
   } else {
     res.status(400).json(`Unknown error.`);
@@ -459,6 +498,17 @@ express()
   // addressProvince:
   // addressCountry:
   // addressPostalCode:
+
+  // creditCardType :
+  // creditCardNumber :
+  // expirationMonth :
+  // expirationYear :
+  // srcNumber :
+  // subTotal :
+  // provTaxCost :
+  // fedTaxCost :
+  // shippingCost:
+  // totalCost :
   // }
   // All these fields are mandatory
   // addAddress is a boolean

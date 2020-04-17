@@ -29,26 +29,13 @@ import {
 const PurchaseModal = () => {
   const {
     purchaseModalVisible,
-    setPurchaseModalVisible,
-    shipToAddress,
-    setShipToAddress,
   } = React.useContext(PurchaseContext);
+
   const currentCart = useSelector((state) => state.orders.currentCart);
   const cartStatus = useSelector((state) => state.orders.status);
   // const user = useSelector((state)=> state.user.user);
 
-  const closePurchase = () => {
-    setPurchaseModalVisible(0);
-  };
-  const handleClickPrev = () => {
-    setPurchaseModalVisible(purchaseModalVisible - 1);
-  };
-  const handleClickNext = () => {
-    if (PurchaseModal !== 3) {
-      setPurchaseModalVisible(purchaseModalVisible + 1);
-    }
-  };
-
+// SOMEWHERE THIS MODAL NEEDS AN EMAIL INPUT IF USER NOT SIGNED IN
   return (
     <OuterContainer>
       <InnerContainer>

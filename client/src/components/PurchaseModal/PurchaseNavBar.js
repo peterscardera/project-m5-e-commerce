@@ -2,26 +2,28 @@ import React from "react";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 
-import { PurchaseContext } from "../../purchaseContext";
-import Cart from "../Cart";
+import {PurchaseContext} from  '../../purchaseContext';
+import { CartContext } from "../../cartContext";
 
 const PurchaseNavBar = () => {
-  const { purchaseModalVisible, setPurchaseModalVisible } = React.useContext(
-    PurchaseContext
-  );
+  const { purchaseModalVisible, setPurchaseModalVisible } = React.useContext(PurchaseContext);
+  const { setCartVisible, setClickStatus } = React.useContext(CartContext);
   const cartStatus = useSelector((state) => state.orders.status);
 
   const closePurchase = () => {
+    setCartVisible(false);
+    setClickStatus(false);
     setPurchaseModalVisible(0);
   };
   const handleClickPrev = () => {
     setPurchaseModalVisible(purchaseModalVisible - 1);
   };
-  const handleClickNext = () => {
-    if (purchaseModalVisible !== 3) {
-      setPurchaseModalVisible(purchaseModalVisible + 1);
-    }
-  };
+  // was for testing purposes:
+  // const handleClickNext = () => {
+  //   if (purchaseModalVisible !== 3) {
+  //     setPurchaseModalVisible(purchaseModalVisible+1);
+  //   }
+  // };
 
   return (
     <Bar>
@@ -29,8 +31,21 @@ const PurchaseNavBar = () => {
       <ColumnDiv>
         <RowDiv>Step {purchaseModalVisible} of 4</RowDiv>
         <RowDiv>
-          <NextPrevButtons onClick={handleClickPrev}>←</NextPrevButtons>
-          <NextPrevButtons onClick={handleClickNext}>→</NextPrevButtons>
+          Step {purchaseModalVisible} of 4
+        </RowDiv>
+        <RowDiv>
+          {purchaseModalVisible !== 4 &&
+            <NextPrevButtons
+            onClick = {handleClickPrev}
+            >
+              ←
+            </NextPrevButtons>
+          }
+          {/* <NextPrevButtons
+          onClick = {handleClickNext}
+          >
+            →
+          </NextPrevButtons> */}
         </RowDiv>
       </ColumnDiv>
       <EscapeButton disabled={cartStatus !== "idle"} onClick={closePurchase}>

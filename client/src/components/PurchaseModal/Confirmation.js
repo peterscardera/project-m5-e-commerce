@@ -15,7 +15,7 @@ const Confirmation = () => {
 
   return (
     <div>
-      Insert Confirmation
+      Insert Confirmation Message
     </div>
   );
 };
