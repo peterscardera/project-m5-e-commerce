@@ -5,7 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import ExistingAccount from "../Account/ExistingAccount";
 import { logUserOut, emptyCartSuccess } from "../../actions";
 import { CartContext } from "../../cartContext";
-import supermarket from "./supermarket.png";
+import { FaShoppingCart} from "react-icons/fa";
+// import supermarket from "./supermarket.png";
 
 const NavBar = () => {
   const { cartVisible, setCartVisible } = useContext(CartContext);
@@ -56,8 +57,9 @@ const NavBar = () => {
             )}
           </NavLink>
           <div>
-            <img src={supermarket} alt="cart button" />
-            <CartButton
+            {/* <img src={supermarket} alt="cart button" /> */}
+           
+            <CartButton 
               onMouseEnter={() => {
                 setCartVisibilityPreHover(cartVisible);
                 setCartVisible(true);
@@ -74,7 +76,7 @@ const NavBar = () => {
               onClick={() => {
                 setClickStatus(!clickStatus);
               }}
-            >
+            > <FaShoppingCart  style={{marginRight: "10px"}} size={20}/>
               {cartNum > 0 ? `CART (${cartNum})` : "CART"}
             </CartButton>
           </div>
@@ -130,6 +132,7 @@ const NavWrapper = styled.nav`
 `;
 
 const CartButton = styled.button`
+outline: none;
   color: black;
   padding: 0;
   border: none;

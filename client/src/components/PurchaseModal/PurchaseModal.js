@@ -14,15 +14,7 @@ import Confirmation from "./Confirmation";
 const PurchaseModal = () => {
   const { purchaseModalVisible } = React.useContext(PurchaseContext);
 
-<<<<<<< Updated upstream
 // SOMEWHERE THIS MODAL NEEDS AN EMAIL INPUT IF USER NOT SIGNED IN
-=======
-  const currentCart = useSelector((state) => state.orders.currentCart);
-  const cartStatus = useSelector((state) => state.orders.status);
-  // const user = useSelector((state)=> state.user.user);
-
-  // SOMEWHERE THIS MODAL NEEDS AN EMAIL INPUT IF USER NOT SIGNED IN
->>>>>>> Stashed changes
   return (
     <OuterContainer>
       <InnerContainer>
