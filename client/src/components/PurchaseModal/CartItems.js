@@ -154,13 +154,13 @@ export default CartItems;
 const DeleteButton = styled.div`
   text-align: center;
   position: absolute;
-  /* right: 0; */
-  /* top: 0; */
   cursor: pointer;
   font-size: 20px;
-  margin-right: 20px;
   margin-top: 7px;
-  //background: red;
+  background: white;
+  border-radius: 50%;
+  height: 28px;
+  width: 28px;
 `;
 
 const StyledButton = styled.button`

@@ -142,10 +142,12 @@ const FinalLineOptions = styled.div`
   padding-left: 48.75%;
 `;
 const Container = styled.div`
-  height: fill;
-  /* change to flexible width */
-  width: 400px;
-  border: ${(props) =>
+  display: flex;
+  flex-wrap: wrap;
+  height: 80%;
+  width: 50%;
+  padding-left: 20px;
+  border-right: ${(props) =>
     props.clickStatus ? "1px solid black" : "1px solid black"};
   padding: 25px;
   /* margin-left: auto; */

@@ -14,7 +14,6 @@ import Confirmation from "./Confirmation";
 const PurchaseModal = () => {
   const { purchaseModalVisible } = React.useContext(PurchaseContext);
 
-// SOMEWHERE THIS MODAL NEEDS AN EMAIL INPUT IF USER NOT SIGNED IN
   return (
     <OuterContainer>
       <InnerContainer>
