@@ -2,10 +2,10 @@ import React from "react";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 
-import {PurchaseContext} from  '../../purchaseContext';
-import Cart from '../Cart';
+import { PurchaseContext } from "../../purchaseContext";
+import Cart from "../Cart";
 
-// import { 
+// import {
 //   resetErrorStatus,
 //   requestEmptyCart,
 //   emptyCartSuccess,
@@ -13,12 +13,13 @@ import Cart from '../Cart';
 // } from "../../actions";
 
 const PurchaseButtons = () => {
-  const { purchaseModalVisible, 
-    setPurchaseModalVisible, 
-    itemsQuantityInCart, 
-    setItemsQuantityInCart, 
-    subTotalInCart, 
-    setSubTotalInCart
+  const {
+    purchaseModalVisible,
+    setPurchaseModalVisible,
+    itemsQuantityInCart,
+    setItemsQuantityInCart,
+    subTotalInCart,
+    setSubTotalInCart,
   } = React.useContext(PurchaseContext);
 
   const currentCart = useSelector((state) => state.orders.currentCart);
@@ -27,40 +28,28 @@ const PurchaseButtons = () => {
   if (Object.keys(currentCart).length === 0) {
     setItemsQuantityInCart(0);
     setSubTotalInCart(0);
-  };
+  }
 
   const handleClick = () => {
-      setPurchaseModalVisible(2);
+    setPurchaseModalVisible(2);
   };
 
   return (
     <Wrapper>
       <PriceWrapper>
         <PriceDisplay>
-          <LeftText>
-            Total items: 
-          </LeftText>
-          <Value>
-            {itemsQuantityInCart}
-          </Value>
+          <LeftText>Total items:</LeftText>
+          <Value>{itemsQuantityInCart}</Value>
         </PriceDisplay>
         <PriceDisplay>
-          <LeftText>
-            SubTotal: 
-          </LeftText>
-          <Value>
-            {subTotalInCart}
-          </Value>
+          <LeftText>SubTotal:</LeftText>
+          <Value>{subTotalInCart}</Value>
         </PriceDisplay>
         {purchaseModalVisible === 1 ? (
-          <StyledButton
-          onClick = {handleClick}
-          >
-            Move to confirm address
-          </StyledButton>
+          <StyledButton onClick={handleClick}>CONTINUE</StyledButton>
         ) : (
           // null
-          'Show values based on taxes.'
+          "Show values based on taxes."
         )}
         {/* <PriceDisplay>
           <LeftText>
@@ -80,24 +69,25 @@ export default PurchaseButtons;
 const Value = styled.div`
   font-weight: bold;
   margin-left: 10px;
-`
-const LeftText = styled.div`
-
-`
+`;
+const LeftText = styled.div``;
 
 const PriceDisplay = styled.div`
   display: flex;
   flex-direction: row;
-`
+`;
 
 const PriceWrapper = styled.div`
   display: flex;
   flex-direction: column;
-`
+`;
 
 const StyledButton = styled.button`
   cursor: pointer;
-`
+  background-color: black;
+  color: white;
+  padding: 5px;
+`;
 const Wrapper = styled.div`
   display: flex;
   justify-content: center;

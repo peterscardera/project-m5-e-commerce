@@ -2,54 +2,39 @@ import React from "react";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 
-import {PurchaseContext} from  '../../purchaseContext';
-import Cart from '../Cart';
-
+import { PurchaseContext } from "../../purchaseContext";
+import Cart from "../Cart";
 
 const PurchaseNavBar = () => {
-  const { purchaseModalVisible, setPurchaseModalVisible } = React.useContext(PurchaseContext);
+  const { purchaseModalVisible, setPurchaseModalVisible } = React.useContext(
+    PurchaseContext
+  );
   const cartStatus = useSelector((state) => state.orders.status);
 
   const closePurchase = () => {
     setPurchaseModalVisible(0);
   };
   const handleClickPrev = () => {
-    setPurchaseModalVisible(purchaseModalVisible-1);
+    setPurchaseModalVisible(purchaseModalVisible - 1);
   };
   const handleClickNext = () => {
     if (purchaseModalVisible !== 3) {
-      setPurchaseModalVisible(purchaseModalVisible+1);
+      setPurchaseModalVisible(purchaseModalVisible + 1);
     }
   };
 
-
   return (
     <Bar>
-      <div>
-      {/* literally a place holder */}
-      </div>
+      <div>{/* literally a place holder */}</div>
       <ColumnDiv>
+        <RowDiv>Step {purchaseModalVisible} of 4</RowDiv>
         <RowDiv>
-          Step {purchaseModalVisible} of 4
-        </RowDiv>
-        <RowDiv>
-          <NextPrevButtons
-          onClick = {handleClickPrev}
-          >
-            ←
-          </NextPrevButtons>
-          <NextPrevButtons
-          onClick = {handleClickNext}
-          >
-            →
-          </NextPrevButtons>
+          <NextPrevButtons onClick={handleClickPrev}>←</NextPrevButtons>
+          <NextPrevButtons onClick={handleClickNext}>→</NextPrevButtons>
         </RowDiv>
       </ColumnDiv>
-      <EscapeButton
-          disabled = {cartStatus !== 'idle'}
-          onClick = {closePurchase}
-          >
-            EXIT
+      <EscapeButton disabled={cartStatus !== "idle"} onClick={closePurchase}>
+        EXIT
       </EscapeButton>
     </Bar>
   );
@@ -63,8 +48,9 @@ const EscapeButton = styled.div`
   /* top: 0; */
   cursor: pointer;
   padding: 5px;
-  background: red;
-`
+  background-color: black;
+  color: white;
+`;
 const NextPrevButtons = styled.button`
   text-align: center;
   width: 20px;
@@ -75,7 +61,7 @@ const NextPrevButtons = styled.button`
   &:hover {
     background-color: rgba(0, 0, 0, 0.75);
   }
-`
+`;
 const RowDiv = styled.div`
   display: flex;
   flex-direction: row;
@@ -83,12 +69,12 @@ const RowDiv = styled.div`
   /* width: 100px; */
   /* text-align: center; */
   align-items: center;
-  text-align:justify;
-`
+  text-align: justify;
+`;
 const ColumnDiv = styled.div`
   display: flex;
   flex-direction: column;
-`
+`;
 const Bar = styled.div`
   display: flex;
   flex-direction: row;
@@ -98,4 +84,4 @@ const Bar = styled.div`
   text-align: center;
   background: lightgray;
   padding: 20px;
-`
+`;

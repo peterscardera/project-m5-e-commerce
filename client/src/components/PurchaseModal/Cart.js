@@ -147,7 +147,7 @@ const Container = styled.div`
   /* change to flexible width */
   width: 400px;
   border: ${(props) =>
-    props.clickStatus ? "1px solid green" : "1px solid black"};
+    props.clickStatus ? "1px solid black" : "1px solid black"};
   padding: 25px;
   /* margin-left: auto; */
   z-index: 5;

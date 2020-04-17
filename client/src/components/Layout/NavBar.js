@@ -54,7 +54,7 @@ const NavBar = () => {
               </button>
             )}
           </NavLink>
-          <CartBtnWrapper>
+          <div>
             <img src={supermarket} alt="cart button" />
             <CartButton
               onMouseEnter={() => {
@@ -76,7 +76,7 @@ const NavBar = () => {
             >
               {cartNum > 0 ? `CART (${cartNum})` : "CART"}
             </CartButton>
-          </CartBtnWrapper>
+          </div>
         </NavWrapper>
       </header>
     </>
@@ -114,7 +114,7 @@ const NavWrapper = styled.nav`
   img {
     width: auto;
     height: 25px;
-    margin-top: 10px;
+    /* margin-top: 10px; */
   }
   .signOutBtn {
     margin: -10px;
@@ -128,8 +128,6 @@ const NavWrapper = styled.nav`
   }
 `;
 
-const CartBtnWrapper = styled.div``;
-
 const CartButton = styled.button`
   color: black;
   padding: 0;
@@ -137,9 +135,9 @@ const CartButton = styled.button`
   background: none;
   min-width: 100px;
   min-height: 45px;
-  font-size: 18px;
+  font-size: 20px;
   padding: 5px;
-  margin-top: -5px;
+  /* margin-top: 10px; */
   &:hover {
     color: white;
     border-bottom: 2px solid white;

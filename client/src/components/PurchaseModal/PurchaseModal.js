@@ -81,8 +81,6 @@ const PurchaseModal = () => {
   );
 };
 
-export default PurchaseModal;
-
 // background-color: ${props => (!props.clickStatus && !props.cartVisibilityPreHover) ? "rgba(0,255,0,0.5)" : "rgba(0,255,0,1)"};
 
 const NextPrevButtons = styled.button`
@@ -102,6 +100,20 @@ const RowDiv = styled.div`
   text-align: center;
 `;
 
+const OuterContainer = styled.div`
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  left: 0;
+  top: 0;
+  background-color: rgba(255, 255, 255, 0.5);
+  height: 100%;
+  width: 100%;
+  z-index: 1;
+`;
+
 const InnerContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -114,17 +126,7 @@ const InnerContainer = styled.div`
   width: 50%;
   min-height: 400px;
   border: 1px solid black;
-  margin: 50px 25%;
-  z-index: 10;
-  position: relative;
+  position: fixed;
 `;
 
-const OuterContainer = styled.div`
-  position: fixed;
-  left: 0;
-  top: 0;
-  background-color: rgba(255, 255, 255, 0.5);
-  height: 100vh;
-  width: 100vw;
-  z-index: 10;
-`;
+export default PurchaseModal;
