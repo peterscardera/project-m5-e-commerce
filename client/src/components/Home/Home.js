@@ -85,6 +85,7 @@ const Home = () => {
     </>
   );
 };
+
 const Wrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -164,7 +165,11 @@ const Wrapper = styled.div`
     margin-left: -20%;
   }
   .home-item-button a {
-    background: black;
+    margin-bottom: 50px;
+    background: rgba(255,255,255,0.6);
+    border-radius: 50%;
+    height: 100px;
+    width: 100px;
     text-transform: uppercase;
     font-family: "Oswald", sans-serif;
     color: #ffffff;
@@ -176,7 +181,10 @@ const Wrapper = styled.div`
     -o-transition: all 0.2s ease-in 0s;
     transition: all 0.2s ease-in 0s;
     text-decoration: none !important;
-    display: block;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
   }
   .home-item-button a:hover {
     background: #3b3b3b;
