@@ -4,16 +4,29 @@ export const PurchaseContext = React.createContext()
 
 export const PurchaseProvider = ({children}) => {
   let initialAddress = {
-  address : '',
-  houseNum : '',
-  streetName : '',
-  city : '',
-  province : '',
-  country : '',
-  postalCode : '',
+  address : null,
+  houseNum : null,
+  streetName : null,
+  city : null,
+  province : null,
+  country : null,
+  postalCode : null,
   }
 
-  const [paymentInfo, setPaymentInfo] = useState({});
+  let initialPaymentInfo = {
+    creditCardType : null,
+    creditCardNumber : null,
+    expirationMonth : null,
+    expirationYear : null,
+    srcNumber : null,
+    subTotal : null,
+    provTaxCost : null,
+    fedTaxCost : null,
+    shippingCost: null,
+    totalCost : null,
+  }
+
+  const [paymentInfo, setPaymentInfo] = useState(initialPaymentInfo);
   const [shipToAddress , setShipToAddress] = useState(initialAddress);
   const [purchaseModalVisible, setPurchaseModalVisible] = useState(0);
   const [itemsQuantityInCart, setItemsQuantityInCart] = useState(0);

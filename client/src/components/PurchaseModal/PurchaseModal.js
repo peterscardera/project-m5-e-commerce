@@ -12,6 +12,13 @@ import NewAddress from "./NewAddress";
 import Payment from "./Payment";
 import Confirmation from "./Confirmation";
 
+import {
+  resetErrorStatus,
+  requestEmptyCart,
+  emptyCartSuccess,
+  emptyCartError,
+} from "../../actions";
+
 // import {
 //   resetErrorStatus,
 //   requestEmptyCart,

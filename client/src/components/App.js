@@ -75,7 +75,7 @@ function App() {
     ) {
       setPurchaseModalVisible(0);
     }
-    console.log("button test");
+    // console.log("button test");
   });
   React.useEffect(() => {
     document.addEventListener("keydown", (ev) => handleEscape(ev));
