@@ -60,7 +60,7 @@ const NextPage = ({
 };
 export default NextPage;
 const Wrapper = styled.div`
-  /* background: red; */
+  margin: 1px;
   display: inline-flex;
 `;
 
@@ -68,7 +68,7 @@ const StyledLi = styled.li`
   list-style-type: none;
 `;
 const Button = styled.button`
-  font-size: 1rem;
+  font-size: 1.1rem;
   width: 28px;
   height: 22px;
   cursor: pointer;

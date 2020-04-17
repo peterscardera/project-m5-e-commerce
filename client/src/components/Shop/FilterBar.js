@@ -1,14 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
 //*Reminder: Filter is child component of shop.js
-const FilterBar = ({ allOfTheItems, setItemsPerPage }) => {
+const FilterBar = ({
+  allOfTheItems,
+  setItemsPerPage,
+  filterHandler,
+  setCategoriesChecked,
+  categoriesChecked,
+}) => {
   const submitHandler = (e) => {
     // console.log(e.target.value);
     setItemsPerPage(e.target.value);
   };
 
   const [searchState, setSearchState] = useState("");
+  //just a state of the categories from data
+  const [categories, setCategories] = useState(null);
 
   let matchedItems = allOfTheItems.filter((item) => {
     if (
@@ -20,9 +28,27 @@ const FilterBar = ({ allOfTheItems, setItemsPerPage }) => {
     return null;
   });
 
-  //remove the slice and
+  useEffect(() => {
+    // i mean.. I could have hard code the categories..
+    let duplicatedCategories = allOfTheItems.map((item) => {
+      return item.category;
+    });
+    let uniqueData = new Set(duplicatedCategories);
+    let uniqueDataArray = [...uniqueData];
+    setCategories(uniqueDataArray);
+    // console.log(uniqueDataArray);
+  }, []);
 
-  console.log(matchedItems); //for now this return doesnt prop up back up to parent component
+  const handleCheck = (e) => {
+    const value = e.target.checked;
+    const name = e.target.name;
+
+    setCategoriesChecked({
+      ...categoriesChecked,
+      [e.target.name]: value,
+    });
+    filterHandler();
+  };
 
   return (
     <Container>
@@ -37,6 +63,7 @@ const FilterBar = ({ allOfTheItems, setItemsPerPage }) => {
       </select>
 
       <label htmlFor="search"></label>
+
       <StyledInput
         autocomplete="off"
         placeholder="search"
@@ -46,10 +73,21 @@ const FilterBar = ({ allOfTheItems, setItemsPerPage }) => {
           setSearchState(e.target.value);
         }}
       />
-      <form >
-        <label htmlFor="lifestyle"> lifestyle </label>
-        <input id="lifestyle" name="lifestyle" type='checkbox'></input>
-      </form>
+      {categories !== null
+        ? categories.map((eachCat) => {
+            return (
+              <>
+                <label htmlFor="eachCat"> {eachCat} </label>
+                <input
+                  onChange={handleCheck}
+                  id={eachCat}
+                  name={eachCat}
+                  type="checkbox"
+                ></input>
+              </>
+            );
+          })
+        : ""}
     </Container>
   );
 };
