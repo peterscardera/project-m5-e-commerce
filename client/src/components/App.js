@@ -88,7 +88,7 @@ function App() {
     <React.Fragment>
       <Router>
         <NavBar />
-        {cartVisible && <Cart right="0px" position="absolute" />}
+        {cartVisible && <Cart />}
         {!!purchaseModalVisible && <PurchaseModal />}
         <GlobalStyles />
         {allOfTheItems && allOfTheVendors && (
@@ -120,4 +120,3 @@ function App() {
 }
 
 export default App;
-

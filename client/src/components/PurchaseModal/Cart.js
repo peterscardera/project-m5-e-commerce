@@ -4,8 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { CartContext } from "../../cartContext";
 import { PurchaseContext } from "../../purchaseContext";
-import CartItems from "./CartItems";
-import PurchaseButtons from "../PurchaseModal/PurchaseButtons";
+import CartItems from "../Cart/CartItems";
 
 import {
   resetErrorStatus,
@@ -110,28 +109,22 @@ const Cart = () => {
               </>
             );
           })}
-        {
-          purchaseModalVisible === 0 ? (
-            <>
-              <Totals>{totalText}</Totals>
-              <FinalLineOptions>
-                {Object.keys(currentCart).length > 0 && (
-                  <>
-                    <StyledButton onClick={handlePurchase}>
-                      {" "}
-                      CHECKOUT
-                    </StyledButton>
-                    <StyledButton onClick={handleEmpty}>
-                      EMPTY CART
-                    </StyledButton>
-                  </>
-                )}
-              </FinalLineOptions>
-            </>
-          ) : null
-
-          // <PurchaseButtons/>
-        }
+        {purchaseModalVisible === 0 ? (
+          <>
+            <Totals>{totalText}</Totals>
+            <FinalLineOptions>
+              {Object.keys(currentCart).length > 0 && (
+                <>
+                  <StyledButton onClick={handlePurchase}>
+                    {" "}
+                    CHECKOUT
+                  </StyledButton>
+                  <StyledButton onClick={handleEmpty}>EMPTY CART</StyledButton>
+                </>
+              )}
+            </FinalLineOptions>
+          </>
+        ) : null}
       </Container>
     </React.Fragment>
   );
@@ -154,12 +147,10 @@ const Container = styled.div`
   /* change to flexible width */
   width: 400px;
   border: ${(props) =>
-    props.clickStatus ? "1px solid black" : "1px solid black"};
+    props.clickStatus ? "1px solid green" : "1px solid black"};
   padding: 25px;
   /* margin-left: auto; */
   z-index: 5;
-  position: absolute;
-  right: 0;
   background-color: ${(props) =>
     !props.clickStatus && !props.cartVisibilityPreHover
       ? "rgb(255,255,255)"

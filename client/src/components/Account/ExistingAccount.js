@@ -42,11 +42,19 @@ function ExistingAccount({ loggedInUser }) {
       </TopWrapper>
       <MidWrapper>
         <AccountDetails>
-          <h2>ACCOUNT DETAILS:</h2>
-          <div> EMAIL: {loggedInUser.email}</div>
+          <h2>ACCOUNT DETAILS</h2>
+          <ColDiv>
+            <AddressConst>NAME</AddressConst>
+            <AddressModular>{loggedInUser.givenName}</AddressModular>
+            <AddressConst> EMAIL </AddressConst>
+            <AddressModular>{loggedInUser.email}</AddressModular>
+            <AddressConst>PASSWORD</AddressConst>
+            <AddressModular>RESET PASSWORD HERE</AddressModular>
+          </ColDiv>
         </AccountDetails>
+
         <SavedAddresses>
-          <h2>SAVED ADDRESSES:</h2>
+          <h2>SAVED ADDRESSES</h2>
 
           {addressArray.length === 0 ? (
             <ColDiv>You have no addresses in our database.</ColDiv>
@@ -102,7 +110,13 @@ function ExistingAccount({ loggedInUser }) {
           )}
         </SavedAddresses>
         <OrderHistory>
-          <h2>ORDER HISTORY:</h2>
+          <h2>ORDER DETAILS</h2>
+          <ColDiv>
+            <AddressConst>ORDER TRACKING</AddressConst>
+            <AddressModular>TRACK YOUR CURRENT ORDER HERE</AddressModular>
+            <AddressConst>PREVIOUS ORDERS</AddressConst>
+            <AddressModular>SEE PREVIOUS ORDERS HERE</AddressModular>
+          </ColDiv>
         </OrderHistory>
       </MidWrapper>
     </>
@@ -131,9 +145,11 @@ const MidWrapper = styled.div`
 `;
 const AccountDetails = styled.div`
   flex: 33.33%;
+  border-right: solid black 2px;
 `;
 const SavedAddresses = styled.div`
   flex: 33.33%;
+  border-right: solid black 2px;
 `;
 const OrderHistory = styled.div`
   flex: 33.33%;
@@ -157,6 +173,11 @@ const ChangeOption = styled.div``;
 
 const StyledButton = styled.button`
   cursor: pointer;
+  background-color: black;
+  color: white;
+  padding: 10px;
+  max-width: 150px;
+  margin: 10px auto;
 `;
 const ColDiv = styled.div`
   display: flex;

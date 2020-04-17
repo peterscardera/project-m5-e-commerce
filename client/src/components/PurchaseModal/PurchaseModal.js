@@ -2,17 +2,17 @@ import React from "react";
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 
-import {PurchaseContext} from  '../../purchaseContext';
+import { PurchaseContext } from "../../purchaseContext";
 
-import Cart from '../Cart';
-import PurchaseNavBar from './PurchaseNavBar';
-import PurchaseButtons from './PurchaseButtons';
-import AddressChoices from './AddressChoices';
-import NewAddress from './NewAddress';
-import Payment from './Payment';
-import Confirmation from './Confirmation';
+import Cart from "./Cart";
+import PurchaseNavBar from "./PurchaseNavBar";
+import PurchaseButtons from "./PurchaseButtons";
+import AddressChoices from "./AddressChoices";
+import NewAddress from "./NewAddress";
+import Payment from "./Payment";
+import Confirmation from "./Confirmation";
 
-// import { 
+// import {
 //   resetErrorStatus,
 //   requestEmptyCart,
 //   emptyCartSuccess,
@@ -20,67 +20,61 @@ import Confirmation from './Confirmation';
 // } from "../../actions";
 
 const PurchaseModal = () => {
-  const { 
-    purchaseModalVisible, 
+  const {
+    purchaseModalVisible,
     setPurchaseModalVisible,
     shipToAddress,
-    setShipToAddress, 
+    setShipToAddress,
   } = React.useContext(PurchaseContext);
   const currentCart = useSelector((state) => state.orders.currentCart);
   const cartStatus = useSelector((state) => state.orders.status);
   // const user = useSelector((state)=> state.user.user);
 
-  
   const closePurchase = () => {
     setPurchaseModalVisible(0);
   };
   const handleClickPrev = () => {
-    setPurchaseModalVisible(purchaseModalVisible-1);
+    setPurchaseModalVisible(purchaseModalVisible - 1);
   };
   const handleClickNext = () => {
     if (PurchaseModal !== 3) {
-      setPurchaseModalVisible(purchaseModalVisible+1);
+      setPurchaseModalVisible(purchaseModalVisible + 1);
     }
   };
-
 
   return (
     <OuterContainer>
       <InnerContainer>
-        <PurchaseNavBar/>
-        {purchaseModalVisible === 1 &&
+        <PurchaseNavBar />
+        {purchaseModalVisible === 1 && (
           <RowDiv>
-            <Cart
-            right = "50%"
-            >
-            </Cart>
-            <PurchaseButtons/>
+            <Cart></Cart>
+            <PurchaseButtons />
           </RowDiv>
-        }
-        {purchaseModalVisible === 2 &&
+        )}
+        {purchaseModalVisible === 2 && (
           <RowDiv>
-            <AddressChoices/>
-            <NewAddress/>
+            <AddressChoices />
+            <NewAddress />
           </RowDiv>
-        }
-        {purchaseModalVisible === 3 &&
+        )}
+        {purchaseModalVisible === 3 && (
           <>
-            <Payment/>
+            <Payment />
           </>
-        }
-        {purchaseModalVisible === 4 &&
+        )}
+        {purchaseModalVisible === 4 && (
           <>
-            <Confirmation/>
-            <PurchaseButtons/>
+            <Confirmation />
+            <PurchaseButtons />
           </>
-        }
+        )}
       </InnerContainer>
     </OuterContainer>
   );
 };
 
 export default PurchaseModal;
-
 
 // background-color: ${props => (!props.clickStatus && !props.cartVisibilityPreHover) ? "rgba(0,255,0,0.5)" : "rgba(0,255,0,1)"};
 
@@ -91,7 +85,7 @@ const NextPrevButtons = styled.button`
   cursor: pointer;
   color: white;
   background: black;
-`
+`;
 
 const RowDiv = styled.div`
   display: flex;
@@ -99,8 +93,7 @@ const RowDiv = styled.div`
   justify-content: space-evenly;
   align-items: center;
   text-align: center;
-
-`
+`;
 
 const InnerContainer = styled.div`
   display: flex;
@@ -127,4 +120,4 @@ const OuterContainer = styled.div`
   height: 100vh;
   width: 100vw;
   z-index: 10;
-`
+`;

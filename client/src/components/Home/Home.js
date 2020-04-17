@@ -6,6 +6,7 @@ import fit3 from "./fit3.png";
 import sam1 from "./sam-1.png";
 import sam2 from "./sam-2.png";
 import sam3 from "./sam-3.png";
+import { NavLink } from "react-router-dom";
 
 const Home = () => {
   return (
@@ -20,7 +21,7 @@ const Home = () => {
               <img src={fit1} alt="fitbit" />
               <span class="home-item-overlay"> </span>
               <div class="home-item-button">
-                <a href="/item/6678">SHOP</a>
+                <NavLink to="/item/6678">SHOP</NavLink>
               </div>
             </div>
           </div>
@@ -31,7 +32,7 @@ const Home = () => {
               <img src={fit2} alt="fitbit" />
               <span class="home-item-overlay"> </span>
               <div class="home-item-button">
-                <a href="/item/6682">SHOP</a>
+                <NavLink to="/item/6682">SHOP</NavLink>
               </div>
             </div>
           </div>
@@ -42,7 +43,7 @@ const Home = () => {
               <img src={fit3} alt="fitbit" />
               <span class="home-item-overlay"> </span>
               <div class="home-item-button">
-                <a href="/item/6551">SHOP</a>
+                <NavLink to="/item/6551">SHOP</NavLink>
               </div>
             </div>
           </div>
@@ -53,7 +54,7 @@ const Home = () => {
               <img src={sam1} alt="samsung watch" />
               <span class="home-item-overlay"> </span>
               <div class="home-item-button">
-                <a href="/item/6583">SHOP</a>
+                <NavLink to="/item/6583">SHOP</NavLink>
               </div>
             </div>
           </div>
@@ -64,7 +65,7 @@ const Home = () => {
               <img src={sam2} alt="samsung watch" />
               <span class="home-item-overlay"> </span>
               <div class="home-item-button">
-                <a href="/item/6999">SHOP</a>
+                <NavLink to="/item/6999">SHOP</NavLink>
               </div>
             </div>
           </div>
@@ -75,7 +76,7 @@ const Home = () => {
               <img src={sam3} alt="samsung" />
               <span class="home-item-overlay"> </span>
               <div class="home-item-button">
-                <a href="/item/7002">SHOP</a>
+                <NavLink to="/item/7002">SHOP</NavLink>
               </div>
             </div>
           </div>
