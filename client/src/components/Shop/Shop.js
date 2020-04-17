@@ -13,17 +13,21 @@ const Shop = () => {
   const [itemsPerPage, setItemsPerPage] = useState(8);
 
   const [categoriesChecked, setCategoriesChecked] = useState({});
-console.log(categoriesChecked)
+  const [filteredDisplay, setFilteredDisplay] = useState(null);
+  console.log(filteredDisplay);
+
+  console.log(categoriesChecked);
   const allOfTheItems = useSelector((state) => state.gallery.items);
-  //console.log(allOfTheItems);
   useEffect(() => {
     if (!allOfTheItems) {
       setLoading(true);
+    } else if (filteredDisplay !== null) {
+      setItemList(filteredDisplay);
     } else {
       setItemList(allOfTheItems);
       setLoading(false);
     }
-  });
+  }, [categoriesChecked, filteredDisplay]);
 
   //index of the itemList array page that your on
   const currentPageIndex = currentPage * itemsPerPage;
@@ -37,41 +41,37 @@ console.log(categoriesChecked)
   };
 
   const filterHandler = () => {
+    console.log("filter start");
+    console.log(categoriesChecked, "categories checked");
     let assigned = Object.keys(categoriesChecked).filter((item) => {
       if (categoriesChecked[item] === true) {
-        return categoriesChecked;
+        return item;
       }
     });
 
-    console.log(assigned);
+    console.log(assigned, "assigned");
 
-    let displayedItemList = allOfTheItems.filter((item) => {
-      assigned.forEach((catChosen) => {
-        if (item.category == catChosen) {
-          console.log(item);
-        }
+    let toBePushed = [];
+
+    if (assigned.length !== 0) {
+      allOfTheItems.forEach((item) => {
+        assigned.forEach((catChosen) => {
+          if (item.category == catChosen) {
+            console.log(item, "each item ");
+            toBePushed.push(item);
+          }
+        });
       });
-    });
-console.log(displayedItemList)
-    // let displayedItemList = allOfTheItems.filter((item) => {
-    //   assigned.filter((eachCate) => {
-    //     return eachCate === item.category;
-    //   });
-    // });
+    } else {
+      toBePushed = allOfTheItems;
+    }
 
-    // console.log(displayedItemList);
+    console.log(toBePushed, "to be pushed beforeset filter");
+
+    setFilteredDisplay(toBePushed);
+
+    console.log("filter end");
   };
-
-  // useEffect(() => {
-  //   console.log(categoriesChecked);
-  //   let assigned = Object.keys(categoriesChecked).filter((item) => {
-  //     if (categoriesChecked[item] === true) {
-  //       return categoriesChecked;
-  //     }
-  //   });
-
-  //   console.log(assigned);
-  // });
 
   return (
     <React.Fragment>

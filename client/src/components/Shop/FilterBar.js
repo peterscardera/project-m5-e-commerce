@@ -17,6 +17,7 @@ const FilterBar = ({
   const [searchState, setSearchState] = useState("");
   //just a state of the categories from data
   const [categories, setCategories] = useState(null);
+  const [clickState, setClickState] = useState(false);
 
   let matchedItems = allOfTheItems.filter((item) => {
     if (
@@ -28,6 +29,12 @@ const FilterBar = ({
     return null;
   });
 
+const filterVisibilityHandler = (e) =>{
+e.preventDefault();
+setClickState(!clickState)
+
+}
+
   useEffect(() => {
     // i mean.. I could have hard code the categories..
     let duplicatedCategories = allOfTheItems.map((item) => {
@@ -37,34 +44,54 @@ const FilterBar = ({
     let uniqueDataArray = [...uniqueData];
     setCategories(uniqueDataArray);
     // console.log(uniqueDataArray);
+    console.log("clicked");
   }, []);
 
+  useEffect(() => {
+    console.log("second useEffecgt filter");
+    filterHandler();
+  }, [categoriesChecked]);
+
   const handleCheck = (e) => {
+    console.log("handl START");
     const value = e.target.checked;
     const name = e.target.name;
 
+    // let newCategoriesChecked = [];
+    // let categoriesKeys = Object.keys(categoriesChecked)
+    // categoriesKeys.forEach((key)=> {newCategoriesChecked[key]=categoriesChecked[key]})
     setCategoriesChecked({
       ...categoriesChecked,
-      [e.target.name]: value,
+      [name]: value,
     });
-    filterHandler();
+    // filterHandler();
+
+    console.log("handl end");
   };
 
-  return (
-    <Container>
-      <label htmlFor="viewAmount">View: </label>
-      <select onChange={submitHandler} id="viewAmount">
-        <option value="4">4</option>
-        <option value="6">6</option>
-        <option selected value="8">
-          8
-        </option>
-        <option value="16">16</option>
-      </select>
+  if (clickState === false) {
+    return (
+      <>
+        <FilterButton onClick={filterVisibilityHandler}> + Filters</FilterButton>
+      </>
+    );
+  } else {
+    return (
+      <Container>
+        <label htmlFor="viewAmount">View: </label>
+        <select onChange={submitHandler} id="viewAmount">
+          <option value="4">4</option>
+          <option value="6">6</option>
+          <option selected value="8">
+            8
+          </option>
+          <option value="16">16</option>
+        </select>
 
-      <label htmlFor="search"></label>
+        <label htmlFor="search"></label>
 
-      <StyledInput
+        {/* search below is not ready */}
+        {/* <StyledInput
         autocomplete="off"
         placeholder="search"
         id="search"
@@ -72,32 +99,47 @@ const FilterBar = ({
         onChange={(e) => {
           setSearchState(e.target.value);
         }}
-      />
-      {categories !== null
-        ? categories.map((eachCat) => {
-            return (
-              <>
-                <label htmlFor="eachCat"> {eachCat} </label>
-                <input
-                  onChange={handleCheck}
-                  id={eachCat}
-                  name={eachCat}
-                  type="checkbox"
-                ></input>
-              </>
-            );
-          })
-        : ""}
-    </Container>
-  );
+      /> */}
+        {categories !== null
+          ? categories.map((eachCat) => {
+              return (
+                <>
+                  <StyledCheckBoxes>
+                    <label htmlFor="eachCat"> {eachCat} </label>
+                    <input
+                      onChange={handleCheck}
+                      id={eachCat}
+                      name={eachCat}
+                      type="checkbox"
+                    ></input>
+                  </StyledCheckBoxes>
+                 
+                </>
+              );
+            })
+          : ""}
+           <FilterExit onClick={filterVisibilityHandler}> X </FilterExit>
+      </Container>
+    );
+  }
 };
 
 export default FilterBar;
 
 const Container = styled.div`
   background: black;
-  height: 100px;
+height: 25px;
   color: white;
+  display: flex;
+  /* flex-wrap: wrap; */
+  width: 100vw;
+  justify-content: space-around;
+
+  /* @media screen and (min-width: 600px) {
+
+      height: 50px; 
+      
+      }  */
 `;
 
 const StyledInput = styled.input`
@@ -117,3 +159,32 @@ const StyledInput = styled.input`
     color: white;
   }
 `;
+
+const StyledCheckBoxes = styled.div`
+  margin-left: 50px;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+`;
+
+const FilterExit = styled.button`
+margin-left: 100px;
+font-size: 1rem;
+font-weight: bold;
+color: white;
+outline: none;
+background: transparent;
+cursor: pointer;
+border: none;
+
+`
+const FilterButton = styled.button`
+text-align: left;
+font-size: 1rem;
+font-weight: bold;
+height: 10px;
+outline: none;
+background: transparent;
+cursor: pointer;
+border: none;
+`
