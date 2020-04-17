@@ -157,10 +157,11 @@ const Container = styled.div`
   z-index: 5;
   position: absolute;
   right: 0;
-  background-color: ${(props) =>
+  background-image: ${(props) =>
     !props.clickStatus && !props.cartVisible
-      ? "rgb(255,255,255)"
-      : "rgb(255,255,255)"};
+      ? "linear-gradient(to right, rgba(255,255,255,1), rgba(255,255,255,0.75))"
+      : "linear-gradient(to right, rgba(255,255,255,1), rgba(255,255,255,1))"};
 `;
+// "rgba(255,255,255,0.9)"
 
 export default Cart;

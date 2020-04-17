@@ -35,7 +35,9 @@ const NextPage = ({
         <ul>
           {pageNumbers.map((individualPageNumber, index) => {
             return (
-              <Wrapper>
+              <Wrapper
+              key = {index}
+              >
                 <StyledLi>
                   {individualPageNumber === "..." ? (
                     <span> ... </span>

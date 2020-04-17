@@ -22,6 +22,7 @@ const Payment = () => {
     shipToAddress,
     setShipToAddress,
     setPaymentInfo, 
+    setLastConfirmedOrderNum,
   } = React.useContext(PurchaseContext);
 
   const currentCart = useSelector((state) => state.orders.currentCart);
@@ -184,6 +185,7 @@ const Payment = () => {
           reduxDispatch(receiveUserInfo(data.user));
           reduxDispatch(receiveGalleryItems(data.items));
           reduxDispatch(receiveOrdersSuccess(data.orders.orderHistory, data.orders.currentCart));
+          setLastConfirmedOrderNum(data.orderId);
           setShipToAddress({
             address : null,
             houseNum : null,

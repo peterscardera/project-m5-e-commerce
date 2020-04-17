@@ -31,6 +31,7 @@ export const PurchaseProvider = ({children}) => {
   const [purchaseModalVisible, setPurchaseModalVisible] = useState(0);
   const [itemsQuantityInCart, setItemsQuantityInCart] = useState(0);
   const [subTotalInCart, setSubTotalInCart] = useState(0);
+  const [lastConfirmedOrderNum, setLastConfirmedOrderNum] = useState(null);
 
   return (
     <PurchaseContext.Provider value={{
@@ -43,7 +44,9 @@ export const PurchaseProvider = ({children}) => {
       itemsQuantityInCart, 
       setItemsQuantityInCart, 
       subTotalInCart, 
-      setSubTotalInCart 
+      setSubTotalInCart,
+      lastConfirmedOrderNum,
+      setLastConfirmedOrderNum,
     }}>
       {children}
     </PurchaseContext.Provider>

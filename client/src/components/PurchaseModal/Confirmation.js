@@ -7,16 +7,27 @@ import Cart from '../Cart';
 
 
 const Confirmation = () => {
-  const { purchaseModalVisible, setPurchaseModalVisible } = React.useContext(PurchaseContext);
+  const { purchaseModalVisible, 
+    setPurchaseModalVisible,
+    lastConfirmedOrderNum,
+  } = React.useContext(PurchaseContext);
   const currentCart = useSelector((state) => state.orders.currentCart);
   const cartStatus = useSelector((state) => state.orders.status);
 
 
 
   return (
-    <div>
-      Insert Confirmation Message
-    </div>
+    <>
+      <div>
+        Thank you for your purchase!
+      </div>
+      <div>
+        Your order date and id are:
+      </div>
+      <h2>
+        {lastConfirmedOrderNum}
+      </h2>
+    </>
   );
 };
 

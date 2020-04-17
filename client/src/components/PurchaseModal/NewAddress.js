@@ -15,8 +15,7 @@ const NewAddress = () => {
   const cartStatus = useSelector((state) => state.orders.status);
 
   const [quickAddress, setQuickAddress] = useState({
-    givenName: "",
-    surName: "",
+    email: "",
     addressHouseNum: "",
     addressStreetName: "",
     addressPostalCode: "",
@@ -34,21 +33,12 @@ const NewAddress = () => {
   };
   return (
     <ColForm>
-      <label htmlFor="givenName">
-        FIRST NAME
+      <label htmlFor="email">
+        EMAIL ADDRESS
         <input
           type="text"
-          name="givenName"
-          value={quickAddress.givenName}
-          onChange={handleQuickAddress}
-        />
-      </label>
-      <label htmlFor="surName">
-        LAST NAME
-        <input
-          type="text"
-          name="surName"
-          value={quickAddress.surName}
+          name="email"
+          value={quickAddress.email}
           onChange={handleQuickAddress}
         />
       </label>

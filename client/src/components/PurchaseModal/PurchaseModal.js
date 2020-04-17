@@ -38,7 +38,6 @@ const PurchaseModal = () => {
         {purchaseModalVisible === 4 && (
           <>
             <Confirmation />
-            <PurchaseButtons />
           </>
         )}
       </InnerContainer>
