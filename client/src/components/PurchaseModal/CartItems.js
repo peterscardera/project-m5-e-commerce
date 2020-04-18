@@ -187,6 +187,7 @@ const Wrapper = styled.div`
 const StyledImg = styled.img`
   height: 100px;
   width: 100px;
+  margin-right: 10px;
 `;
 
 const Quantity = styled.input`

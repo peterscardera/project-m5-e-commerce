@@ -99,13 +99,13 @@ const Cart = () => {
         {Object.keys(currentCart).length > 0 &&
           Object.keys(currentCart).map((itemId, index) => {
             return (
-              <>
+              <ColDiv>
                 <CartItems
                   key={itemId}
                   item={currentCart[itemId].itemInfo}
                   quantity={currentCart[itemId].quantity}
                 ></CartItems>
-              </>
+              </ColDiv>
             );
           })}
         {purchaseModalVisible === 0 ? (
@@ -129,6 +129,14 @@ const Cart = () => {
   );
 };
 
+
+const ColDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+`
 const StyledButton = styled.button`
   cursor: pointer;
 `;
@@ -142,6 +150,7 @@ const FinalLineOptions = styled.div`
   padding-left: 48.75%;
 `;
 const Container = styled.div`
+  margin-top : 5%;
   display: flex;
   flex-wrap: wrap;
   height: 80%;
@@ -150,6 +159,7 @@ const Container = styled.div`
   border-right: ${(props) =>
     props.clickStatus ? "1px solid black" : "1px solid black"};
   padding: 25px;
+  min-height: 500px;
   /* margin-left: auto; */
   z-index: 5;
   background-color: ${(props) =>

@@ -1,3 +1,66 @@
+# Background info:
+
+This project was put together by Andrew Diles, Kendra Scappaticci and Peter Scardera as a requirement to complete the Javascript Concordia bootcamp, winter of 2020 (cb-i-3)
+
+We collaborated for 8 days on the project; and surpassed all MVP goals.
+
+# How to run:
+
+In VS code, this will require a split screen terminal, as both a back end server and front end site need to be run.
+Install and run the components in both the client and server folders.  The FE will fetch the appropriate data when it first accesses the site ( @ http://localhost:3000/ )
+
+# What the site does:
+
+This E-commerce site displays item for sale from a list of item details provided from the BE.
+
+Site navigation includes:
+- home page that display items
+- shop that displays items with several filtering functions
+- log in, new account and user profile screens.
+
+Users can:
+- log in / out
+- create new accounts
+- add the items to their from the shop (by any increment that the stock can supply)
+- open their cart at any time (except when in the purchase screen)
+
+From the cart they can: 
+- increment item quantities up/down
+- clear out all quantity of an item
+- clear out all items from the cart
+- Move to the purchase screen
+
+From the purchase screen they can:
+- manipulate item quantities
+- travel to log in screen if they are not signed in
+- select an address that is saved with their account
+- input payment information (this information is not authenticated, but information type is verified as being appropriate)
+
+The BE maintains the cart of a logged in user at all times.  If a user logs in with items in their cart, the saved cart and their current cart are merged, and items in excess of stock are removed.  The FE recieves the item ids of truncated quantities, but we did not have enough time to display them in a modal, which leads us to...
+
+# Incompleted features due to lack of time
+
+The project was initially due on a Monday, but, the Thursday before, was bumped up to Friday, leaving us one day left to work instead of three.  Consequantially, we had to forego some features we had intended to implement.
+
+View past orders was not completed in the user information screen.  The information is successfully in the FE, but we did not have enough time to display it in a satisfying manner
+
+The confirmation page was not completed.
+Some stylings were not polished (notably the purchase modal)
+
+Users cannot enter a new address when performing a purchase.
+
+Users cannot purchase without an account.
+
+Users cannot search for orderHistories using an email address without an account.
+
+Some known bugs exist : such as the total number of items in the cart displaying a zero in the tens column after cart merges.  The filter bar not having appropriate wrapping for smaller screen widths.  The filter displaying one less item than it should.  Etc.
+
+We are confident the bugs we knew about, the styling and extra intended features would have been completed in the original time allotment.
+
+
+# Below are the instructions our team recieved for this project:
+
+
 # Wearables E-Commerce Project
 
 [See the list of TEAMS](__documentation/TEAMS.md)

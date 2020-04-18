@@ -112,7 +112,7 @@ export default AddToCartButton;
 //we want the add to cart button to not only be disable but to also let the user know he has has hold the max amt in his cart
 const AddToCButton = styled.button`
   opacity: ${(props) => (props.disabled ? ".5" : "1")};
-  cursor: pointer;
+  cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
   &:hover {
     background: grey;
   }
