@@ -27,13 +27,13 @@ export default function userReducer(state = initialState, action) {
     case 'REQUEST_CREATE_NEW_USER' : {
       return {
         ...state,
-        status: 'error',
+        status: 'loading',
       }
     }
     case 'CREATE_NEW_USER_SUCCESS' : {
       return {
         ...state,
-        status: 'error',
+        status: 'idle',
       }
     }
     case 'CREATE_NEW_USER_ERROR' : {
