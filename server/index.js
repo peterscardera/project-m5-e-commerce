@@ -19,6 +19,7 @@ const {
   putRemoveItem,
   postMergeCartGetOrders,
   putEmptyCart,
+  postPurchase,
 } = require('./handlers');
 
 const PORT = 4000;
@@ -585,6 +586,6 @@ express()
   .get("/mongo/addItem/:email/:itemId/:quantity", getAddItem)
   .put("/mongo/removeItem/:email/:itemId/:quantity", putRemoveItem)
   .put("/mongo/emptyCart/:email", putEmptyCart)
-  // .post("/purchase/:email", handlePurchase)
+  .post("/mongo/purchase/:email", postPurchase)
 
   .listen(PORT, () => console.info(`Listening on port ${PORT}`));
