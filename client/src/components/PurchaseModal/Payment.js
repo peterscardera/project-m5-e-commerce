@@ -148,7 +148,7 @@ const Payment = () => {
     if (userInfo) email = userInfo.email;
     reduxDispatch(requestPurchase());
       
-    fetch(`/purchase/${email}`, {
+    fetch(`/mongo/purchase/${email}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

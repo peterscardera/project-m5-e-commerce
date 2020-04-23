@@ -21,7 +21,7 @@ const ItemDetails = () => {
   useEffect(() => {
     // *NO NEED FOR AN 'IF' AS I CONDITIONALLY RENDERED THIS PAGE IN APPs
     let selectedItem = allOfTheItems.find((element) => {
-      return element.id === parseInt(itemId);
+      return element._id === parseInt(itemId);
     });
     setProductChosen([selectedItem]);
   }, [itemId, allOfTheItems]);
@@ -30,7 +30,7 @@ const ItemDetails = () => {
     if (productChosen !== null) {
       productChosen.forEach((eachProduct) => {
         let company = allOfTheVendors.filter((element) => {
-          return element.id === eachProduct.companyId;
+          return element._id === eachProduct.companyId;
         });
         setAssociatedComp(company);
       });
@@ -49,7 +49,7 @@ const ItemDetails = () => {
               name={eachComp.name}
               itsWebSite={eachComp.url}
               itsCountry={eachComp.country}
-              itsId={eachComp.id}
+              itsId={eachComp._id}
             >
               <div>{eachComp.name}</div>
             </VendorPage>
@@ -57,11 +57,12 @@ const ItemDetails = () => {
         })}
       {productChosen != null &&
         productChosen.map((item, index) => {
+          console.log('productChosenproductChosenproductChosenproductChosen',productChosen)
           return (
             <GridContainer key={index}>
               <TopRow>
                 <h1> {item.name}</h1>
-                <div>Modal Number: {item.id} </div>
+                <div>Modal Number: {item._id} </div>
               </TopRow>
               <ImgContainer>
                 <img src={item.imageSrc} />

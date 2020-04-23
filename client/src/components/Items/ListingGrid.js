@@ -7,7 +7,7 @@ const ListingGrid = ({ itemList }) => {
     <React.Fragment>
       <Wrapper>
         {itemList.map((eachItem) => {
-          return <EachUnit key={eachItem.id} {...eachItem} />;
+          return <EachUnit key={eachItem._id} {...eachItem} />;
         })}
       </Wrapper>
     </React.Fragment>

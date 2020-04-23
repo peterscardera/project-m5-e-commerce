@@ -1,28 +1,28 @@
-{
-  "kendra@gmail.com": {
+[
+  {
+    "_id": "0001",
     "currentCart" : {},
     "orderHistory" : [
     ]
   },
-  "andrew@gmail.com": {
+  {
+    "_id": "0002",
     "currentCart" : {},
     "orderHistory" : []
   },
-  "peter@gmail.com": {
+  {
+    "_id": "0003",
     "currentCart" : {},
     "orderHistory" : []
   },
-  "buffy@gmail.com": {
+  {
+    "_id": "0004",
     "currentCart" : {},
     "orderHistory" : []
   },
-  "malcolm@gmail.com": {
+  {
+    "_id": "0005",
     "currentCart" : {},
     "orderHistory" : []
-  },
-  "no@account.com": {
-    "currentCart": {},
-    "orderHistory": [
-    ]
   }
-}
+]

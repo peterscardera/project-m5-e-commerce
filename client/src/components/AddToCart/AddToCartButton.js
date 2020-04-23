@@ -29,7 +29,7 @@ const AddToCartButton = ({ productChosen, currentCart }) => {
     } else {
       dispatch(requestAddItemToCart());
       fetch(
-        `/addItem/${loggedInStatus.email}/${productChosen[0].id}/${quantity}`
+        `/mongo/addItem/${loggedInStatus.email}/${productChosen[0]._id}/${quantity}`
         ).then((res) => {
           if (res.status === 200) {
             dispatch(addItemToCartSuccess(productChosen, quantity));
@@ -56,7 +56,7 @@ const AddToCartButton = ({ productChosen, currentCart }) => {
     //   let orderKeys = Object.keys(orderInfo);
     //   orderKeys.forEach((eachKey) => {
     //     if (orderInfo[itemId]) {
-    //       setTempFound(orderInfo[eachKey].itemInfo.id)
+    //       setTempFound(orderInfo[eachKey].itemInfo._id)
     //       // console.log(tempFound)
     //     }
     //     if (tempFound) {

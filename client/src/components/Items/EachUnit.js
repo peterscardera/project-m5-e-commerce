@@ -8,7 +8,7 @@ const EachUnit = ({
   price,
   body_location,
   category,
-  id,
+  _id,
   imageSrc,
   numInStock,
   companyId,
@@ -17,12 +17,12 @@ const EachUnit = ({
     <React.Fragment>
       <Container>
         <ImgCenter>
-          <StyledLink to={`/item/${id}`}>
+          <StyledLink to={`/item/${_id}`}>
             <StyledImg src={imageSrc} />
           </StyledLink>
         </ImgCenter>
         <SpaceBetween>
-          <StyledLink to={`/item/${id}`}>
+          <StyledLink to={`/item/${_id}`}>
             <div>{name}</div>
           </StyledLink>
           <StyledPrice>{price}</StyledPrice>

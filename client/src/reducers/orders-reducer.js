@@ -51,14 +51,14 @@ export default function ordersReducer(state = initialState, action) {
       }
     }
     case 'ADD_ITEM_TO_CART_SUCCESS' : {
-      if (state.currentCart[action.item[0].id]) {
+      if (state.currentCart[action.item[0]._id]) {
         return {
           ...state,
           currentCart: {
             ...state.currentCart,
-            [action.item[0].id] : {
+            [action.item[0]._id] : {
               itemInfo: action.item[0],
-              quantity: state.currentCart[action.item[0].id].quantity + action.quantity,
+              quantity: state.currentCart[action.item[0]._id].quantity + action.quantity,
             }
           },
           status: 'idle',
@@ -69,7 +69,7 @@ export default function ordersReducer(state = initialState, action) {
           ...state,
           currentCart: {
             ...state.currentCart,
-            [action.item[0].id] : {
+            [action.item[0]._id] : {
               itemInfo: action.item[0],
               quantity: action.quantity,
             }
@@ -94,7 +94,7 @@ export default function ordersReducer(state = initialState, action) {
     }
     case 'DISCARD_ITEM_SUCCESS': {
       const newState = { ...state};
-      delete newState.currentCart[action.item.id];
+      delete newState.currentCart[action.item._id];
       return {...newState};
     }
     case 'DISCARD_ITEM_ERROR': {
@@ -117,12 +117,12 @@ export default function ordersReducer(state = initialState, action) {
       // console.log('action.item:',action.item);
       // console.log('state:', state);
       // console.log("state's currentCart", state.currentCart);
-      // console.log("id from action:", action.item[0].id )
-      // console.log('item in cart using id from action:', state.currentCart[action.item[0].id]);
-      // console.log('fishing for numInStock',state.currentCart[action.item[0].id].itemInfo[0].numInStock );
-      // console.log('qant in state:', state.currentCart[action.item[0].id].quantity );
+      // console.log("id from action:", action.item[0]._id )
+      // console.log('item in cart using id from action:', state.currentCart[action.item[0]._id]);
+      // console.log('fishing for numInStock',state.currentCart[action.item[0]._id].itemInfo[0].numInStock );
+      // console.log('qant in state:', state.currentCart[action.item[0]._id].quantity );
       // console.log('action.quantity', parseInt(action.quantity));
-      if (parseInt(state.currentCart[action.item[0].id].quantity) === parseInt(action.quantity)) {
+      if (parseInt(state.currentCart[action.item[0]._id].quantity) === parseInt(action.quantity)) {
         let stateKeys = Object.keys(state);
         let newState = {};
         stateKeys.forEach((element)=>{
@@ -130,7 +130,7 @@ export default function ordersReducer(state = initialState, action) {
         });
 
         newState = { ...newState, status: 'idle',};
-        delete newState.currentCart[action.item[0].id];
+        delete newState.currentCart[action.item[0]._id];
         return {...newState};
       }
       else { // case: removing some, but not all, of a given item from the cart
@@ -138,9 +138,9 @@ export default function ordersReducer(state = initialState, action) {
           ...state,
           currentCart: {
             ...state.currentCart,
-            [action.item[0].id] : {
-              ...state.currentCart[action.item[0].id],
-              quantity: state.currentCart[action.item[0].id].quantity - action.quantity,
+            [action.item[0]._id] : {
+              ...state.currentCart[action.item[0]._id],
+              quantity: state.currentCart[action.item[0]._id].quantity - action.quantity,
             }
           },
           status: 'idle',
