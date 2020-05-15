@@ -27,7 +27,7 @@ function ExistingAccount({ loggedInUser }) {
     setAddressNum(addressNum - 1);
   };
 
-  console.log(loggedInUser);
+  // console.log(loggedInUser);
   return (
     <>
       <TopWrapper>

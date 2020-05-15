@@ -34,7 +34,7 @@ function App() {
   const { purchaseModalVisible, setPurchaseModalVisible } = useContext(
     PurchaseContext
   );
-
+  
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -42,18 +42,21 @@ function App() {
     dispatch(requestVendors());
     const initialFetch = async () => {
       try {
-        let storeData = await fetch("/getStore");
+        // let storeData = await fetch("/getStore"); //without mongo
+        let storeData = await fetch("/mongo/getStore");
         if (storeData.status === 200) {
           let jsonData = await storeData.json();
-          dispatch(receiveGalleryItems(jsonData));
+          console.log('jsonDatajsonDatajsonDatajsonData',jsonData)
+          dispatch(receiveGalleryItems(jsonData.data));
         } else {
           console.log("error fetching store data");
           dispatch(receiveGalleryItemsError());
         }
-        let vendorData = await fetch("/getVendors");
+        // let vendorData = await fetch("/getVendors"); //without mongo
+        let vendorData = await fetch("/mongo/getVendors");
         if (vendorData.status === 200) {
           let jsonVendor = await vendorData.json();
-          dispatch(receiveVendors(jsonVendor));
+          dispatch(receiveVendors(jsonVendor.data));
         } else {
           console.log("error fetching vendor data");
           dispatch(receiveVendorsError());

@@ -61,7 +61,7 @@ const Cart = () => {
     if (!user) {
       dispatch(emptyCartSuccess());
     } else {
-      fetch(`/emptyCart/${user.email}`, {
+      fetch(`/mongo/emptyCart/${user.email}`, {
         method: "PUT",
       }).then((res) => {
         if (res.status === 200) {

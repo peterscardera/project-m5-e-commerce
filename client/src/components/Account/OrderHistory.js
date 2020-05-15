@@ -18,20 +18,19 @@ const OrderHistory = () => {
     let orderId = Object.keys(order);
     orderIds.push(orderId[0]);
   })
-  console.log('Past Orders:', pastOrders);
-  console.log('Here are the ids:', orderIds);
+  // console.log('Past Orders:', pastOrders);
+  // console.log('Here are the ids:', orderIds);
 
-  console.log('targetting',orderIds[pastOrderNum]);
+  // console.log('targetting',orderIds[pastOrderNum]);
 
   let orderItemIds = [];
 
   if (pastOrders && pastOrderNum && orderIds && pastOrderNum) {
-    console.log('digging', pastOrders[pastOrderNum][orderIds[pastOrderNum]]);
+    // console.log('digging', pastOrders[pastOrderNum][orderIds[pastOrderNum]]);
     orderItemIds = Object.keys(pastOrders[pastOrderNum][orderIds[pastOrderNum]]);
     orderItemIds.pop();
     orderItemIds.pop();
   }
-  console.log('orderItemIdsorderItemIdsorderItemIds',orderItemIds)
   return (
     <ColDiv>
     <RowDiv>
@@ -54,7 +53,7 @@ const OrderHistory = () => {
       <OrderConst>ITEMS</OrderConst>
       {/* {orderItemIds && orderItemIds.map((id)=>{
         return (
-          // {id}
+          // {_id}
           'hi'
         )
       })} */}

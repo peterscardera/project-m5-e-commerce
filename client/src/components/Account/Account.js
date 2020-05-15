@@ -86,17 +86,20 @@ function Account() {
 
     reduxDispatch(requestUserInfo());
 
-    fetch(`/logIn/${state.email}`, {
+    // fetch(`/logIn/${state.email}`, { //without mongo
+    fetch(`/mongo/logIn/${state.email}`, {
+      // /mongo/logIn/:email
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ password: state.password }),
     }).then((resp) => {
+      // console.log('respresprespresprespresp',resp)
       if (resp.status === 200) {
         resp.json().then((userData) => {
-          console.log(userData, "IM IN USERDATA LOGGED IN");
-          reduxDispatch(receiveUserInfo(userData));
+          // console.log(userData, "IM IN USERDATA LOGGED IN");
+          reduxDispatch(receiveUserInfo(userData.user));
           //handler below will get the order history and merge a previous cart to then existing cart
           getPastInfo();
         });
@@ -117,7 +120,7 @@ function Account() {
     //1- get the current cart and past cart
     reduxDispatch(requestOrders());
 
-    fetch(`/mergeCartGetOrders/${state.email}`, {
+    fetch(`/mongo/mergeCartGetOrders/${state.email}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -165,7 +168,8 @@ function Account() {
     console.log("data about to submit for creation,", createAccountUserInput);
 
     // one beautiful nested then to create a user and "then" log the user in
-    fetch(`/createAccount/${createAccountUserInput.email}`, {
+    // fetch(`/createAccount/${createAccountUserInput.email}`, { //without mongo
+    fetch(`/mongo/createAccount/${createAccountUserInput.email}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -193,17 +197,18 @@ function Account() {
             // once server says account is created successfully, below we will automatically sign in the user
           })
           .then((newUserData) => {
-            fetch(`/logIn/${newUserData.email}`, {
+            // fetch(`/logIn/${state.email}`, {    requires change to method POST
+            fetch(`/mongo/logIn/${createAccountUserInput.email}`, {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
               },
-              body: JSON.stringify({ password: newUserData.password }),
+              body: JSON.stringify({ password: createAccountUserInput.password }),
             }).then((newUserLogIn) => {
               if (newUserLogIn.status === 200) {
                 newUserLogIn.json().then((returnData) => {
                   // console.log(returnData,"****");
-                  reduxDispatch(receiveUserInfo(returnData));
+                  reduxDispatch(receiveUserInfo(returnData.user));
                   pushToHome();
                 });
               }

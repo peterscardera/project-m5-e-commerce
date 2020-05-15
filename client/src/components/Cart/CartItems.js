@@ -20,7 +20,7 @@ const CartItems = ({ item, quantity }) => {
   const [subTotal, setSubTotal] = useState(
     quantity * parseFloat(item.price.substring(1))
   );
-  const stateItem = useSelector((state) => state.orders.currentCart[item.id]);
+  const stateItem = useSelector((state) => state.orders.currentCart[item._id]);
   let stateQuantity = 0;
   if (stateItem) stateQuantity = stateItem.quantity;
   else if (stateQuantity != 0) stateQuantity = 0; //this line may be wrong
@@ -34,7 +34,7 @@ const CartItems = ({ item, quantity }) => {
   const user = useSelector((state) => state.user.user);
   const orders = useSelector((state) => state.orders);
   const dispatch = useDispatch();
-  let linkAddress = `/item/${item.id}`;
+  let linkAddress = `/item/${item._id}`;
 
   const handleAdd = (ev) => {
     ev.preventDefault();
@@ -43,7 +43,7 @@ const CartItems = ({ item, quantity }) => {
     if (!user) {
       dispatch(addItemToCartSuccess([item], 1));
     } else {
-      fetch(`/addItem/${user.email}/${item.id}/1`, {
+      fetch(`/mongo/addItem/${user.email}/${item._id}/1`, {
         method: "GET",
       }).then((res) => {
         if (res.status === 200) {
@@ -70,7 +70,7 @@ const CartItems = ({ item, quantity }) => {
     if (!user) {
       dispatch(removeItemFromCartSuccess([item], x));
     } else {
-      fetch(`/removeItem/${user.email}/${item.id}/${x}`, {
+      fetch(`/mongo/removeItem/${user.email}/${item._id}/${x}`, {
         method: "PUT",
       }).then((res) => {
         if (res.status === 200) {

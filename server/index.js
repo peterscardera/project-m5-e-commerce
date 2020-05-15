@@ -9,6 +9,19 @@ const users = require("./data/users");
 const orders = require("./data/orders");
 const vendors = require("./data/companies");
 
+const { 
+  getUserInfo, 
+  getItemInfo,
+  getVendorInfo,
+  postCreateAccount,
+  getOrders,
+  getAddItem,
+  putRemoveItem,
+  postMergeCartGetOrders,
+  putEmptyCart,
+  postPurchase,
+} = require('./handlers');
+
 const PORT = 4000;
 
 const handleGetStore = (req, res) => {
@@ -61,7 +74,7 @@ const handleCreateAccount = (req, res) => {
   if (!password || password.length === 0) {
     res.status(400).json(`Password may not be blank.`);
   }
-  let newAccount = { id: id, email: email, password: password };
+  let newAccount = { _id: id, email: email, password: password };
   if (userName) newAccount.userName = userName;
   if (givenName) newAccount.givenName = givenName;
   if (surName) newAccount.surName = surName;
@@ -78,26 +91,28 @@ const handleCreateAccount = (req, res) => {
   users.push(newAccount);
   userInfo = users.find((element) => element.email === email);
   if (userInfo) {
+
     let ordersKeys = Object.keys(orders);
     let foundOrder = ordersKeys.find((key) => key === email);
     if (!foundOrder) {
-      let newOrders = { currentCart: {}, orderHistory: [] };
-      orders[email] = newOrders;
+      let newOrders = { _id: id ,currentCart: {}, orderHistory: [] };
+      orders.push(newOrders);
     }
     res.status(200).json(userInfo);
   } else {
     res.status(500).json("Internal error.");
   }
-
-  // ALSO CREATE AN EMPTY ORDERS
 };
+
 const handleGetOrders = (req, res) => {
   let email = req.params.email.toLowerCase();
-  // let userInfo = users.find(element => element.email === email);
-  // if (!userInfo || !userInfo.id) {
-  //   res.status(400).json(`No account linked to email address: ${email}, was found.`)
-  // }
-  const userOrders = orders[email];
+  let userInfo = users.find(element => element.email === email);
+  if (!userInfo || !userInfo._id) {
+    res.status(400).json(`No account linked to email address: ${email}, was found.`)
+  }
+  let userOrders = orders.find(element => element._id === userInfo[_id]);
+
+  // const userOrders = userOrders;
   if (!userOrders) {
     res.status(400).json(`${email} does not have existing orders...`);
   } else {
@@ -108,17 +123,19 @@ const handleGetOrders = (req, res) => {
 const handleMergeCartGetOrders = (req, res) => {
   let incomingCart = req.body.currentCart;
   let email = req.params.email.toLowerCase();
-  let userInfo = users.find((element) => element.email === email);
   let incomingKeys = Object.keys(incomingCart);
-  if (!userInfo || !userInfo.id) {
+
+  let userInfo = users.find((element) => element.email === email);
+  if (!userInfo || !userInfo._id) {
     res.status(400).json(`Error accessing ${email}'s information.`);
   }
-  const userOrders = orders[email];
+  let userOrders = orders.find(element => element._id === userInfo[_id]);
   if (!userOrders) {
     res
       .status(400)
       .json(`User name ${userName} does not have existing orders...`);
-  } else if (incomingKeys.length === 0) {
+  } 
+  if (incomingKeys.length === 0) {
     res.status(200).json({userOrders: userOrders});
   }
   // case below: user has added items to cart before logging in but their account's cart is empty
@@ -146,7 +163,7 @@ const handleMergeCartGetOrders = (req, res) => {
       // the item has been ordered before
       else {
         // test available quantity, first case: store has enough, second: store does not have sufficient inventory
-        let itemInfo = items.find((element) => element.id === parseInt(incId));
+        let itemInfo = items.find((element) => element._id === parseInt(incId));
         if (
           itemInfo.numInStock >=
           parseInt(incomingCart[incId].quantity) +
@@ -179,43 +196,51 @@ const handleAddItem = (req, res) => {
   let email = req.params.email.toLowerCase();
   let itemId = req.params.itemId;
   let quantity = req.params.quantity;
-  let itemInfo = items.find((element) => element.id === parseInt(itemId));
-  if (!itemInfo) {
-    res.status(400).json(`Item number ${itemId} not found.}`);
-  } else if (!orders[email]) {
+  let itemInfo = items.find((element) => element._id === parseInt(itemId));
+
+  let userInfo = users.find((element) => element.email === email);
+  if (!userInfo || !userInfo._id) {
+    res.status(400).json(`No account linked to email address: ${email}, was found.`)
+  }
+  let userOrders = orders.find(element => element._id === userInfo[_id]);
+  if (!userOrders) {
     res
       .status(400)
-      .json(`Acount linked to: ${email}, does not have any orders...`);
-  } else if (orders[email].currentCart) {
-    if (orders[email].currentCart[itemId]) {
+      .json(`No orders linked to email address: ${email}, was found.`);
+  }
+
+  if (!itemInfo) {
+    res.status(400).json(`Item number ${itemId} not found.}`);
+  } else if (userOrders.currentCart) {
+    if (userOrders.currentCart[itemId]) {
       if (
         parseInt(quantity) +
-          parseInt(orders[email].currentCart[itemId].quantity) >
+          parseInt(userOrders.currentCart[itemId].quantity) >
         itemInfo.numInStock
       ) {
         res
           .status(409)
           .json(`Insufficient quantity of item id ${itemId} in stock.`);
       } else {
-        orders[email].currentCart[itemId] = {
+        userOrders.currentCart[itemId] = {
           itemInfo: itemInfo,  // made a change here
           quantity: (
             parseInt(quantity) +
-            parseInt(orders[email].currentCart[itemId].quantity)
+            parseInt(userOrders.currentCart[itemId].quantity)
           ).toString(),
         };
-        res.status(200).json(orders[email].currentCart[itemId]);
+        res.status(200).json(userOrders.currentCart[itemId]);
       }
     } else if (parseInt(quantity) > itemInfo.numInStock) {
       res
         .status(409)
         .json(`Insufficient quantity of item id ${itemId} in stock.`);
     } else {
-      orders[email].currentCart[itemId] = {
+      userOrders.currentCart[itemId] = {
         itemInfo: itemInfo,
         quantity: parseInt(quantity),
       };
-      res.status(200).json(orders[email].currentCart[itemId]);
+      res.status(200).json(userOrders.currentCart[itemId]);
     }
   } else {
     res.status(400).json(`Unknown error.`);
@@ -226,41 +251,53 @@ const handleRemoveItem = (req, res) => {
   let email = req.params.email.toLowerCase();
   let itemId = req.params.itemId;
   let quantity = req.params.quantity;
-  let itemInfo = items.find((element) => element.id === parseInt(itemId));
+  let itemInfo = items.find((element) => element._id === parseInt(itemId));
+
+  let userInfo = users.find((element) => element.email === email);
+  if (!userInfo || !userInfo._id) {
+    res.status(400).json(`Error accessing ${email}'s information.`);
+  }
+  let userOrders = orders.find(element => element._id === userInfo[_id]);
+  if (!userOrders) {
+    res
+      .status(400)
+      .json(`User name ${userName} does not have existing orders...`);
+  } 
+
   if (!itemInfo) {
     res.status(400).json(`Item number ${itemId} not found.}`);
-  } else if (!orders[email]) {
+  } else if (!userOrders) {
     res
       .status(400)
       .json(`Account linked to: ${email}, does not have any orders...`);
-  } else if (orders[email].currentCart) {
+  } else if (userOrders.currentCart) {
     if (
-      parseInt(orders[email].currentCart[itemId].quantity) < parseInt(quantity)
+      parseInt(userOrders.currentCart[itemId].quantity) < parseInt(quantity)
     ) {
       res
         .status(400)
         .json(
-          `Error: requested to remove ${quantity} of item id ${itemId} when there are only ${orders[email].currentCart[itemId].quantity} to be removed.`
+          `Error: requested to remove ${quantity} of item id ${itemId} when there are only ${userOrders.currentCart[itemId].quantity} to be removed.`
         );
     } else if (
-      parseInt(orders[email].currentCart[itemId].quantity) ===
+      parseInt(userOrders.currentCart[itemId].quantity) ===
       parseInt(quantity)
     ) {
-      delete orders[email].currentCart[itemId];
-      res.status(200).json(orders[email].currentCart);
+      delete userOrders.currentCart[itemId];
+      res.status(200).json(userOrders.currentCart);
     } else if (
-      parseInt(orders[email].currentCart[itemId].quantity) > parseInt(quantity)
+      parseInt(userOrders.currentCart[itemId].quantity) > parseInt(quantity)
     ) {
       let currentQuantity = parseInt(
-        orders[email].currentCart[itemId].quantity
+        userOrders.currentCart[itemId].quantity
       );
       let newQuantity = currentQuantity - parseInt(quantity);
       newQuantity = newQuantity.toString();
-      orders[email].currentCart[itemId] = {
+      userOrders.currentCart[itemId] = {
         itemInfo: itemInfo,
         quantity: parseInt(newQuantity),
       };
-      res.status(200).json(orders[email].currentCart[itemId]);
+      res.status(200).json(userOrders.currentCart[itemId]);
     } else {
       res.status(400).json(`Unknown error.`);
     }
@@ -271,13 +308,25 @@ const handleRemoveItem = (req, res) => {
 
 const handleEmptyCart = (req, res) => {
   let email = req.params.email.toLowerCase();
-  if (!orders[email]) {
+
+  let userInfo = users.find((element) => element.email === email);
+  if (!userInfo || !userInfo._id) {
+    res.status(400).json(`Error accessing ${email}'s information.`);
+  }
+  let userOrders = orders.find(element => element._id === userInfo[_id]);
+  if (!userOrders) {
+    res
+      .status(400)
+      .json(`User name ${userName} does not have existing orders...`);
+  } 
+
+  if (!userOrders) {
     res
       .status(400)
       .json(`Account linked to: ${email}, does not have any orders...`);
   } else {
-    orders[email].currentCart = {};
-    res.status(200).json(orders[email].currentCart);
+    userOrders.currentCart = {};
+    res.status(200).json(userOrders.currentCart);
   }
 };
 
@@ -287,27 +336,32 @@ const handlePurchase = (req, res) => {
     // console.log('11111111111111111111111111111');
     res.status(400).json("Email must be provided.");
   }
-  if (!orders[email]) {
+  let userInfo = users.find((element) => element.email === email);
+  if (!userInfo || !userInfo._id) {
+    res.status(400).json(`Error accessing ${email}'s information.`);
+  }
+  let userOrders = orders.find(element => element._id === userInfo[_id]); 
+  if (!userOrders) {
     // console.log('2222222222222222222222222222');
     res
       .status(400)
       .json(`Account linked to: ${email}, does not have any orders...`);
-  } else if (Object.keys(orders[email].currentCart).length === 0) {
+  } else if (Object.keys(userOrders.currentCart).length === 0) {
     // console.log('33333333333333333333333');
     res.status(400).json(`Nothing in the shopping cart to purchase`);
-  } else if (Object.keys(orders[email].currentCart).length > 0) {
-    let cartKeys = Object.keys(orders[email].currentCart);
+  } else if (Object.keys(userOrders.currentCart).length > 0) {
+    let cartKeys = Object.keys(userOrders.currentCart);
     let notFoundError = false;
     let insufficient = false;
     let insufficientItems = [];
     cartKeys.forEach((id) => {
       let idInt = parseInt(id);
-      let itemInStore = items.find((element) => element.id === idInt);
+      let itemInStore = items.find((element) => element._id === idInt);
       if (!itemInStore) {
         notFoundError = true;
       }
       if (
-        parseInt(orders[email].currentCart[id].quantity) >
+        parseInt(userOrders.currentCart[id].quantity) >
         itemInStore.numInStock
       ) {
         insufficient = true;
@@ -390,7 +444,6 @@ const handlePurchase = (req, res) => {
         totalCost : totalCost,
       }
       // addAddress should only be available if the user is logged in, and, if true, adds the given address into the user's profile information
-      let userInfo = users.find((element) => element.email === email);
       if (addAddress) {
         let foundNewAddressIndex = false;
         let i = 1;
@@ -405,22 +458,22 @@ const handlePurchase = (req, res) => {
         }
         userInfo[nextAddressNum] = address;
       }
-      orders[email].currentCart.shippingAddress = address;
-      orders[email].currentCart.shippingInfo = shippingInfo;
+      userOrders.currentCart.shippingAddress = address;
+      userOrders.currentCart.shippingInfo = shippingInfo;
       cartKeys.forEach((id) => {
         let idInt = parseInt(id);
-        let itemInStore = items.find((element) => element.id === idInt);
+        let itemInStore = items.find((element) => element._id === idInt);
         itemInStore.numInStock -= parseInt(
-          orders[email].currentCart[id].quantity
+          userOrders.currentCart[id].quantity
         );
       });
       let date = Date();
       let randNum = Math.floor(Math.random() * 100000);
       let orderId = `${date} - ${randNum}`;
-      orders[email].orderHistory.push({ [orderId]: orders[email].currentCart });
-      orders[email].currentCart = {};
+      userOrders.orderHistory.push({ [orderId]: userOrders.currentCart });
+      userOrders.currentCart = {};
       // console.log('200200200200200200200200200');
-      res.status(200).json({ orderId: orderId, orders: orders[email], user: userInfo, items: items });
+      res.status(200).json({ orderId: orderId, orders: userOrders, user: userInfo, items: items });
     }
   } else {
     // console.log('999999999999999999');
@@ -522,5 +575,17 @@ express()
   // All these fields are mandatory
   // addAddress is a boolean
   // this post returns the orderID number, the userData, the orders associated with the given email address and the new items data (changed NumInStocks)
+
+  // NEW END POINTS AFTER CONNECTING TO MONGO
+  .get("/mongo/getStore", getItemInfo)
+  .get("/mongo/getVendors", getVendorInfo)
+  .post("/mongo/logIn/:email", getUserInfo)
+  .post("/mongo/createAccount/:email", postCreateAccount)
+  .get("/mongo/getOrders/:email", getOrders)
+  .post("/mongo/mergeCartGetOrders/:email", postMergeCartGetOrders) //unfinished
+  .get("/mongo/addItem/:email/:itemId/:quantity", getAddItem)
+  .put("/mongo/removeItem/:email/:itemId/:quantity", putRemoveItem)
+  .put("/mongo/emptyCart/:email", putEmptyCart)
+  .post("/mongo/purchase/:email", postPurchase)
 
   .listen(PORT, () => console.info(`Listening on port ${PORT}`));
