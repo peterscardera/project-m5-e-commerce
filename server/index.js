@@ -8,6 +8,7 @@ const items = require("./data/items");
 const users = require("./data/users");
 const orders = require("./data/orders");
 const vendors = require("./data/companies");
+const cors = require("cors");
 
 const { 
   getUserInfo, 
@@ -58,7 +59,7 @@ const handleCreateAccount = (req, res) => {
   else if (id < 100) id = `00${id}`;
   else if (id < 1000) id = `0${id}`;
   else id = `${id}`;
-  console.log(req.params);
+  // console.log(req.params);
   let password = req.body.password;
   let userName = req.body.userName;
   let givenName = req.body.givenName;
@@ -498,6 +499,7 @@ express()
   .use(bodyParser.json())
   .use(express.urlencoded({ extended: false }))
   .use("/", express.static(__dirname + "/"))
+  .use(cors())
 
   // retrieves items that vendor has for sale (regardless of quantity in stock)
   .get("/getStore", handleGetStore)
@@ -588,4 +590,6 @@ express()
   .put("/mongo/emptyCart/:email", putEmptyCart)
   .post("/mongo/purchase/:email", postPurchase)
 
-  .listen(PORT, () => console.info(`Listening on port ${PORT}`));
+ .listen(process.env.PORT || 3000, function () {
+   console.log('server listening on port')
+ })

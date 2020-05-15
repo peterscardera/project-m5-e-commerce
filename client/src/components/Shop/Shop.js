@@ -14,9 +14,9 @@ const Shop = () => {
 
   const [categoriesChecked, setCategoriesChecked] = useState({});
   const [filteredDisplay, setFilteredDisplay] = useState(null);
-  console.log(filteredDisplay);
+ 
 
-  console.log(categoriesChecked);
+  
   const allOfTheItems = useSelector((state) => state.gallery.items);
   useEffect(() => {
     if (!allOfTheItems) {
@@ -36,20 +36,19 @@ const Shop = () => {
 
   //handler for next page must be on parent for page to re-render
   const loadSpecificPageNumber = (individualPageNumber) => {
-    //console.log(individualPageNumber)
+   
     setCurrentPage(individualPageNumber);
   };
 
   const filterHandler = () => {
-    console.log("filter start");
-    console.log(categoriesChecked, "categories checked");
+ 
     let assigned = Object.keys(categoriesChecked).filter((item) => {
       if (categoriesChecked[item] === true) {
         return item;
       }
     });
 
-    console.log(assigned, "assigned");
+
 
     let toBePushed = [];
 
@@ -57,7 +56,7 @@ const Shop = () => {
       allOfTheItems.forEach((item) => {
         assigned.forEach((catChosen) => {
           if (item.category == catChosen) {
-            console.log(item, "each item ");
+            
             toBePushed.push(item);
           }
         });
@@ -66,11 +65,11 @@ const Shop = () => {
       toBePushed = allOfTheItems;
     }
 
-    console.log(toBePushed, "to be pushed beforeset filter");
+  
 
     setFilteredDisplay(toBePushed);
 
-    console.log("filter end");
+    
   };
 
   return (

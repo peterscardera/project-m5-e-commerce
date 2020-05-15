@@ -23,7 +23,7 @@ const NewAddress = () => {
     addressProvince: "",
     addressCountry: "",
   });
-  console.log(quickAddress);
+  // console.log(quickAddress);
   const handleQuickAddress = (e) => {
     const values = e.target.value;
     setQuickAddress({

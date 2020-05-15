@@ -6,6 +6,8 @@ import { CartContext } from "../../cartContext";
 import { PurchaseContext } from "../../purchaseContext";
 import CartItems from "./CartItems";
 
+import { ip } from "../../constantsB";
+
 import {
   requestEmptyCart,
   emptyCartSuccess,
@@ -61,7 +63,7 @@ const Cart = () => {
     if (!user) {
       dispatch(emptyCartSuccess());
     } else {
-      fetch(`/mongo/emptyCart/${user.email}`, {
+      fetch(`${ip}/mongo/emptyCart/${user.email}`, {
         method: "PUT",
       }).then((res) => {
         if (res.status === 200) {

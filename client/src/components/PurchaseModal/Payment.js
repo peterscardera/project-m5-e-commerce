@@ -13,6 +13,8 @@ import {
   receiveGalleryItems,
   receiveOrdersSuccess,
 } from "../../actions";
+import { ip } from "../../constantsB";
+
 
 const Payment = () => {
 
@@ -148,7 +150,7 @@ const Payment = () => {
     if (userInfo) email = userInfo.email;
     reduxDispatch(requestPurchase());
       
-    fetch(`/mongo/purchase/${email}`, {
+    fetch(`${ip}/mongo/purchase/${email}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

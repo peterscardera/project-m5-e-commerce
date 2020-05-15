@@ -112,11 +112,15 @@ const Wrapper = styled.div`
   .home-item-wrapper {
     position: relative;
     width: 100%;
-    height: 450px;
+    height: 400px;
+    display:flex;
+    justify-content:center
   }
   .home-item-image {
     position: relative;
     overflow: hidden;
+    /* display:flex;
+    justify-content:center */
   }
   .home-item-image img {
     display: block;
@@ -190,14 +194,13 @@ const Wrapper = styled.div`
     background: #3b3b3b;
   }
   .first .home-item-button {
-    -webkit-transition: all 0.5s ease-in 0.5s;
-    -moz-transition: all 0.5s ease-in 0.5s;
-    -o-transition: all 0.5s ease-in 0.5s;
-    transition: all 0.5s ease-in 0.5s;
-    top: -100px;
+    transition: all 0s ease-in 0.25s;
+  
+    top: -120px;
   }
   .first .home-item-wrapper:hover .home-item-button {
-    top: 40%;
+    top: 32%;
+   
   }
 `;
 

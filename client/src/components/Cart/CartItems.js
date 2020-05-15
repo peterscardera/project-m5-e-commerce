@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
-
+import { ip } from "../../constantsB";
 import {
   resetErrorStatus,
   requestAddItemToCart,
@@ -43,7 +43,7 @@ const CartItems = ({ item, quantity }) => {
     if (!user) {
       dispatch(addItemToCartSuccess([item], 1));
     } else {
-      fetch(`/mongo/addItem/${user.email}/${item._id}/1`, {
+      fetch(`${ip}/mongo/addItem/${user.email}/${item._id}/1`, {
         method: "GET",
       }).then((res) => {
         if (res.status === 200) {
@@ -70,7 +70,7 @@ const CartItems = ({ item, quantity }) => {
     if (!user) {
       dispatch(removeItemFromCartSuccess([item], x));
     } else {
-      fetch(`/mongo/removeItem/${user.email}/${item._id}/${x}`, {
+      fetch(`${ip}/mongo/removeItem/${user.email}/${item._id}/${x}`, {
         method: "PUT",
       }).then((res) => {
         if (res.status === 200) {
@@ -89,7 +89,7 @@ const CartItems = ({ item, quantity }) => {
 
   const handleDelete = (ev) => {
     handleSubtract(ev, stateQuantity);
-    console.log("dnjasdbnjasndjsanjkdnsajnda", stateQuantity);
+  
   };
 
   return (

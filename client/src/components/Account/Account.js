@@ -2,6 +2,8 @@ import React, { useState, useReducer } from "react";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
+import { ip } from "../../constantsB";
+
 import Forms from "./Forms";
 
 import ExistingAccount from "./ExistingAccount";
@@ -87,7 +89,7 @@ function Account() {
     reduxDispatch(requestUserInfo());
 
     // fetch(`/logIn/${state.email}`, { //without mongo
-    fetch(`/mongo/logIn/${state.email}`, {
+    fetch(`${ip}/mongo/logIn/${state.email}`, {
       // /mongo/logIn/:email
       method: "POST",
       headers: {
@@ -120,7 +122,7 @@ function Account() {
     //1- get the current cart and past cart
     reduxDispatch(requestOrders());
 
-    fetch(`/mongo/mergeCartGetOrders/${state.email}`, {
+    fetch(`${ip}/mongo/mergeCartGetOrders/${state.email}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -129,7 +131,7 @@ function Account() {
     }).then((resp) => {
       if (resp.status === 200) {
         resp.json().then((jsonResponse) => {
-          console.log(jsonResponse.userOrders);
+          // console.log(jsonResponse.userOrders);
           reduxDispatch(
             receiveOrdersSuccess(
               jsonResponse.userOrders.orderHistory,
@@ -165,11 +167,11 @@ function Account() {
     //when clicking this the error state must be RESET to null incase user triggers a different error
     setErrorCreateState(null);
     reduxDispatch(requestCreateNewUser());
-    console.log("data about to submit for creation,", createAccountUserInput);
+    // console.log("data about to submit for creation,", createAccountUserInput);
 
     // one beautiful nested then to create a user and "then" log the user in
     // fetch(`/createAccount/${createAccountUserInput.email}`, { //without mongo
-    fetch(`/mongo/createAccount/${createAccountUserInput.email}`, {
+    fetch(`${ip}/mongo/createAccount/${createAccountUserInput.email}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -198,7 +200,7 @@ function Account() {
           })
           .then((newUserData) => {
             // fetch(`/logIn/${state.email}`, {    requires change to method POST
-            fetch(`/mongo/logIn/${createAccountUserInput.email}`, {
+            fetch(`${ip}/mongo/logIn/${createAccountUserInput.email}`, {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",

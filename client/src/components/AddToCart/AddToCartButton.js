@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+
+import { ip } from "../../constantsB";
+
 import {
   addItemToCartSuccess,
   requestAddItemToCart,
@@ -29,7 +32,7 @@ const AddToCartButton = ({ productChosen, currentCart }) => {
     } else {
       dispatch(requestAddItemToCart());
       fetch(
-        `/mongo/addItem/${loggedInStatus.email}/${productChosen[0]._id}/${quantity}`
+        `${ip}/mongo/addItem/${loggedInStatus.email}/${productChosen[0]._id}/${quantity}`
         ).then((res) => {
           if (res.status === 200) {
             dispatch(addItemToCartSuccess(productChosen, quantity));

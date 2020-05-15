@@ -3,7 +3,7 @@
 const { MongoClient } = require('mongodb');
 const assert = require('assert');
 
-const uri = "mongodb+srv://master:adminadmin@cluster0-csv1l.mongodb.net/test?retryWrites=true&w=majority";
+const uri = "mongodb+srv://m001-student:vYnIpETCHJxWBdGI@cluster0-sptak.azure.mongodb.net/test?retryWrites=true&w=majority";
 
 const client = new MongoClient(uri, { 
   useNewUrlParser: true,
@@ -52,7 +52,6 @@ const getVendorInfo = async (req, res) => {
 const getUserInfo = async (req, res) => {
 
   const email = req.params.email;
-  // console.log('emailemailemailemailemailemailemailemail',email);
   await client.connect();
   const db = client.db('e-commerce');
   
@@ -82,7 +81,7 @@ const postCreateAccount = async (req, res) => {
     }
     else {
       const userCount = await db.collection('users').count();
-      // console.log('userCountuserCountuserCountuserCount',userCount);
+     
       let id = userCount + 1;
       if (id < 10) id = `000${id}`;
       else if (id < 100) id = `00${id}`;
@@ -162,7 +161,7 @@ const getOrders = async (req, res) => {
 };
 
 const getAddItem = async (req, res) => {
-  // console.log('YUDOUUIDIDD  IT T GOOOD JOBBI');
+
   await client.connect();
   const db = client.db('e-commerce');
   let email = req.params.email.toLowerCase();
@@ -173,20 +172,20 @@ const getAddItem = async (req, res) => {
   
 
   const itemInfo = await db.collection('items').findOne({ _id: itemIdToInt });
-    // console.log('itemInfoitemInfoitemInfoitemInfoitemInfo',itemInfo)
+ 
     if (!itemInfo) {
       res.status(404).json({item: 'Item not found' });
     }
     else {
       const userInfo = await db.collection('users').findOne({ email: email });
-      // console.log('userInfouserInfouserInfouserInfouserInfouserInfo',userInfo)
+  
       if (!userInfo) {
         res.status(404).json({user: 'Not Found' });
       }
       else {
         let user_id = userInfo._id;
         const userOrders = await db.collection('orders').findOne({ _id: user_id });
-        // console.log('userOrdersuserOrdersuserOrdersuserOrdersuserOrders',userOrders)
+      
         if (!userOrders) {
           res.status(404).json({orders: 'Not Found'});
         }
@@ -214,7 +213,7 @@ const getAddItem = async (req, res) => {
                 const r = await db.collection('orders').updateOne(query, newValues);
                 assert.equal(1, r.matchedCount);
                 assert.equal(1, r.modifiedCount);
-                // console.log('rrrrrrrrrrrrrrrrrrrrrrrr',r)
+              
                 res.status(200).json(userOrders.currentCart[itemId]);
               }
             } else if (parseInt(quantity) > itemInfo.numInStock) {
@@ -231,7 +230,7 @@ const getAddItem = async (req, res) => {
               const r = await db.collection('orders').updateOne(query, newValues);
               assert.equal(1, r.matchedCount);
               assert.equal(1, r.modifiedCount);
-              console.log('rrrrrrrrrrrrrrrrrrrrrrrr',r)
+            
               res.status(200).json(userOrders.currentCart[itemId]);
             }
           } else {
@@ -252,13 +251,13 @@ const putRemoveItem = async ( req, res ) => {
   const db = client.db('e-commerce');
 
   const itemInfo = await db.collection('items').findOne({ _id: itemIdToInt });
-    // console.log('itemInfoitemInfoitemInfoitemInfoitemInfo',itemInfo)
+   
     if (!itemInfo) {
       res.status(404).json({item: 'Item not found' });
     }
     else {
       const userInfo = await db.collection('users').findOne({ email: email });
-      // console.log('userInfouserInfouserInfouserInfouserInfouserInfo',userInfo)
+    
       if (!userInfo) {
         res.status(404).json(`Error accessing ${email}'s information.`);
       }
@@ -323,7 +322,7 @@ const postMergeCartGetOrders = async (req , res) => {
   const db = client.db('e-commerce');
 
   const userInfo = await db.collection('users').findOne({ email: email });
-  // console.log('userInfouserInfouserInfouserInfouserInfouserInfo',userInfo)
+  
   if (!userInfo) {
     res.status(404).json(`Error accessing ${email}'s information.`);
   }
@@ -429,7 +428,7 @@ const postPurchase = async (req, res) => {
   const db = client.db('e-commerce');
   let email = req.params.email.toLowerCase();
   if (!email) {
-    // console.log('11111111111111111111111111111');
+   
     res.status(400).json("Email must be provided.");
     return
   }
@@ -552,7 +551,6 @@ const postPurchase = async (req, res) => {
           userInfo[nextAddressNum] = address;
           const query = { _id : userOrders._id };
           const newValues = { userInfo : userInfo };
-          console.log('---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------')
           const r = await db.collection('users').updateOne(query, newValues);
           assert.equal(1, r.matchedCount);
           assert.equal(1, r.modifiedCount);

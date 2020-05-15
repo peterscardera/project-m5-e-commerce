@@ -31,7 +31,7 @@ const NavBar = () => {
   const currentCart = useSelector((state) => state.orders.currentCart);
   let cartNum = Object.keys(currentCart).length;
   const handleSignOut = () => {
-    console.log("signing out...");
+    // console.log("signing out...");
     dispatch(logUserOut());
     dispatch(emptyCartSuccess());
   };

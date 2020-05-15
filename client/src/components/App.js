@@ -25,6 +25,9 @@ import ExistingAccount from "./Account/ExistingAccount";
 
 import Footer from "./Layout/Footer";
 
+import { ip } from "../constantsB";
+
+
 function App() {
   const allOfTheItems = useSelector((state) => state.gallery.items);
   const allOfTheVendors = useSelector((state) => state.vendors.items);
@@ -43,22 +46,22 @@ function App() {
     const initialFetch = async () => {
       try {
         // let storeData = await fetch("/getStore"); //without mongo
-        let storeData = await fetch("/mongo/getStore");
+        let storeData = await fetch(`${ip}/mongo/getStore`);
         if (storeData.status === 200) {
           let jsonData = await storeData.json();
-          console.log('jsonDatajsonDatajsonDatajsonData',jsonData)
+          // console.log('jsonDatajsonDatajsonDatajsonData',jsonData)
           dispatch(receiveGalleryItems(jsonData.data));
         } else {
-          console.log("error fetching store data");
+          // console.log("error fetching store data");
           dispatch(receiveGalleryItemsError());
         }
         // let vendorData = await fetch("/getVendors"); //without mongo
-        let vendorData = await fetch("/mongo/getVendors");
+        let vendorData = await fetch(`${ip}/mongo/getVendors`);
         if (vendorData.status === 200) {
           let jsonVendor = await vendorData.json();
           dispatch(receiveVendors(jsonVendor.data));
         } else {
-          console.log("error fetching vendor data");
+          // console.log("error fetching vendor data");
           dispatch(receiveVendorsError());
         }
       } catch (err) {

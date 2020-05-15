@@ -43,30 +43,26 @@ setClickState(!clickState)
     let uniqueData = new Set(duplicatedCategories);
     let uniqueDataArray = [...uniqueData];
     setCategories(uniqueDataArray);
-    // console.log(uniqueDataArray);
-    console.log("clicked");
+
   }, []);
 
   useEffect(() => {
-    console.log("second useEffecgt filter");
+    
     filterHandler();
   }, [categoriesChecked]);
 
   const handleCheck = (e) => {
-    console.log("handl START");
+ 
     const value = e.target.checked;
     const name = e.target.name;
 
-    // let newCategoriesChecked = [];
-    // let categoriesKeys = Object.keys(categoriesChecked)
-    // categoriesKeys.forEach((key)=> {newCategoriesChecked[key]=categoriesChecked[key]})
     setCategoriesChecked({
       ...categoriesChecked,
       [name]: value,
     });
-    // filterHandler();
+   
 
-    console.log("handl end");
+
   };
 
   if (clickState === false) {

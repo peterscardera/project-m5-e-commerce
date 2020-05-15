@@ -1,0 +1,1 @@
+export const ip = 'https://ecommerce-bootcamp2020.herokuapp.com'

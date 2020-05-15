@@ -57,7 +57,7 @@ const ItemDetails = () => {
         })}
       {productChosen != null &&
         productChosen.map((item, index) => {
-          console.log('productChosenproductChosenproductChosenproductChosen',productChosen)
+         
           return (
             <GridContainer key={index}>
               <TopRow>
