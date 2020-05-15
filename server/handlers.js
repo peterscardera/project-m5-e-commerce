@@ -3,7 +3,7 @@
 const { MongoClient } = require('mongodb');
 const assert = require('assert');
 
-const uri = "mongodb+srv://m001-student:vYnIpETCHJxWBdGI@cluster0-sptak.azure.mongodb.net/test?retryWrites=true&w=majority";
+const uri = "mongodb+srv://m001-student:---cluster0-sptak.azure.mongodb.net/test?retryWrites=true&w=majority";
 
 const client = new MongoClient(uri, { 
   useNewUrlParser: true,
